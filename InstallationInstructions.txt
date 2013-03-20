@@ -1,0 +1,20 @@
+Installation-Checklist
+1. Install Matlab
+2. Install the Chrome-Extension: Can be downloaded from the repository
+3. Instanll JAVA7. You can download it from 
+http://www.oracle.com/technetwork/java/javase/downloads/index.html
+JDK For Develpers
+JRE For General Users
+
+4. Someother issues: 
+1) to ensure this package works fine with your local environment. Please use screen resolution(will effect the resolutions of images captured from game window) 
+ between 1024 * 768 and 1920 * 1080. Actually, only 1024 * 768 and 1920 * 1080 have been tested. 
+2) Since  the centrod of the bird on the slingshot (we call it focus point) is required when the robot shooting a bird,please specified adjust it manually in Setup.ini. 
+To get a accurate focus point: open a game window, load naive agent once, and go to \vision2.3\matlab\im.png  The screen shot of the game window 
+is stored in im.png and you can manually get the focus point using paint...
+
+3)  To test the naive agent, you can either type : java -jar Simulator.jar -naive [num] or go to the IntegeratedBangBangBang class to run the method there
+[num] specifies the number of segmentations the agent will perform.  The naive agent will shoot birds to the set of pigs dectected by segementation. 
+
+4) All the tracjectory predictions are on the basis of the trajectory points we collect. All the collected trajectory points will be stored in a file. The trajectory
+prediction module will make use of that. To collect trajectories, please refer to TrajectoryCollector calss under representation.uitl package 
