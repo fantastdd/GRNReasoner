@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 import quanti.QuantiShapeCalculator;
 
@@ -45,6 +46,19 @@ public static void registerMBR(MBR mbr,boolean edge)
 		mbr.setId(count++);
 		mbrs.add(mbr);
 	}
+}
+public static void batchRegister (List<MBR> mbrs, MBR... edge)
+{
+     for(MBR mbr: mbrs)
+     {
+     	boolean isEdge = false;
+     	
+     	if(mbr.equals(edge))
+     		isEdge = true;
+
+        registerMBR(mbr, isEdge);  
+     }
+
 }
 public static Node constructNode()
 {

@@ -14,6 +14,7 @@ private MBR mbr;
 public int x;
 public int y;
 public int height;
+
 public int hheight = height/2;
 public MBR getMbr() {
 	return mbr;
@@ -31,13 +32,13 @@ private boolean completed;
 private LinkedList<MBR> overlapping_mbrs = new  LinkedList<MBR>();
 private HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
 private HashMap<MBR,Contact> contact_map = new HashMap<MBR,Contact>();
-/* store all the points that potentially contacted with the actual shape*/
+/* store all the points that potentially contact with the actual shape*/
 private LinkedList<Point> points4 = new LinkedList<Point>();
 private LinkedList<Point> points3 = new LinkedList<Point>();
 private LinkedList<Point> points2 = new LinkedList<Point>();
 private LinkedList<Point> points1 = new LinkedList<Point>();
 
-/* store all the points that contacted with the actual shape*/
+/* store all the points that contact with the actual shape*/
 private LinkedList<Point> points41 = new LinkedList<Point>();
 private LinkedList<Point> points31 = new LinkedList<Point>();
 private LinkedList<Point> points21 = new LinkedList<Point>();
@@ -297,217 +298,8 @@ public boolean addRestrictedPoints(Point point, int region,boolean contacted)
 
 
 }
-/*public void addRestrictedPoints(Point point, int region) 
-{
-   assert(!actualConfiguration);
-	if(region == 4)
-    {
-		points4.add(point);
-   		formActualObject4();
-    } 
-	else	
-		if(region == 3)
-	    {
-			points3.add(point);
-	    	formActualObject3();
-	    }
-		else	
-			if(region == 1)
-		    {
-			   points1.add(point);
-		       formActualObject1();
-		    
-		    }else	
-				if(region == 2)
-			    {
-					points2.add(point);
-			    	formActualObject2();
-			   
-			    }
-	
-}*/
-private void formActualObject3() {
-	/* y = kx + b
-     * k = (y1 - y2)/(x1-x2)
-     * 
-     * */
-	assert(points3.size() == 2);
-	
-	Point p1 = points3.get(0);
-	Point p2 = points3.get(1);
-	double k = (p1.y - p2.y)/(p1.x - p2.x);
-	double b = p1.y - k * p1.x;
-	
-	double bpx = ( (y + height) - b )/k;
-	double rpy =  x * k + b;
-	
-	if( (this.permit_regions[2] == 1
-			&& 
-					(   x <= bpx && bpx <= x + limit_horizontal)
-			      &&
-			        (   y + height - limit_vertical <= rpy && rpy <= height + y)
-		)
-		||
-		(this.permit_regions[3] == 1
-		&& 
-				(   x + width >= bpx&& bpx >= x + width - limit_horizontal)
-		      &&
-		        (   y + limit_vertical>= rpy && y <= rpy)
-	  
-	  )
-	 )
-	{
-	    this.actual_object.addPoint((int)bpx, y + height);
-	    this.actual_object.addPoint(x + width, (int)rpy);
-	    this.actual_object.addPoint(x + width - (int)bpx, y);
-	    this.actual_object.addPoint(x, y + height - (int)rpy);
-	    this.actualConfiguration = true;
-	   
-	}
-	
-	
-}
-
-private void formActualObject2()
-{
-    /* y = kx + b
-     * k = (y1 - y2)/(x1-x2)
-     * 
-     * */
-	assert(points2.size() == 2);
-	
-	Point p1 = points4.get(0);
-	Point p2 = points4.get(1);
-	double k = (p1.y - p2.y)/(p1.x - p2.x);
-	double b = p1.y - k * p1.x;
-	
-	double bpx = ( y  - b )/k;
-	double rpy =  x * k + b;
-	
-	if( (this.permit_regions[3] == 1
-			&& 
-					(   x <= bpx && bpx <= x + limit_horizontal)
-			      &&
-			        (   y + limit_vertical >= rpy && y <= rpy)
-		)
-		||
-		(this.permit_regions[2] == 1
-		&& 
-				(   x + width >= bpx&& bpx >= x + width - limit_horizontal)
-		      &&
-		        (   y + height>= rpy && y + height - limit_vertical<= rpy)
-	  
-	  )
-	 )
-	{
-	    this.actual_object.addPoint((int)bpx, y + height);
-	    this.actual_object.addPoint(x + width, (int)rpy);
-	    this.actual_object.addPoint(x + width - (int)bpx, y);
-	    this.actual_object.addPoint(x, y + height - (int)rpy);
-	    this.actualConfiguration = true;
-	
-	}
 
 
-}
-
-private void formActualObject4() 
-{
-    /* y = kx + b
-     * k = (y1 - y2)/(x1-x2)
-     * 
-     * */
-	assert(points4.size() == 1);
-	
-	Point p1 = points4.get(0);
-    
-   if(this.permit_regions[2] ==  1 && this.width > this.height)
-   {
-	   //treat fat as slim
-	   for(int i = 0;i < this.limit_vertical;i++)
-	   {
-		   
-		   
-	   }
-	   
-	   int offset = 0;
-	   //double r = (hheight - offset)
-	   
-   }
-	/*double k = (p1.y - p2.y)/(p1.x - p2.x);
-	double b = p1.y - k * p1.x;
-	
-	double bpx = ( (y + height) - b )/k;
-	double rpy =  (x + width) * k + b;
-	
-	if( (this.permit_regions[2] == 1
-			&& 
-					(   x <= bpx && bpx <= x + limit_horizontal)
-			      &&
-			        (   y + limit_vertical >= rpy && y <= rpy)
-		)
-		||
-		(this.permit_regions[3] == 1
-		&& 
-				(   x + width >= bpx&& bpx >= x + width - limit_horizontal)
-		      &&
-		        (   y + height>= rpy && y + height - limit_vertical<= rpy)
-	  
-	  )
-	 )
-	{
-	    this.actual_object.addPoint((int)bpx, y + height);
-	    this.actual_object.addPoint(x + width, (int)rpy);
-	    this.actual_object.addPoint(x + width - (int)bpx, y);
-	    this.actual_object.addPoint(x, y + height - (int)rpy);
-	    this.actualConfiguration = true;
-	
-	}
-*/
-
-}
-private void formActualObject1() 
-{
-    /* y = kx + b
-     * k = (y1 - y2)/(x1-x2)
-     * 
-     * */
-	assert(points1.size() == 2);
-	
-	Point p1 = points1.get(0);
-	Point p2 = points1.get(1);
-	double k = (p1.y - p2.y)/(p1.x - p2.x);
-	double b = p1.y - k * p1.x;
-	
-	double bpx = ( y  - b )/k;
-	double rpy = (x + width) * k + b;
-	
-	if( (this.permit_regions[2] == 1
-			&& 
-					(   x + limit_horizontal <= bpx && bpx <= x + width)
-			      &&
-			        (   y + limit_vertical >= rpy && y <= rpy)
-		)
-		||
-		(this.permit_regions[3] == 1
-		&& 
-				(   x <= bpx&& bpx <= x + limit_horizontal)
-		      &&
-		        (   y + height>= rpy && y + height - limit_vertical<= rpy)
-	  
-	  )
-	 )
-	{
-	    this.actual_object.addPoint((int)bpx, y + height);
-	    this.actual_object.addPoint(x + width, (int)rpy);
-	    this.actual_object.addPoint(x + width - (int)bpx, y);
-	    this.actual_object.addPoint(x, y + height - (int)rpy);
-	    this.actualConfiguration = true;
-	  
-	}
-
-
-}
 
 
 public boolean isEdge() {
@@ -678,17 +470,17 @@ public Configuration(MBR mbr)
    	core_right.addPoint(this.x + this.width - this.limit_horizontal, this.y);
    	
    	
- 	core_right2.addPoint(this.x, this.y + this.height - this.limit_vertical);
+ 	  core_right2.addPoint(this.x, this.y + this.height - this.limit_vertical);
    	core_right2.addPoint((this.x + this.limit_horizontal+this.x)/2, (this.y + this.height + this.y + this.height - this.limit_vertical)/2);
    	core_right2.addPoint((this.x + this.width + this.x + this.width - this.limit_horizontal)/2, (this.y + this.limit_vertical+this.y)/2);
    	core_right2.addPoint(this.x + this.width - this.limit_horizontal, this.y);
    	
    	
-   	
- 	core_right4.addPoint((this.x + this.width + this.x + this.width - this.limit_horizontal)/2, (this.y + this.limit_vertical+this.y)/2);
-   	core_right4.addPoint(this.x + this.limit_horizontal, this.y + this.height);
-	core_right4.addPoint(this.x + this.width, this.y + this.limit_vertical);
- 	core_right4.addPoint((this.x + this.width + this.x + this.width - this.limit_horizontal)/2, (this.y + this.limit_vertical+this.y)/2);
+     	
+   	core_right4.addPoint((this.x + this.width + this.x + this.width - this.limit_horizontal)/2, (this.y + this.limit_vertical+this.y)/2);
+    core_right4.addPoint(this.x + this.limit_horizontal, this.y + this.height);
+  	core_right4.addPoint(this.x + this.width, this.y + this.limit_vertical);
+   	core_right4.addPoint((this.x + this.width + this.x + this.width - this.limit_horizontal)/2, (this.y + this.limit_vertical+this.y)/2);
  	
  	
 
@@ -707,10 +499,10 @@ public Configuration(MBR mbr)
    	core_left1.addPoint((this.x + this.width - this.limit_horizontal+this.x + this.width)/2, (this.y + this.height+this.y + this.height - this.limit_vertical)/2);
    	core_left1.addPoint(this.x + this.width, this.y + this.height - this.limit_vertical);
    	
- 	core_left3.addPoint((this.x + this.x + this.limit_horizontal)/2, (this.y + this.limit_vertical + this.y)/2);
- 	core_left3.addPoint(this.x, this.y + this.limit_vertical);
-	core_left3.addPoint(this.x + this.width - this.limit_horizontal, this.y + this.height);
-	core_left3.addPoint((this.x + this.width - this.limit_horizontal+this.x + this.width)/2, (this.y + this.height+this.y + this.height - this.limit_vertical)/2);
+   	core_left3.addPoint((this.x + this.x + this.limit_horizontal)/2, (this.y + this.limit_vertical + this.y)/2);
+   	core_left3.addPoint(this.x, this.y + this.limit_vertical);
+  	core_left3.addPoint(this.x + this.width - this.limit_horizontal, this.y + this.height);
+  	core_left3.addPoint((this.x + this.width - this.limit_horizontal+this.x + this.width)/2, (this.y + this.height+this.y + this.height - this.limit_vertical)/2);
    	
    	diagonal_left.addPoint(this.x + this.width, this.y + this.height);
    	diagonal_left.addPoint(this.x ,this.y);
