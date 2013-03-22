@@ -4,8 +4,6 @@ import java.awt.Rectangle;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import common.util.Debug;
-
 import quanti.QuantiShapeCalculator;
 
 public class Node {
@@ -99,7 +97,7 @@ public Node(LinkedList<MBR> mbrs, LinkedList<MBR> updated_mbrs, LinkedList<MBR> 
     initialize(edge);
 
 }
-public Node(){}
+// test the overlapping blocks
 public void initialize(LinkedList<MBR> edge)
 {
 	
@@ -113,14 +111,14 @@ public void initialize(LinkedList<MBR> edge)
 			configuration.setEdge(true);
 			
 		}
-		this.confmaps.put(mbr, configuration);
+		confmaps.put(mbr, configuration);
 	}
 	
 	
 	for (int i = 0; i < mbrs.size() - 1; i++)
 	{
 		MBR mbr = mbrs.get(i);
-		Configuration configuration = this.lookupConf(mbr);
+		Configuration configuration = lookupConf(mbr);
 		for (int j = i + 1; j < mbrs.size(); j++)
 		{
 			MBR mbr1 = mbrs.get(j);
@@ -130,23 +128,99 @@ public void initialize(LinkedList<MBR> edge)
 				
 				configuration.getOverlapping_mbrs().add(mbr1);
 				configuration.getContact_map().put(mbr1,new Contact() );
+			    Short[] id = new Short[3];
+			    id[0] = 0;
+			    id[1] = 0;
+			    id[2] = (short)mbr1.getId();
+			    configuration.getNeighbors().add(id);
+			    		
 				
 				
-				
-				
-				
-				Configuration configuration1 = this.lookupConf(mbr1);
+				Configuration configuration1 = lookupConf(mbr1);
 				configuration1.getOverlapping_mbrs().add(mbr);
 				configuration1.getContact_map().put(mbr,new Contact() );
-				
+			    Short[] _id = new Short[3];
+			    _id[0] = 0;
+			    _id[1] = 0;
+			    _id[2] = (short)mbr.getId();
+			    configuration.getNeighbors().add(_id);
+			    
 				detectBlockedRegion(configuration,configuration1);
 				detectBlockedRegion(configuration1,configuration);
 				
 				
 			}
+			else
+			{
+				Short[] id = createTreeId(mbr,mbr1);
+				configuration.getNeighbors().add(id);
+				
+			}
 		}
 	}
 
+}
+// use the tree structure 
+private Short[] createTreeId(MBR pmbr, MBR rmbr)
+{
+
+
+	double r_x = rmbr.getX();
+	double r_y = rmbr.getY();
+	double r_mx = rmbr.getX() + rmbr.getWidth();
+	double r_my = rmbr.getY() + rmbr.getHeight();
+	
+
+	double x = pmbr.getX();
+	double y = pmbr.getY();
+	double mx = pmbr.getX() + pmbr.getWidth();
+	double my = pmbr.getY() + pmbr.getHeight();
+	
+	Short[] id = new Short[3];
+	
+	if(r_my > y || r_y < my)
+	{
+		if ( r_x > mx)
+		
+		{
+			//in the view region 4.
+			id[0] = 4;
+			id[1] = (short)(r_x - mx);
+			
+		    
+		}
+		else
+			if(r_mx < x)
+			{
+				//in the view region 2
+				id[0] = 2;
+				id[1] = (short)(x - r_mx);
+			
+			}
+		
+	}
+	else if (r_mx > x || r_x < mx)
+	{
+		if (r_y > my)
+			//in the view region 3
+		{
+			id[0] = 3;
+			id[1] = (short)(r_y - my);
+			
+		}
+		else
+			if(r_my < y)
+				// in the view region 1
+				{id[0] = 1;
+				id[1] = (short)(y - r_my);
+				}
+	}
+
+	id[2] = (short)rmbr.getId();
+	
+	return id;
+	
+	
 }
 
 

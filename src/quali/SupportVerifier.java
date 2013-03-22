@@ -27,7 +27,7 @@ private static LinkedList<Configuration> verifySupport(MBR mbr, Configuration co
 }
 public static boolean verifySupport(Configuration conf)
 {
-	  /* to vertex-support realtion under an edge */
+	  /* to vertex-support realation under an edge */
 	 HashMap<MBR, Contact> cmap = conf.getContact_map();
 	 for (MBR mbr: cmap.keySet())
 	  {

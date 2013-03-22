@@ -257,7 +257,12 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 	   
 	 }
 	 
-	 
+	/* // gap intersected. take the shell into considerations
+	 public static boolean isGapIntersected(Polygon p1, Polygon p2)
+	 {
+		 
+	 } 
+	 */
 	 
 	 public static LinkedList<Point> isIntersected(Edge edge, Polygon p)
 	{

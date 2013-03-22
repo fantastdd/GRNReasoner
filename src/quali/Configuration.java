@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import common.MyPolygon;
-import common.util.Debug;
-import exception.SolidOverlapping;
 
 public class Configuration {
 	
@@ -25,10 +23,11 @@ public void setMbr(MBR mbr) {
 public int width;
 public int hwdith = width/2;
 
-
+private int unary = -1;//0 = regular, 1 = lean to right, 2 = lean to left, -1 = not initialized, -2 = completed.
 private int angular;
 private int[] permit_regions;
 private boolean completed;
+private LinkedList<Short[]> neighbors = new LinkedList<Short[]>();
 private LinkedList<MBR> overlapping_mbrs = new  LinkedList<MBR>();
 private HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
 private HashMap<MBR,Contact> contact_map = new HashMap<MBR,Contact>();
@@ -351,12 +350,19 @@ public void setOverlapping_mbrs(LinkedList<MBR> overlapping_mbrs) {
 }
 
 
+public LinkedList<Short[]> getNeighbors() {
+	return neighbors;
+}
 public Configuration clone()
 {
   Configuration conf = new Configuration(this.mbr);
   conf.setAngular(angular);
   conf.permit_regions = this.permit_regions;
-  
+  conf.unary = unary;
+  for(Short[] neighbor: neighbors)
+  {
+	  conf.getNeighbors().add(neighbor);
+  }
   for(MBR _mbr:overlapping_mbrs)
   {
 	  conf.getOverlapping_mbrs().add(_mbr);
@@ -408,124 +414,117 @@ public Configuration(MBR mbr)
 	   permit_regions[2] = 1;
 	   permit_regions[3] = 1;
 	   angular = 2;
-	   this.getBlocked_regions().put(0, new LinkedList<MBR>());
-	   this.getBlocked_regions().put(1, new LinkedList<MBR>());
-	   this.getBlocked_regions().put(2, new LinkedList<MBR>());
-	   this.getBlocked_regions().put(3, new LinkedList<MBR>());
-       this.mbr = mbr;
-       this.x = mbr.x;
-       this.y = mbr.y;
-       this.height = mbr.height;
-       this.width = mbr.width;
+	    getBlocked_regions().put(0, new LinkedList<MBR>());
+	    getBlocked_regions().put(1, new LinkedList<MBR>());
+	    getBlocked_regions().put(2, new LinkedList<MBR>());
+	    getBlocked_regions().put(3, new LinkedList<MBR>());
+        this.mbr = mbr;
+        x = mbr.x;
+        y = mbr.y;
+        height = mbr.height;
+        width = mbr.width;
        
-       if(this.height > width)
+       if( height > width)
        {
-       	this.limit_horizontal = width/2;
-       	this.limit_vertical = height/2 - (int) Math.sqrt( (height/2) * (height/2) - (width/2)*(width/2) );
+       	 limit_horizontal = width/2;
+       	 limit_vertical = height/2 - (int) Math.sqrt( (height/2) * (height/2) - (width/2)*(width/2) );
        }
        else
        {
        	
-       	this.limit_vertical = height/2;
-       	this.limit_horizontal = width/2 - (int) Math.sqrt(  (width/2)*(width/2) - (height/2) * (height/2) );
+       	 limit_vertical = height/2;
+       	 limit_horizontal = width/2 - (int) Math.sqrt(  (width/2)*(width/2) - (height/2) * (height/2) );
        }
   
-    triangle4.addPoint(this.x + this.width - this.limit_horizontal,this.y + this.height);
-   	triangle4.addPoint(this.x + this.width,this.y + this.height);
-   	triangle4.addPoint(this.x + this.width,this.y + this.height - this.limit_vertical);
+    triangle4.addPoint( x +  width -  limit_horizontal, y +  height);
+   	triangle4.addPoint( x +  width, y +  height);
+   	triangle4.addPoint( x +  width, y +  height -  limit_vertical);
        
-   	triangle3.addPoint(this.x,this.y + this.height - this.limit_vertical);
-   	triangle3.addPoint(this.x,this.y + this.height);
-   	triangle3.addPoint(this.x + this.limit_vertical,this.y + this.height);
+   	triangle3.addPoint( x, y +  height -  limit_vertical);
+   	triangle3.addPoint( x, y +  height);
+   	triangle3.addPoint( x +  limit_vertical, y +  height);
        
        
-   	triangle2.addPoint(this.x,this.y);
-   	triangle2.addPoint(this.x,this.y + this.limit_vertical);
-   	triangle2.addPoint(this.x + this.limit_horizontal,this.y);
+   	triangle2.addPoint( x, y);
+   	triangle2.addPoint( x, y +  limit_vertical);
+   	triangle2.addPoint( x +  limit_horizontal, y);
        
-   	triangle1.addPoint(this.x + this.width - this.limit_horizontal,this.y);
-   	triangle1.addPoint(this.x + this.width,this.y);
-   	triangle1.addPoint(this.x + this.width,this.y + this.limit_horizontal);
+   	triangle1.addPoint( x +  width -  limit_horizontal, y);
+   	triangle1.addPoint( x +  width, y);
+   	triangle1.addPoint( x +  width, y +  limit_horizontal);
    	
-   	triangle44.addPoint(this.x,this.y + this.height);
-   	triangle44.addPoint(this.x + this.width,this.y + this.height);
-   	triangle44.addPoint(this.x + this.width,this.y);
+   	triangle44.addPoint( x, y +  height);
+   	triangle44.addPoint( x +  width, y +  height);
+   	triangle44.addPoint( x +  width, y);
        
-   	triangle33.addPoint(this.x,this.y);
-   	triangle33.addPoint(this.x,this.y + this.height);
-   	triangle33.addPoint(this.x + this.width,this.y + this.height);
+   	triangle33.addPoint( x, y);
+   	triangle33.addPoint( x, y +  height);
+   	triangle33.addPoint( x +  width, y +  height);
        
        
-   	triangle22.addPoint(this.x,this.y);
-   	triangle22.addPoint(this.x,this.y + this.height);
-   	triangle22.addPoint(this.x + this.width,this.y);
+   	triangle22.addPoint( x, y);
+   	triangle22.addPoint( x, y +  height);
+   	triangle22.addPoint( x +  width, y);
        
-   	triangle11.addPoint(this.x,this.y);
-   	triangle11.addPoint(this.x + this.width,this.y + this.height);
-   	triangle11.addPoint(this.x + this.width,this.y);
+   	triangle11.addPoint( x, y);
+   	triangle11.addPoint( x +  width, y +  height);
+   	triangle11.addPoint( x +  width, y);
    	
-   	core_right.addPoint(this.x, this.y + this.height - this.limit_vertical);
-   	core_right.addPoint(this.x + this.limit_horizontal, this.y + this.height);
-   	core_right.addPoint(this.x + this.width, this.y + this.limit_vertical);
-   	core_right.addPoint(this.x + this.width - this.limit_horizontal, this.y);
+   	core_right.addPoint( x,  y +  height -  limit_vertical);
+   	core_right.addPoint( x +  limit_horizontal,  y +  height);
+   	core_right.addPoint( x +  width,  y +  limit_vertical);
+   	core_right.addPoint( x +  width -  limit_horizontal,  y);
    	
    	
- 	  core_right2.addPoint(this.x, this.y + this.height - this.limit_vertical);
-   	core_right2.addPoint((this.x + this.limit_horizontal+this.x)/2, (this.y + this.height + this.y + this.height - this.limit_vertical)/2);
-   	core_right2.addPoint((this.x + this.width + this.x + this.width - this.limit_horizontal)/2, (this.y + this.limit_vertical+this.y)/2);
-   	core_right2.addPoint(this.x + this.width - this.limit_horizontal, this.y);
+ 	  core_right2.addPoint( x,  y +  height -  limit_vertical);
+   	core_right2.addPoint(( x +  limit_horizontal+ x)/2, ( y +  height +  y +  height -  limit_vertical)/2);
+   	core_right2.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
+   	core_right2.addPoint( x +  width -  limit_horizontal,  y);
    	
    	
      	
-   	core_right4.addPoint((this.x + this.width + this.x + this.width - this.limit_horizontal)/2, (this.y + this.limit_vertical+this.y)/2);
-    core_right4.addPoint(this.x + this.limit_horizontal, this.y + this.height);
-  	core_right4.addPoint(this.x + this.width, this.y + this.limit_vertical);
-   	core_right4.addPoint((this.x + this.width + this.x + this.width - this.limit_horizontal)/2, (this.y + this.limit_vertical+this.y)/2);
+   	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
+    core_right4.addPoint( x +  limit_horizontal,  y +  height);
+  	core_right4.addPoint( x +  width,  y +  limit_vertical);
+   	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
  	
  	
 
-   	diagonal_right.addPoint(this.x, this.y + this.height);
-   	diagonal_right.addPoint(this.x + this.width, this.y);
+   	diagonal_right.addPoint( x,  y +  height);
+   	diagonal_right.addPoint( x +  width,  y);
 
    	
 
-   	core_left.addPoint(this.x + this.limit_horizontal, this.y);
-   	core_left.addPoint(this.x, this.y + this.limit_vertical);
-   	core_left.addPoint(this.x + this.width - this.limit_horizontal, this.y + this.height);
-   	core_left.addPoint(this.x + this.width, this.y + this.height - this.limit_vertical);
+   	core_left.addPoint( x +  limit_horizontal,  y);
+   	core_left.addPoint( x,  y +  limit_vertical);
+   	core_left.addPoint( x +  width -  limit_horizontal,  y +  height);
+   	core_left.addPoint( x +  width,  y +  height -  limit_vertical);
    	
-   	core_left1.addPoint(this.x + this.limit_horizontal, this.y);
-   	core_left1.addPoint((this.x + this.x + this.limit_horizontal)/2, (this.y + this.limit_vertical + this.y)/2);
-   	core_left1.addPoint((this.x + this.width - this.limit_horizontal+this.x + this.width)/2, (this.y + this.height+this.y + this.height - this.limit_vertical)/2);
-   	core_left1.addPoint(this.x + this.width, this.y + this.height - this.limit_vertical);
+   	core_left1.addPoint( x +  limit_horizontal,  y);
+   	core_left1.addPoint(( x +  x +  limit_horizontal)/2, ( y +  limit_vertical +  y)/2);
+   	core_left1.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);
+   	core_left1.addPoint( x +  width,  y +  height -  limit_vertical);
    	
-   	core_left3.addPoint((this.x + this.x + this.limit_horizontal)/2, (this.y + this.limit_vertical + this.y)/2);
-   	core_left3.addPoint(this.x, this.y + this.limit_vertical);
-  	core_left3.addPoint(this.x + this.width - this.limit_horizontal, this.y + this.height);
-  	core_left3.addPoint((this.x + this.width - this.limit_horizontal+this.x + this.width)/2, (this.y + this.height+this.y + this.height - this.limit_vertical)/2);
+   	core_left3.addPoint(( x +  x +  limit_horizontal)/2, ( y +  limit_vertical +  y)/2);
+   	core_left3.addPoint( x,  y +  limit_vertical);
+  	core_left3.addPoint( x +  width -  limit_horizontal,  y +  height);
+  	core_left3.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);
    	
-   	diagonal_left.addPoint(this.x + this.width, this.y + this.height);
-   	diagonal_left.addPoint(this.x ,this.y);
+   	diagonal_left.addPoint( x +  width,  y +  height);
+   	diagonal_left.addPoint( x , y);
    	
-   	vertices[0] = new Point(this.x + this.width, this.y);
-   	vertices[1]  = new Point(this.x,this.y);
-   	vertices[2]  = new Point(this.x, this.y + this.height);
-   	vertices[3]  = new Point(this.x + this.width, y + this.height);
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-       
-
+   	vertices[0] = new Point( x +  width,  y);
+   	vertices[1]  = new Point( x, y);
+   	vertices[2]  = new Point( x,  y +  height);
+   	vertices[3]  = new Point( x +  width, y +  height);
+        
 }
 
-
+public int nextInitialization()
+{
+      unary = (unary + 1 > 3)?-2:++unary;
+      return unary;
+}
 
 
 public String toString()

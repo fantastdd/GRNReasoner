@@ -10,8 +10,6 @@ import java.util.LinkedList;
 
 import javax.swing.JFrame;
 
-import quali.EntityRegister;
-import quali.ShapeCalculator;
 import quanti.PolygonRegister;
 
 import common.MyPolygon;
