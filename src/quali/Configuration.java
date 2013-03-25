@@ -24,9 +24,13 @@ public int width;
 public int hwdith = width/2;
 
 private int unary = -1;//0 = regular, 1 = lean to right, 2 = lean to left, -1 = not initialized, -2 = completed.
+public boolean isCompleted()
+{
+       return unary == -2;	
+}
 private int angular;
 private int[] permit_regions;
-private boolean completed;
+
 private LinkedList<Short[]> neighbors = new LinkedList<Short[]>();
 private LinkedList<MBR> overlapping_mbrs = new  LinkedList<MBR>();
 private HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
@@ -333,13 +337,7 @@ public void setBlocked_regions(HashMap<Integer, LinkedList<MBR>> blocked_regions
 	this.blocked_regions = blocked_regions;
 }
 
-public boolean isCompleted() {
-	return completed;
-}
 
-public void setComplete(boolean completed) {
-	this.completed = completed;
-}
 
 public LinkedList<MBR> getOverlapping_mbrs() {
 	return overlapping_mbrs;
@@ -382,7 +380,7 @@ public Configuration clone()
   {
 	  conf.contact_map.put(key, this.contact_map.get(key).clone());
   }
-  conf.setComplete(this.isCompleted());
+
   conf.setEdge(this.edge);
   
   conf.actual_object = this.actual_object; 
