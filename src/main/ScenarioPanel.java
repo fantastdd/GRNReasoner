@@ -53,7 +53,7 @@ public class ScenarioPanel extends JFrame {
 			g.drawLine(conf.getCore_left().xpoints[1], conf.getCore_left().ypoints[1],conf.getCore_left().xpoints[2], conf.getCore_left().ypoints[2]);
 			g.drawLine(conf.getCore_left().xpoints[2], conf.getCore_left().ypoints[2],conf.getCore_left().xpoints[3], conf.getCore_left().ypoints[3]);
 			g.drawLine(conf.getCore_left().xpoints[3], conf.getCore_left().ypoints[3],conf.getCore_left().xpoints[0], conf.getCore_left().ypoints[0]);*/
-			//g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
+			g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
 		}
 		
 	}

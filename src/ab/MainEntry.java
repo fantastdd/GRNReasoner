@@ -11,8 +11,8 @@ public class MainEntry {
 
 	public static void main(String argsp[])
 	{
-	   ActionRobot ar = new ActionRobot();
-	   BufferedImage screenshot = ar.doScreenShot();
+	  ActionRobot actionRobot = new ActionRobot();
+	   BufferedImage screenshot = ActionRobot.doScreenShot();
 	   Vision vision = new Vision(screenshot);
 	   LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 	   worldInVision.addAll(vision.findStones());
