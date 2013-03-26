@@ -2,6 +2,7 @@ package quali;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class MBRReasonerAdvance {
@@ -20,61 +21,88 @@ public class MBRReasonerAdvance {
 	 
 	}
     private LinkedList<Configuration> confs = new LinkedList<Configuration>();
-    private LinkedList<Configuration> expanded_confs = new LinkedList<Configuration>();
-    private Configuration currentStabilityTest;
+
     
     
     
 	private LinkedList<Node> candidnates_solid = new LinkedList<Node>();
 	private LinkedList<Node> candidnates_gravity = new LinkedList<Node>();
 	private LinkedList<Node> candidnates_result = new LinkedList<Node>();
+    
+	//search ----
+	public boolean search(TestNode node)
+	{
+		if(checkSolution(node))
+		{
+		    //output the solutions	
+			System.out.println("solution is found:   " + node);
+			return true;
+		}
+		else
+		{
+		    LinkedList<TestNode> refinements = refine(node);
+		    if(!refinements.isEmpty())
+		    {
+		    	for(TestNode refinement: refinements)
+		    		if(search(refinement)) {return true;};
+		    }
+		}
+		return false;
+		
+	}
+	public LinkedList<TestNode> refine(final TestNode node)
+	{   
+		
+		LinkedList<TestNode> refinements = new LinkedList<TestNode>();
+	   if(!node.isCompleted()){
+				Configuration cconf = node.pop().clone(); 
+				//there are three types, namely, regular, left, right
+				while(!cconf.isCompleted())
+				{
+					cconf.nextInitialization();
+		            if(solidValidity(cconf , node))
+					{
+		            	TestNode _node = node.clone();
+		            	_node.update(cconf.clone());
+						confs.add(cconf.clone());
+						refinements.add(_node);
+					}
+				}
+		}
+		return refinements;
+	}
 
-    public boolean smartReason()
+    //------ test ----
+    public boolean checkSolution(TestNode node)
     {
-    	boolean _result = true;
-       while(!confs.isEmpty())
-       {
-         
-    	 Configuration _conf = confs.pop();
-         expanded_confs.add(_conf);
-         _result &= refine(_conf);
-         
-      }
-       if(!_result)
-       {
-    	   
-       }
-         
-         
-         
-         return _result;
+    	return node.isCompleted();
     }
-    public boolean refine(Configuration conf)
-    {
-    	boolean result = false;
-    	while(!conf.isCompleted() && !result)
-    	{
-    		conf.nextInitialization();
-    		if(solidValidity(conf))
-    		{
-    			result = true;
-    		}
-        }
-    	Configuration _conf = confs.pop();
-        expanded_confs.add(_conf);
-        if(result & refine(_conf))
-        {
-        	
-        }
-    	return result & refine(_conf);
-    }
+
     //verify the solid properties among all the $expanded$ confs
-    public boolean solidValidity(Configuration conf)
+    // only test the regular/angular case. do not do the block_region test (rely on precise data)
+    public boolean solidValidity(final Configuration cconf, final TestNode confs)
     {
-    	return false;
     	
-    }
-    // return true 
+    	/* test the regular/angular property*/
+	   //System.out.println(cconf.getNeighbors().size());
+    	for (Neighbor neighbor: cconf.getNeighbors())
+    	{
+             MBR mbr_neighbor = neighbor.getMbr();
+             Configuration conf_neighbor =  confs.lookup(mbr_neighbor);
+           //  System.out.println( cconf.getMbr() + "   " + cconf.unary + conf_neighbor.getMbr() + "   " + conf_neighbor.unary);
+             if(neighbor.getNeighborType() == 0)
+          {
+            	
+            	 if(cconf.unary == 0 && conf_neighbor.unary == 0)
+            		 return false;
+          }
+             
+    	}  
+       return true;  
+	
+    	
+    } 
+   
     public boolean localStability(Configuration conf)
     {
         
@@ -124,7 +152,7 @@ public class MBRReasonerAdvance {
 			else
 			/* only return valid (stable) results */
 			{
-				LinkedList<Node> nodes = MBRRegisterWithFuzzyShape.expandOnGravityProperty(node);
+				LinkedList<Node> nodes = MBRRegister.expandOnGravityProperty(node);
 				//System.out.println(candidnates_gravity.size() + "  " +nodes.size());
 			    if(!nodes.isEmpty())
 			    {

@@ -5,9 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 import main.ScenarioPanel;
-
 import quali.MBR;
-import quali.MBRRegisterWithFuzzyShape;
+import quali.MBRReasonerAdvance;
+import quali.MBRRegister;
+import quali.TestNode;
 
 public class WorldinVision {
   private LinkedList<MBR> mbrs = new LinkedList<MBR>();
@@ -26,7 +27,7 @@ public class WorldinVision {
   public void showWorldinVision()
   {
 	  ScenarioPanel sp = new ScenarioPanel();
-	  sp.run(MBRRegisterWithFuzzyShape.getMbrs());
+	  sp.run(MBRRegister.getMbrs());
 	  
 	  
   }
@@ -36,7 +37,10 @@ public class WorldinVision {
   }
   private void reason()
   {
-      MBRRegisterWithFuzzyShape.batchRegister(mbrs);
+      MBRRegister.batchRegister(mbrs);
+  	  TestNode node = MBRRegister.constructTestNode();
+  	  MBRReasonerAdvance MBRR = new MBRReasonerAdvance();
+  	  MBRR.search(node);
 
   }
   

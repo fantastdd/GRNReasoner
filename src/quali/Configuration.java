@@ -23,15 +23,17 @@ public void setMbr(MBR mbr) {
 public int width;
 public int hwdith = width/2;
 
-private int unary = -1;//0 = regular, 1 = lean to right, 2 = lean to left, -1 = not initialized, -2 = completed.
+public int unary = -1;//0 = regular, 1 = lean to right, 2 = lean to left, -1 = not initialized, -2 = completed.
 public boolean isCompleted()
 {
-       return unary == -2;	
+	// the next is -2...
+	boolean result = (unary == 2)||isEdge();
+     return result;	
 }
 private int angular;
 private int[] permit_regions;
 
-private LinkedList<Short[]> neighbors = new LinkedList<Short[]>();
+private LinkedList<Neighbor> neighbors = new LinkedList<Neighbor>();
 private LinkedList<MBR> overlapping_mbrs = new  LinkedList<MBR>();
 private HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
 private HashMap<MBR,Contact> contact_map = new HashMap<MBR,Contact>();
@@ -318,6 +320,8 @@ public void setActual_object1(MyPolygon actual_object) {
 }
 
 public void setEdge(boolean edge) {
+	if(edge)
+		unary = 0;
 	this.edge = edge;
 }
 
@@ -348,19 +352,21 @@ public void setOverlapping_mbrs(LinkedList<MBR> overlapping_mbrs) {
 }
 
 
-public LinkedList<Short[]> getNeighbors() {
+public LinkedList<Neighbor> getNeighbors() {
 	return neighbors;
 }
 public Configuration clone()
 {
-  Configuration conf = new Configuration(this.mbr);
+	
+  Configuration conf = new Configuration(mbr);
   conf.setAngular(angular);
-  conf.permit_regions = this.permit_regions;
+  conf.permit_regions = permit_regions;
   conf.unary = unary;
-  for(Short[] neighbor: neighbors)
+  for(Neighbor neighbor: neighbors)
   {
 	  conf.getNeighbors().add(neighbor);
   }
+  
   for(MBR _mbr:overlapping_mbrs)
   {
 	  conf.getOverlapping_mbrs().add(_mbr);
@@ -520,33 +526,36 @@ public Configuration(MBR mbr)
 
 public int nextInitialization()
 {
-      unary = (unary + 1 > 3)?-2:++unary;
+	
+    if(!isEdge())
+    {  
+    	unary = (unary + 1 > 3)?-2:++unary;
+    
+	}
       return unary;
 }
 
 
 public String toString()
 {
-  String result = "";
-  if(angular == 1)
-	  result += " angular ";
+  String result =  mbr + "  ";
+  if(unary == 0)
+	  result += " regular ";
   else
-	  if( angular == 0)
-		  result += " regular ";
+	  if( unary == 1)
+	     result += " lean to left ";
 	  else
-		  result += " not initialized ";
-  if(angular == 1){
-	  if(this.permit_regions[2] == 1)
-		  result += " lean to right";
-	  if(this.permit_regions[3] == 1)
-		  result += " lean to left ";
-  }
+		  if(unary == 2)
+			  result += "lean to right";
+		  else if(unary == -2)
+			  result += " completed";
+		  else
+			  result += " not initialized ";
+
   for (MBR mbr: this.contact_map.keySet())
   {
-	  
-	  result+= " contacted with [ " + mbr + " at " + this.contact_map.get(mbr) + " ] "; 
-	  
-  }
+	  result+= " contacted with [ " + mbr + " at " +  contact_map.get(mbr) + " ] "; 
+	  }
   return result;
 	  
   
@@ -612,19 +621,11 @@ public MyPolygon getTriangle1() {
 	return triangle1;
 }
 
-public void setTriangle1(MyPolygon triangle1) {
-	this.triangle1 = triangle1;
-}
-
 public MyPolygon getTriangle2() {
 
 
 	
 	return triangle2;
-}
-
-public void setTriangle2(MyPolygon triangle2) {
-	this.triangle2 = triangle2;
 }
 
 public MyPolygon getTriangle3() {
@@ -634,18 +635,10 @@ public MyPolygon getTriangle3() {
 	return triangle3;
 }
 
-public void setTriangle3(MyPolygon triangle3) {
-	this.triangle3 = triangle3;
-}
-
 public MyPolygon getTriangle4() {
 	
 	
 	return triangle4;
-}
-
-public void setTriangle4(MyPolygon triangle4) {
-	this.triangle4 = triangle4;
 }
 
 public MyPolygon getDiagonal_right() {
@@ -653,17 +646,9 @@ public MyPolygon getDiagonal_right() {
 	return diagonal_right;
 }
 
-public void setDiagonal_right(MyPolygon diagonal_right) {
-	this.diagonal_right = diagonal_right;
-}
-
 public MyPolygon getDiagonal_left() {
 	
 	return diagonal_left;
-}
-
-public void setDiagonal_left(MyPolygon diagonal_left) {
-	this.diagonal_left = diagonal_left;
 }
 
 public MyPolygon getCore_right() {
@@ -673,10 +658,6 @@ public MyPolygon getCore_right() {
 	return core_right;
 }
 
-public void setCore_right(MyPolygon core_right) {
-	this.core_right = core_right;
-}
-
 public MyPolygon getCore_left() {
 	
 
@@ -684,31 +665,16 @@ public MyPolygon getCore_left() {
 	return core_left;
 }
 
-public void setCore_left(MyPolygon core_left) {
-	this.core_left = core_left;
-}
 public MyPolygon getTriangle11() {
 	return triangle11;
-}
-
-public void setTriangle11(MyPolygon triangle11) {
-	this.triangle11 = triangle11;
 }
 
 public MyPolygon getTriangle22() {
 	return triangle22;
 }
 
-public void setTriangle22(MyPolygon triangle22) {
-	this.triangle22 = triangle22;
-}
-
 public MyPolygon getTriangle33() {
 	return triangle33;
-}
-
-public void setTriangle33(MyPolygon triangle33) {
-	this.triangle33 = triangle33;
 }
 
 public MyPolygon getRegion(int region)
@@ -770,11 +736,6 @@ public MyPolygon getRegionLarge(int region)
 public MyPolygon getTriangle44() {
 	return triangle44;
 }
-
-public void setTriangle44(MyPolygon triangle44) {
-	this.triangle44 = triangle44;
-}
-
 
 public MyPolygon getRegionLine(int region)
 {
@@ -902,26 +863,14 @@ public MyPolygon getRegionLine(int region)
 public MyPolygon getCore_right2() {
 	return core_right2;
 }
-public void setCore_right2(MyPolygon core_right2) {
-	this.core_right2 = core_right2;
-}
 public MyPolygon getCore_left1() {
 	return core_left1;
-}
-public void setCore_left1(MyPolygon core_left1) {
-	this.core_left1 = core_left1;
 }
 public MyPolygon getCore_right4() {
 	return core_right4;
 }
-public void setCore_right4(MyPolygon core_right4) {
-	this.core_right4 = core_right4;
-}
 public MyPolygon getCore_left3() {
 	return core_left3;
-}
-public void setCore_left3(MyPolygon core_left3) {
-	this.core_left3 = core_left3;
 }
 public int getX() {
 	return x;

@@ -6,9 +6,6 @@ import java.awt.Rectangle;
 public class MBR extends Rectangle
 {
 
-
-
-
 private int id;
 
 public int getId() {
@@ -34,9 +31,7 @@ public MBR(Rectangle rec) {
 
 
 public MBR()
-{
-	
-	}
+{}
 
 
 

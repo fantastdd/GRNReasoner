@@ -67,7 +67,7 @@ public class MBRReasoner {
 			else
 			/* only return valid (stable) results */
 			{
-				LinkedList<Node> nodes = MBRRegisterWithFuzzyShape.expandOnGravityProperty(node);
+				LinkedList<Node> nodes = MBRRegister.expandOnGravityProperty(node);
 				//System.out.println(candidnates_gravity.size() + "  " +nodes.size());
 			    if(!nodes.isEmpty())
 			    {

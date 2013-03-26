@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import main.ScenarioPanel;
 import quali.MBR;
 import quali.MBRReasoner;
-import quali.MBRRegisterWithFuzzyShape;
+import quali.MBRRegister;
 import quali.Node;
 
 import common.util.Debug;
@@ -33,13 +33,13 @@ public class Test {
 			
 		   if(count == 0)
 			{
-			   MBRRegisterWithFuzzyShape.registerMBR(mbr,true);
+			   MBRRegister.registerMBR(mbr,true);
 			   count = 1;
 			}  
 		   else
-			   MBRRegisterWithFuzzyShape.registerMBR(mbr,false);
+			   MBRRegister.registerMBR(mbr,false);
 		}
-		Node node = MBRRegisterWithFuzzyShape.constructNode();
+		Node node = MBRRegister.constructNode();
 
 		
 		

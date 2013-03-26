@@ -13,14 +13,14 @@ import common.util.Debug;
 
 
 
-public class MBRRegisterWithFuzzyShape {
+public class MBRRegister {
 private static LinkedList<MBR> mbrs = new LinkedList<MBR>();
 private static LinkedList<MBR> edge = new LinkedList<MBR>();
 public static LinkedList<MBR> getMbrs() {
 	return mbrs;
 }
 public static void setMbrs(LinkedList<MBR> mbrs) {
-	MBRRegisterWithFuzzyShape.mbrs = mbrs;
+	MBRRegister.mbrs = mbrs;
 }
 
 private static int count = 0;
@@ -29,7 +29,7 @@ public static void registerRectangle(Rectangle rec,boolean edge)
 {
 	MBR mbr = new MBR(rec);
 	if(edge)
-		MBRRegisterWithFuzzyShape.edge.add(mbr);
+		MBRRegister.edge.add(mbr);
 	if(!mbrs.contains(mbr))
 	{	
 		mbr.setId(count++);
@@ -40,7 +40,7 @@ public static void registerMBR(MBR mbr,boolean edge)
 {
 	
 	if(edge)
-		MBRRegisterWithFuzzyShape.edge.add(mbr);
+		MBRRegister.edge.add(mbr);
 	if(!mbrs.contains(mbr))
 	{	
 		mbr.setId(count++);
@@ -52,11 +52,13 @@ public static void batchRegister (List<MBR> mbrs, MBR... edge)
      for(MBR mbr: mbrs)
      {
      	boolean isEdge = false;
-     	
-     	if(mbr.equals(edge))
-     		isEdge = true;
-
-        registerMBR(mbr, isEdge);  
+     	for(MBR _edge : edge)
+     	{	
+     	  if(_edge.equals(mbr))
+     		  isEdge = true;
+     		
+     	}
+         registerMBR(mbr, isEdge);  
      }
 
 }
@@ -64,6 +66,13 @@ public static Node constructNode()
 {
    Node node = new Node(mbrs, new LinkedList<MBR>(),edge);
    return node;
+
+}
+public static TestNode constructTestNode()
+{
+   	TestNode node = new TestNode(mbrs, edge);
+  
+   	return node;
 
 }
 public static LinkedList<Node>  expandOnGravityProperty(Node node)
