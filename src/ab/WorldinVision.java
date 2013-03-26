@@ -11,6 +11,7 @@ import quali.MBRRegisterWithFuzzyShape;
 
 public class WorldinVision {
   private LinkedList<MBR> mbrs = new LinkedList<MBR>();
+  public static int gap = 10;
   public void buildWorld(List<Rectangle> objs)
   {
 	   // hardcode the objects in this sList<MBR> mbrsr (Rectangle rec : objs)

@@ -31,7 +31,7 @@ public boolean isCompleted()
 private int angular;
 private int[] permit_regions;
 
-private LinkedList<Short[]> neighbors = new LinkedList<Short[]>();
+private LinkedList<Neighbor> neighbors = new LinkedList<Neighbor>();
 private LinkedList<MBR> overlapping_mbrs = new  LinkedList<MBR>();
 private HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
 private HashMap<MBR,Contact> contact_map = new HashMap<MBR,Contact>();
@@ -348,7 +348,7 @@ public void setOverlapping_mbrs(LinkedList<MBR> overlapping_mbrs) {
 }
 
 
-public LinkedList<Short[]> getNeighbors() {
+public LinkedList<Neighbor> getNeighbors() {
 	return neighbors;
 }
 public Configuration clone()
@@ -357,10 +357,11 @@ public Configuration clone()
   conf.setAngular(angular);
   conf.permit_regions = this.permit_regions;
   conf.unary = unary;
-  for(Short[] neighbor: neighbors)
+  for(Neighbor neighbor: neighbors)
   {
 	  conf.getNeighbors().add(neighbor);
   }
+  
   for(MBR _mbr:overlapping_mbrs)
   {
 	  conf.getOverlapping_mbrs().add(_mbr);

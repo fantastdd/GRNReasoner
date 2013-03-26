@@ -2,6 +2,7 @@ package quali;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class MBRReasonerAdvance {
@@ -28,53 +29,80 @@ public class MBRReasonerAdvance {
 	private LinkedList<Node> candidnates_solid = new LinkedList<Node>();
 	private LinkedList<Node> candidnates_gravity = new LinkedList<Node>();
 	private LinkedList<Node> candidnates_result = new LinkedList<Node>();
+    
+	//search ----
+	public boolean search(LinkedList<Configuration> _confs)
+	{
+		if(checkSolution(_confs))
+		{
+		    //output the solutions	
+			System.out.println("solution is found:  ");
+			for(Configuration _conf : _confs)
+			{
+				System.out.println(_conf);
+			}
+		}
+		else
+		{
+			// current node
+			Configuration conf = _confs.pop();
+		    LinkedList<LinkedList<Configuration>> refinements = refine(conf,_confs);
+		    if(!refinements.isEmpty())
+		    {
+		    	for(LinkedList<Configuration> refinement: refinements)
+		    		search(refinement);
+		    }
+		}
+		return false;
+		
+	}
+	public LinkedList<LinkedList<Configuration>> refine(final Configuration conf , LinkedList<Configuration> _confs)
+	{   
+		LinkedList<LinkedList<Configuration>> refinements = new LinkedList<LinkedList<Configuration>>();
+		Configuration cconf = conf.clone(); 
+		//there are three types, namely, regular, left, right
+		while(!cconf.isCompleted())
+		{
+			LinkedList<Configuration> confs = new LinkedList<Configuration>();
+			cconf.nextInitialization();
+            if(solidValidity(cconf,confs))
+			{
+				confs.add(cconf.clone());
+				for (Configuration _conf: _confs)
+				{
+					confs.add(_conf.clone());
+				}
+				refinements.add(confs);
+			}
+		}
+		
+		return refinements;
+	}
 
-    public boolean smartReason()
-    {
-    	boolean _result = true;
-       while(!confs.isEmpty())
-       {
-         
-    	 Configuration _conf = confs.pop();
-         expanded_confs.add(_conf);
-         _result &= refine(_conf);
-         
-      }
-       if(!_result)
-       {
-    	   
-       }
-         
-         
-         
-         return _result;
-    }
-    public boolean refine(Configuration conf)
-    {
-    	boolean result = false;
-    	while(!conf.isCompleted() && !result)
-    	{
-    		conf.nextInitialization();
-    		if(solidValidity(conf))
-    		{
-    			result = true;
-    		}
-        }
-    	Configuration _conf = confs.pop();
-        expanded_confs.add(_conf);
-        if(result & refine(_conf))
-        {
-        	
-        }
-    	return result & refine(_conf);
-    }
-    //verify the solid properties among all the $expanded$ confs
-    public boolean solidValidity(Configuration conf)
+    //------ test ----
+    public boolean checkSolution(LinkedList<Configuration> _confs)
     {
     	return false;
-    	
     }
-    // return true 
+
+    //verify the solid properties among all the $expanded$ confs
+    // only test the regular/angular case. do not do the block_region test (rely on precise data)
+    public boolean solidValidity(final Configuration cconf, final LinkedList<Configuration> confs)
+    {
+    	
+    	/* test the regular/angular property*/
+	  
+    	for (Neighbor neighbor: cconf.getNeighbors())
+    	{
+             MBR _neighbor = neighbor.getMbr();
+             
+    	}  
+     
+
+     return true;  
+	
+    	
+    } 
     public boolean localStability(Configuration conf)
     {
         

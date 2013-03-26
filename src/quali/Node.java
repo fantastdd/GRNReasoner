@@ -128,22 +128,18 @@ public void initialize(LinkedList<MBR> edge)
 				
 				configuration.getOverlapping_mbrs().add(mbr1);
 				configuration.getContact_map().put(mbr1,new Contact() );
-			    Short[] id = new Short[3];
-			    id[0] = 0;
-			    id[1] = 0;
-			    id[2] = (short)mbr1.getId();
-			    configuration.getNeighbors().add(id);
+				
+				Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
+		        configuration.getNeighbors().add(neighbor);
 			    		
 				
 				
 				Configuration configuration1 = lookupConf(mbr1);
 				configuration1.getOverlapping_mbrs().add(mbr);
 				configuration1.getContact_map().put(mbr,new Contact() );
-			    Short[] _id = new Short[3];
-			    _id[0] = 0;
-			    _id[1] = 0;
-			    _id[2] = (short)mbr.getId();
-			    configuration.getNeighbors().add(_id);
+				
+				Neighbor _neighbor = new Neighbor(mbr,(byte)0,0);
+				configuration1.getNeighbors().add(_neighbor);
 			    
 				detectBlockedRegion(configuration,configuration1);
 				detectBlockedRegion(configuration1,configuration);
@@ -152,8 +148,8 @@ public void initialize(LinkedList<MBR> edge)
 			}
 			else
 			{
-				Short[] id = createTreeId(mbr,mbr1);
-				configuration.getNeighbors().add(id);
+				Neighbor neighbor = createNeighbor(mbr,mbr1);
+				configuration.getNeighbors().add(neighbor);
 				
 			}
 		}
@@ -161,7 +157,7 @@ public void initialize(LinkedList<MBR> edge)
 
 }
 // use the tree structure 
-private Short[] createTreeId(MBR pmbr, MBR rmbr)
+private Neighbor createNeighbor(MBR pmbr, MBR rmbr)
 {
 
 
@@ -176,7 +172,7 @@ private Short[] createTreeId(MBR pmbr, MBR rmbr)
 	double mx = pmbr.getX() + pmbr.getWidth();
 	double my = pmbr.getY() + pmbr.getHeight();
 	
-	Short[] id = new Short[3];
+	Neighbor neighbor = null;
 	
 	if(r_my > y || r_y < my)
 	{
@@ -184,18 +180,14 @@ private Short[] createTreeId(MBR pmbr, MBR rmbr)
 		
 		{
 			//in the view region 4.
-			id[0] = 4;
-			id[1] = (short)(r_x - mx);
-			
+			neighbor = new Neighbor(rmbr,(byte)4, r_x - mx);	
 		    
 		}
 		else
 			if(r_mx < x)
 			{
 				//in the view region 2
-				id[0] = 2;
-				id[1] = (short)(x - r_mx);
-			
+				neighbor = new Neighbor(rmbr,(byte)2, x - r_mx);
 			}
 		
 	}
@@ -204,21 +196,17 @@ private Short[] createTreeId(MBR pmbr, MBR rmbr)
 		if (r_y > my)
 			//in the view region 3
 		{
-			id[0] = 3;
-			id[1] = (short)(r_y - my);
+			neighbor = new Neighbor(rmbr,(byte)3, r_y - my);
 			
 		}
 		else
 			if(r_my < y)
 				// in the view region 1
-				{id[0] = 1;
-				id[1] = (short)(y - r_my);
-				}
+				neighbor = new Neighbor(rmbr,(byte)1, r_my - y);
 	}
 
-	id[2] = (short)rmbr.getId();
 	
-	return id;
+	return neighbor;
 	
 	
 }
