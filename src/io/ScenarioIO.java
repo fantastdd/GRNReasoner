@@ -8,19 +8,10 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
-import main.ScenarioPanel;
-
-import common.util.Debug;
-
 import quali.MBR;
-import quali.MBRReasoner;
-
-import quali.Node;
 
 public class ScenarioIO{
 

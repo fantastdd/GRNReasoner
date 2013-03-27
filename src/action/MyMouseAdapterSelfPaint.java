@@ -24,8 +24,7 @@ public class MyMouseAdapterSelfPaint extends MouseAdapter {
     private MouseController mc;
     private Point startPoint;
     private LinkedList<Point> points = new LinkedList<Point>();
-    private boolean isDragged = false;
-	public MyMouseAdapterSelfPaint(JFrame mainWindow, MouseController mc)
+    public MyMouseAdapterSelfPaint(JFrame mainWindow, MouseController mc)
 	{
 		frame = mainWindow;
 		g = (Graphics2D) frame.getGraphics();

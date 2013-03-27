@@ -19,7 +19,7 @@ public static void supportExpand(Node node)
 }
 private static LinkedList<Configuration> verifySupport(MBR mbr, Configuration conf) {
 	
-	LinkedList<Configuration> confs = new LinkedList<Configuration>();
+	new LinkedList<Configuration>();
 	
 	return null;
 	
@@ -31,7 +31,7 @@ public static boolean verifySupport(Configuration conf)
 	 HashMap<MBR, Contact> cmap = conf.getContact_map();
 	 for (MBR mbr: cmap.keySet())
 	  {
-		  Contact contact = cmap.get(mbr);
+		  cmap.get(mbr);
 		  
 		  
 		  

@@ -55,12 +55,6 @@ public boolean v2 = false;
 public boolean v3 = false;
 public boolean v4 = false;
 
-private MyPolygon actual_object = new MyPolygon();
-
-
-private boolean actualConfiguration = false;
-
-
 public int limit_vertical;
 public int limit_horizontal;
 
@@ -77,7 +71,6 @@ private MyPolygon triangle1 = new MyPolygon();
 private MyPolygon triangle2 = new MyPolygon();
 private MyPolygon triangle3 = new MyPolygon();
 private MyPolygon triangle4 =  new MyPolygon();
-
 
 private MyPolygon triangle11 = new MyPolygon();
 private MyPolygon triangle22 = new MyPolygon();
@@ -250,7 +243,7 @@ public boolean addRestrictedPoints(Point point, int region,boolean contacted)
    	   	   	}else
    	   	   		if(region == 1)
    	   	   	   	{
-   	   	   	   		for(Point p : this.points11)
+   	   	   	   		for(Point p : points11)
    	   	   	   		{
    	   	   	   			if(p.x < point.x)
    	   	   	   			{
@@ -311,13 +304,6 @@ public boolean isEdge() {
 	return edge;
 }
 
-public MyPolygon getActual_object() {
-	return actual_object;
-}
-
-public void setActual_object1(MyPolygon actual_object) {
-	this.actual_object = actual_object;
-}
 
 public void setEdge(boolean edge) {
 	if(edge)
@@ -362,6 +348,7 @@ public Configuration clone()
   conf.setAngular(angular);
   conf.permit_regions = permit_regions;
   conf.unary = unary;
+  
   for(Neighbor neighbor: neighbors)
   {
 	  conf.getNeighbors().add(neighbor);
@@ -384,31 +371,19 @@ public Configuration clone()
   
   for(MBR key: this.contact_map.keySet())
   {
-	  conf.contact_map.put(key, this.contact_map.get(key).clone());
+	  conf.contact_map.put(key, contact_map.get(key).clone());
   }
 
-  conf.setEdge(this.edge);
+  conf.setEdge(edge);
   
-  conf.actual_object = this.actual_object; 
 
-  
-  conf.actualConfiguration = this.actualConfiguration;
+
+
 		  
   return conf;
 
 
 }
-public boolean isActualConfiguration() {
-	return actualConfiguration;
-}
-
-
-
-public void setActualConfiguration(boolean actualConfiguration) {
-	this.actualConfiguration = actualConfiguration;
-}
-
-
 public Configuration(MBR mbr)
 {
 	
@@ -694,10 +669,10 @@ public MyPolygon getRegion(int region)
 
    else if(region == 5)
    {
-	   result.addPoint(this.x, this.y);
-	   result.addPoint(this.x, (int)(this.y + this.getHeight()));
-	   result.addPoint((int)(this.getX() + this.getWidth()),(int)(this.getY() + this.getHeight()));
-	   result.addPoint((int)(this.getX() + this.getWidth()),(int)this.getY());
+	   result.addPoint( x,  y);
+	   result.addPoint( x, (int)( y +  getHeight()));
+	   result.addPoint((int)( getX() +  getWidth()),(int)( getY() +  getHeight()));
+	   result.addPoint((int)( getX() +  getWidth()),(int) getY());
    }
    
    return result;
@@ -722,10 +697,10 @@ public MyPolygon getRegionLarge(int region)
 
    else if(region == 5)
    {
-	   result.addPoint(this.x, this.y);
-	   result.addPoint(this.x, this.y + this.height);
-	   result.addPoint(this.x + this.width,this.y + this.height);
-	   result.addPoint(this.x + this.width,this.y);
+	   result.addPoint( x,  y);
+	   result.addPoint( x,  y +  height);
+	   result.addPoint( x +  width, y +  height);
+	   result.addPoint( x +  width, y);
    }
    
    return result;
@@ -743,7 +718,7 @@ public MyPolygon getRegionLine(int region)
    
    if(region == 1)
    { 
-	 if(this.angular == 0)
+	 if( angular == 0)
 	 { 
 	   result.addPoint(x + width, y);
 	   result.addPoint(x + width/2, y);
@@ -751,108 +726,108 @@ public MyPolygon getRegionLine(int region)
 	 else
 	 {
 		 result.addPoint(x + width, y);
-		 result.addPoint(x + width - this.limit_horizontal, y);
+		 result.addPoint(x + width -  limit_horizontal, y);
 	 }
    }
    else if(region == 2)
    {  
-	   if(this.angular == 0)
+	   if( angular == 0)
 	   {
-	     result.addPoint((int)(this.getX()), (int)(this.getY()));
-		 result.addPoint((int)(this.getX() + this.getWidth()/2), (int)(this.getY()));
+	     result.addPoint((int)( getX()), (int)( getY()));
+		 result.addPoint((int)( getX() +  getWidth()/2), (int)( getY()));
 	   }
 	   else
 	   {
 		   result.addPoint(x, y);
-		    result.addPoint(x + this.limit_horizontal, y);
+		    result.addPoint(x +  limit_horizontal, y);
 	   }
    }
    else if(region == 3)
    {
-	   if(this.angular == 0)
+	   if( angular == 0)
 	   {
-	    result.addPoint((int)(this.getX()), (int)(this.getY() + this.getHeight()));
-		 result.addPoint((int)(this.getX() + this.getWidth()/2), (int)(this.getY() + this.getHeight()));
+	    result.addPoint((int)( getX()), (int)( getY() +  getHeight()));
+		 result.addPoint((int)( getX() +  getWidth()/2), (int)( getY() +  getHeight()));
        }
 	   else
 	   {
 		   result.addPoint(x, y + height);
-		    result.addPoint(x + this.limit_horizontal, y + height);
+		    result.addPoint(x +  limit_horizontal, y + height);
 	   }
    }
    else if(region == 4)
    {
-	   if(this.angular == 0)
+	   if( angular == 0)
 	   {
-		  result.addPoint((int)(this.getX() + this.getWidth()/2), (int)(this.getY() + this.getHeight()));
-		  result.addPoint((int)(this.getX() + this.getWidth()), (int)(this.getY() + this.getHeight()));
+		  result.addPoint((int)( getX() +  getWidth()/2), (int)( getY() +  getHeight()));
+		  result.addPoint((int)( getX() +  getWidth()), (int)( getY() +  getHeight()));
 	   }
 	   else
 	   {
-		    result.addPoint(x + width - this.limit_horizontal, y + height);
+		    result.addPoint(x + width -  limit_horizontal, y + height);
 		    result.addPoint(x + width, y + height);
 	   }
    }
    else if(region == 5)
    {
-	   result.addPoint(this.x, this.y);
-	   result.addPoint(this.x, (int)(this.y + this.getHeight()));
-	   result.addPoint((int)(this.getX() + this.getWidth()),(int)(this.getY() + this.getHeight()));
-	   result.addPoint((int)(this.getX() + this.getWidth()),(int)this.getY());
+	   result.addPoint( x,  y);
+	   result.addPoint( x, (int)( y +  getHeight()));
+	   result.addPoint((int)( getX() +  getWidth()),(int)( getY() +  getHeight()));
+	   result.addPoint((int)( getX() +  getWidth()),(int) getY());
    }
    else
 	   if(region == 34)
 	   {
-		   assert(this.getAngular() != 1);
-		   result.addPoint((int)(this.getX()), (int)(this.getY() + this.getHeight()));
-		   result.addPoint((int)(this.getX() + this.getWidth()), (int)(this.getY() + this.getHeight()));
+		   assert( getAngular() != 1);
+		   result.addPoint((int)( getX()), (int)( getY() +  getHeight()));
+		   result.addPoint((int)( getX() +  getWidth()), (int)( getY() +  getHeight()));
 	   }
 	   else
 		   if(region == 12)
 		   {
-			   assert(this.getAngular() != 1);
-			   result.addPoint((int)(this.getX()), (int)(this.getY()));
-			   result.addPoint((int)(this.getX() + this.getWidth()), (int)(this.getY()));
+			   assert( getAngular() != 1);
+			   result.addPoint((int)( getX()), (int)( getY()));
+			   result.addPoint((int)( getX() +  getWidth()), (int)( getY()));
 		   }
 		   else
 			   if(region == 23)
 			{
-				   assert(this.getAngular() != 1);
-				   result.addPoint((int)(this.getX()), (int)(this.getY())); 
-			       result.addPoint((int)(this.getX()), (int)(this.getY() + this.getHeight()));
+				   assert( getAngular() != 1);
+				   result.addPoint((int)( getX()), (int)( getY())); 
+			       result.addPoint((int)( getX()), (int)( getY() +  getHeight()));
 			}
 			   else
 				   if(region == 14)
 				   {
-					   assert(this.getAngular() != 1);
-					   result.addPoint((int)(this.getX() + this.getWidth()), (int)(this.getY()));
-					   result.addPoint((int)(this.getX()+ this.getWidth()), (int)(this.getY() + this.getHeight()));
+					   assert( getAngular() != 1);
+					   result.addPoint((int)( getX() +  getWidth()), (int)( getY()));
+					   result.addPoint((int)( getX()+  getWidth()), (int)( getY() +  getHeight()));
 				   }
 				   else if(region == 230)
 					{
-					   assert(this.getAngular() == 1);
+					   assert( getAngular() == 1);
 					   result.addPoint(x,y); 
-				       result.addPoint(x,y + this.limit_vertical);
+				       result.addPoint(x,y +  limit_vertical);
 				}
 				   else
 					   if(region == 231)
 					   {
-						   assert(this.getAngular() == 1);
+						   assert( getAngular() == 1);
 						   result.addPoint(x,y + height); 
-					       result.addPoint(x,y + height - this.limit_vertical);
+					       result.addPoint(x,y + height -  limit_vertical);
 					   }
 					   else if(region == 140)
 						{
-						   assert(this.getAngular() == 1);
+						   assert( getAngular() == 1);
 						   result.addPoint(x + width,y); 
-					       result.addPoint(x + width,y + this.limit_vertical);
+					       result.addPoint(x + width,y +  limit_vertical);
 					}
 					   else
 						   if(region == 141)
 						   {
-							   assert(this.getAngular() == 1);
+							   assert( getAngular() == 1);
 							   result.addPoint(x + width,y + height); 
-						       result.addPoint(x + width,y + height - this.limit_vertical);
+						       result.addPoint(x + width,y + height -  limit_vertical);
 						   }
                    
    return result;

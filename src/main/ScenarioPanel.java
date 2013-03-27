@@ -1,6 +1,5 @@
 package main;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.LinkedList;
 
@@ -33,11 +32,8 @@ public class ScenarioPanel extends JFrame {
 	    super.paint(this.getGraphics());
 	}
 	public void paint(Graphics g) {
-       //super.paint(g);
-		int count = 0;
-		for(MBR mbr:mbrs)
+       for(MBR mbr:mbrs)
 		{  
-			count++;
 			/*if(count%4 == 0)
 				g.setColor(Color.magenta);
 			else if (count%4 == 1)
@@ -47,7 +43,7 @@ public class ScenarioPanel extends JFrame {
 			else if(count%4 == 3)
 				g.setColor(Color.cyan);*/
 			g.drawRect(mbr.x,mbr.y,mbr.width,mbr.height);
-			Configuration conf = new Configuration(mbr);
+			new Configuration(mbr);
 		/*	g.drawLine(conf.getDiagonal_left().xpoints[0], conf.getDiagonal_left().ypoints[0], conf.getDiagonal_left().xpoints[1], conf.getDiagonal_left().ypoints[1]);
 			g.drawLine(conf.getCore_left().xpoints[0], conf.getCore_left().ypoints[0],conf.getCore_left().xpoints[1], conf.getCore_left().ypoints[1]);
 			g.drawLine(conf.getCore_left().xpoints[1], conf.getCore_left().ypoints[1],conf.getCore_left().xpoints[2], conf.getCore_left().ypoints[2]);
@@ -59,7 +55,6 @@ public class ScenarioPanel extends JFrame {
 	}
 	public static void main(String args[])
 	{
-	   ScenarioPanel gui = new ScenarioPanel();
-	   //gui.run();
+	   new ScenarioPanel();
 	}
 }

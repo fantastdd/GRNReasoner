@@ -1,7 +1,5 @@
 package action;
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
@@ -10,16 +8,12 @@ import javax.swing.JFrame;
 
 
 public class MyMouseMotionAdapter extends MouseMotionAdapter{
-    private JFrame frame;
-
-   
     private Graphics g;
     private MouseController mc;
 
     
 	public MyMouseMotionAdapter(JFrame frame,MouseController mc)
 	{
-		this.frame = frame;
 		this.mc = mc;
 		g = frame.getGraphics();
 	}

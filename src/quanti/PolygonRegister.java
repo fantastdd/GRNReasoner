@@ -1,11 +1,9 @@
 package quanti;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.util.Collections;
 import java.util.LinkedList;
 
 import common.CompositeStructure;
-import common.Edge;
 import common.MyPolygon;
 import common.util.LevelComparator;
 

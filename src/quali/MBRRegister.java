@@ -1480,23 +1480,23 @@ private static int testFreeRegion24(final Configuration conf,final Configuration
 	int result = 0;
 
 	 MyPolygon min = new MyPolygon();
-	 MyPolygon max = new MyPolygon();
+	 new MyPolygon();
 	 MyPolygon tmin = new MyPolygon();
-	 MyPolygon tmax = new MyPolygon();
+	 new MyPolygon();
 
 	  if(conf.getPermit_regions()[2] == 1)
 	  {
           min = conf.getDiagonal_right();
           if(region == 4)
-        	  max = conf.getCore_right4();
-          else
-        	  max = conf.getCore_right2();
+			conf.getCore_right4();
+		else
+			conf.getCore_right2();
 	  }
 	  else
 		  if(conf.getPermit_regions()[3] == 1)
 		  {
 	
-			  max = conf.getRegion(2);
+			  conf.getRegion(2);
 		      min = conf.getCore_left();
 		  }
   
@@ -1504,26 +1504,26 @@ private static int testFreeRegion24(final Configuration conf,final Configuration
 	  {
 		  tmin = tconf.getDiagonal_right();
 		  if(region == 2)
-        	  tmax = tconf.getCore_right4();
-          else
-        	  tmax = tconf.getCore_right2();
+			tconf.getCore_right4();
+		else
+			tconf.getCore_right2();
 	  }
 	  else
 		  if(tconf.getPermit_regions()[3] == 1)
 		  {
-			  tmax = tconf.getDiagonal_left();
+			  tconf.getDiagonal_left();
 		      tmin = tconf.getCore_left();
 		  }
  
   
-  		MyPolygon _region = new MyPolygon();
+  		new MyPolygon();
 	
 			if(conf.getPermit_regions()[3] == 1)
-				_region = conf.getRegion(region);
+				conf.getRegion(region);
 			else
 				//问题在这，如果用大区域描述2，那么会导致vertex touch的极端情况
 				if(conf.getPermit_regions()[2] == 1)
-					_region = conf.getRegionLarge(region);
+					conf.getRegionLarge(region);
 			
 		
 

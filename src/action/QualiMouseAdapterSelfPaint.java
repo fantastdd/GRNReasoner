@@ -24,8 +24,7 @@ public class QualiMouseAdapterSelfPaint extends MouseAdapter {
     private QualiMouseController mc;
     private Point startPoint;
     private LinkedList<Point> points = new LinkedList<Point>();
-    private boolean isDragged = false;
-	public QualiMouseAdapterSelfPaint(JFrame mainWindow, QualiMouseController mc)
+    public QualiMouseAdapterSelfPaint(JFrame mainWindow, QualiMouseController mc)
 	{
 		frame = mainWindow;
 		g = (Graphics2D) frame.getGraphics();

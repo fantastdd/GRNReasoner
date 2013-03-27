@@ -1,7 +1,6 @@
 package quali;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import quanti.QuantiShapeCalculator;
@@ -9,7 +8,22 @@ import quanti.QuantiShapeCalculator;
 public class TestNode {
 
 private HashMap<Integer,Configuration> confs ;
+//the pointer points to the next configuration (pop())
 private int current_id= -1;
+//the pointer points to the next stability verification conf
+private int stability_id = -1;
+public int nextStabilityVerificationCandidate()
+{
+   return ++stability_id; 	
+}
+public boolean isStabilityVerificationCompleted()
+{
+	return stability_id >= confs.size() - 1;
+}
+
+
+
+
 
 public TestNode()
 {

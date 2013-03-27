@@ -9,11 +9,8 @@ public class MBRReasoner {
      
 	static
 	{
-		PrintStream out;
 		try {
-			out = new PrintStream("test.txt");
-		     //System.setOut(out);  
-			    //System.out.println(out);
+			new PrintStream("test.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

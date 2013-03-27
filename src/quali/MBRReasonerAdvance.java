@@ -2,18 +2,14 @@ package quali;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.util.HashSet;
 import java.util.LinkedList;
 
 public class MBRReasonerAdvance {
      
 	static
 	{
-		PrintStream out;
 		try {
-			out = new PrintStream("test.txt");
-		     //System.setOut(out);  
-			    //System.out.println(out);
+			new PrintStream("test.txt");
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -60,9 +56,14 @@ public class MBRReasonerAdvance {
 				while(!cconf.isCompleted())
 				{
 					cconf.nextInitialization();
+					
+					//--- first initialize the cconf's neighbor's configuration that makes cconf local stable.
+					TestNode _node = formLocalStability(cconf,node);
+					
+					
 		            if(solidValidity(cconf , node))
 					{
-		            	TestNode _node = node.clone();
+		            	//TestNode _node = node.clone();
 		            	_node.update(cconf.clone());
 						confs.add(cconf.clone());
 						refinements.add(_node);
@@ -103,10 +104,13 @@ public class MBRReasonerAdvance {
     	
     } 
    
-    public boolean localStability(Configuration conf)
+    public TestNode formLocalStability(final Configuration conf , final TestNode node)
     {
         
-    	return false;
+    	
+    	
+    	
+    	return node;
     }
 
 	public boolean reason(Node initial)

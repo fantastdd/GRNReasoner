@@ -1,8 +1,6 @@
 package action;
 
 import java.awt.event.MouseAdapter;
-import java.awt.event.MouseMotionAdapter;
-
 import javax.swing.JFrame;
 
 import quali.RecEssentialPoints;
