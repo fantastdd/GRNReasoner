@@ -59,7 +59,7 @@ public class MBRReasonerAdvance {
 					cconf.nextInitialization();
 					if(solidValidity(cconf , node)){
 						//----- one unique configuration will have various contactmap..
-						LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);
+						LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
 						for (HashMap<MBR,Contact> contactmap: lscontacts)
 						{
 							//test the solid properties
