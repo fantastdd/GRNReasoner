@@ -1,7 +1,10 @@
 package quali;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+
+import ab.WorldinVision;
 
 import quanti.QuantiShapeCalculator;
 
@@ -9,12 +12,19 @@ public class TestNode {
 
 private HashMap<Integer,Configuration> confs ;
 //the pointer points to the next configuration (pop())
-private int current_id= -1;
+public int current_id= -1;
+
 //the pointer points to the next stability verification conf
-private int stability_id = -1;
+public int stability_id = 0;
+
+// 0-i confs have been instantiated
+public boolean instaniatedUntilIndex(int i)
+{
+		return i <= current_id;
+}
 public int nextStabilityVerificationCandidate()
 {
-   return ++stability_id; 	
+   return stability_id++; 	
 }
 public boolean isStabilityVerificationCompleted()
 {
@@ -97,6 +107,16 @@ public void initialize()
 					conf.getNeighbors().add(_neighbor);
 			}
 		}
+		
+		// sort the neighbors according to the gap in between in the ascending order.
+	    Collections.sort(conf.getNeighbors(), new NeighborComparator());
+	    
+	    for (Neighbor neighbor : conf.getNeighbors())
+	    {
+	    	if(neighbor.getGap() > WorldinVision.gap) 
+	    		conf.lastValidNeighborId =  conf.getNeighbors().indexOf(neighbor) - 1; 
+	    }
+	   
 	}
 	
 }
@@ -164,6 +184,7 @@ public TestNode clone()
 		_node.getConfs().put(key, confs.get(key).clone());
 	}
 	_node.current_id = current_id;
+	_node.stability_id = stability_id;
    
 	return _node;
 }

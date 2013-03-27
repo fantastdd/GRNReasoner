@@ -75,6 +75,9 @@ public static TestNode constructTestNode()
    	return node;
 
 }
+
+
+
 public static LinkedList<Node>  expandOnGravityProperty(Node node)
 {
 	 LinkedList<Node> nodes = new LinkedList<Node>();

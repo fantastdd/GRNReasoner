@@ -6,11 +6,19 @@ import quanti.PolygonRegister;
 
 import common.MyPolygon;
 
+
 public class Test {
+	static int id = 0;
+	public boolean test = false;
+
+	public static int getId()
+	{
+		return id++;
+	}
 	public static void main(String args[])
 	{
 		
-		MyPolygon pl = new MyPolygon(new Point(50,50),new Point(60,50),new Point(60,60),new Point(50,60));
+		/*MyPolygon pl = new MyPolygon(new Point(50,50),new Point(60,50),new Point(60,60),new Point(50,60));
 
 		
 		MyPolygon pl1 = new MyPolygon(new Point(60,50),new Point(70,50),new Point(70,60),new Point(60,60));
@@ -26,10 +34,13 @@ public class Test {
 		 PolygonRegister.register(pl2);
 		 PolygonRegister.register(pl3);
 		 PolygonRegister.verifySolidProperty();
-		 PolygonRegister.verifyGravity();
-		
+		 PolygonRegister.verifyGravity();*/
+		System.out.println(getId());
               		
+		Test t1 = new Test();
 		
+		t1.test = true;
+
 		
 	}
 }

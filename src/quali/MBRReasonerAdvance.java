@@ -2,6 +2,7 @@ package quali;
 
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class MBRReasonerAdvance {
@@ -16,7 +17,7 @@ public class MBRReasonerAdvance {
 		}  
 	 
 	}
-    private LinkedList<Configuration> confs = new LinkedList<Configuration>();
+
 
     
     
@@ -56,18 +57,21 @@ public class MBRReasonerAdvance {
 				while(!cconf.isCompleted())
 				{
 					cconf.nextInitialization();
+					if(solidValidity(cconf , node)){
+						//----- one unique configuration will have various contactmap..
+						LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);
+						for (HashMap<MBR,Contact> contactmap: lscontacts)
+						{
+							//test the solid properties
 					
-					//--- first initialize the cconf's neighbor's configuration that makes cconf local stable.
-					TestNode _node = formLocalStability(cconf,node);
-					
-					
-		            if(solidValidity(cconf , node))
-					{
-		            	//TestNode _node = node.clone();
-		            	_node.update(cconf.clone());
-						confs.add(cconf.clone());
-						refinements.add(_node);
-					}
+						   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
+						   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
+							refinements.add(_node);
+						
+					   }
+					   
+				   
+				}
 				}
 		}
 		return refinements;
@@ -76,7 +80,13 @@ public class MBRReasonerAdvance {
     //------ test ----
     public boolean checkSolution(TestNode node)
     {
-    	return node.isCompleted();
+    	if(node.isCompleted())
+    	{
+    		return true;
+    		
+    	}
+    	else
+    		return false;
     }
 
     //verify the solid properties among all the $expanded$ confs
@@ -86,17 +96,20 @@ public class MBRReasonerAdvance {
     	
     	/* test the regular/angular property*/
 	   //System.out.println(cconf.getNeighbors().size());
+
     	for (Neighbor neighbor: cconf.getNeighbors())
     	{
              MBR mbr_neighbor = neighbor.getMbr();
              Configuration conf_neighbor =  confs.lookup(mbr_neighbor);
            //  System.out.println( cconf.getMbr() + "   " + cconf.unary + conf_neighbor.getMbr() + "   " + conf_neighbor.unary);
              if(neighbor.getNeighborType() == 0)
-          {
+             {
             	
             	 if(cconf.unary == 0 && conf_neighbor.unary == 0)
             		 return false;
-          }
+             }
+             else
+            	 break;// since we sort the gap ascendingly and the neighbor type 0 indicates a zero gap. thus, if the type is not 0, it means the type should be more than 0.
              
     	}  
        return true;  
@@ -104,10 +117,62 @@ public class MBRReasonerAdvance {
     	
     } 
    
-    public TestNode formLocalStability(final Configuration conf , final TestNode node)
+    public TestNode formLocalStability(Configuration conf , HashMap<MBR,Contact> contactmap, TestNode node)
     {
-        
+        //Test by enumerating all possible local configurations. // there are so many tricks in selection of the root. e.g. the root can be the one with the most neighbor and its immediately child could be the one with the least negihbor
+    	// in this version, we randomly pick up a mbr as the root.
     	
+        //stability_id = the id of the mbr that waiting to be tested
+    	//current_id = the maximum id of the instantiated confs.
+    	
+    	for (int i = node.stability_id; i <= node.current_id; i++)
+    	{
+    		 Configuration testConf = node.lookup(i);
+    		 LinkedList<Neighbor> neighbors = testConf.getNeighbors();
+    		 
+    		 // test local stability
+    		 for (Neighbor neighbor : neighbors)
+    		 {
+    			 int index = neighbors.indexOf(neighbor);
+    			  //do not do the test when gap is greater than the threshold
+    			 if(index > testConf.lastValidNeighborId)
+    			 {
+    				 break;
+    			 } 
+    			 else //do not do the test on the tested neighbors again. 
+    				 if (index <= testConf.lastTestNeighborId) 
+    					 continue;
+    				 else
+    				 {
+    				       //test
+    	                   testConf.lastTestNeighborId = index;
+    	                   //To-do rewrite the support function
+    	                   Configuration _conf = conf.clone();
+    	                   _conf.setContact_map(contactmap);
+    	                   boolean support = _conf.isSupport();
+    	                   if(!support && testConf.lastTestNeighborId >= testConf.lastValidNeighborId)
+    	                   {
+    	                	   
+    	                	 //all tested and no support
+	                		   return null;
+    	                   }
+    	                   else
+	    	                   {
+	    	                      
+	    	                         TestNode _node = node.clone();
+	    	                         _node.update(_conf);
+	    	                         if(support)
+	    	                         {
+	    	                        	 _node.nextStabilityVerificationCandidate();
+	    	                         }
+	    	                    
+	    	                         return _node;
+	    	                   }          
+    	                                
+    				 }
+    			 
+    		 }
+    	}
     	
     	
     	return node;
