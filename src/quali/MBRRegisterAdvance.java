@@ -82,62 +82,71 @@ public static TestNode constructTestNode()
 public static 	LinkedList<HashMap<MBR,Contact>> getPossibleContacts(Configuration conf , TestNode node)
 {
 	LinkedList<HashMap<MBR,Contact>>  contactMaps = new LinkedList<HashMap<MBR,Contact>>();
+	
 	// since we instantiate the conf by the order of the id. so we only need to test all the conf with the ids smaller than the conf's. 
 	LinkedList<Neighbor> neighbors = conf.getNeighbors();
-	for (Neighbor neighbor : neighbors)
-	{
-		if(neighbors.indexOf(neighbor) > conf.lastValidNeighborId)
-	  {
-			break;
-	  }
-		else 
-		{
-			Configuration  _conf = node.lookup(neighbor.getMbr());
-			if(neighbor.getMbr().getId() < conf.getMbr().getId())
+	
+	//add the inititial map
+	if(conf.lastValidNeighborId == -1)
+		contactMaps.add(conf.getContact_map());
+	else{
+	
+			for (Neighbor neighbor : neighbors)
 			{
-				if(contactMaps.isEmpty())
+				if(neighbors.indexOf(neighbor) > conf.lastValidNeighborId)
+			  {
+					break;
+			  }
+				else 
 				{
-					LinkedList<Contact> contacts = getContact(conf, _conf);
-					for (Contact contact : contacts)
+					Configuration  _conf = node.lookup(neighbor.getMbr());
+					if(neighbor.getMbr().getId() < conf.getMbr().getId())
 					{
-						HashMap<MBR,Contact> _contactMap = new HashMap<MBR,Contact>();
-						//clone the map and add to list
-						HashMap<MBR,Contact>  contactMap = conf.getContact_map();
-						  for(MBR key:  contactMap.keySet())
-						  {
-							  if(key.equals(key))
-							   _contactMap.put(key, contact);
-							  else
-							  		_contactMap.put(key,  contactMap.get(key).clone() );
-						  }
-						  contactMaps.add(_contactMap);
+						//TODO non-used work if.
+						if(contactMaps.isEmpty())
+						{
+							LinkedList<Contact> contacts = getContact(conf, _conf);
+							for (Contact contact : contacts)
+							{
+								HashMap<MBR,Contact> _contactMap = new HashMap<MBR,Contact>();
+								//clone the map and add to list
+								HashMap<MBR,Contact>  contactMap = conf.getContact_map();
+								  for(MBR key:  contactMap.keySet())
+								  {
+									  if(key.equals(key))
+									   _contactMap.put(key, contact);
+									  else
+									  		_contactMap.put(key,  contactMap.get(key).clone() );
+								  }
+								  contactMaps.add(_contactMap);
+							}
+						}
+						else // pop up the contactmap in the list and split...
+						{
+							LinkedList<HashMap<MBR,Contact>> maps = new LinkedList<HashMap<MBR,Contact>>();
+							for (HashMap<MBR,Contact> contactMap : contactMaps)
+							{
+								LinkedList<Contact> contacts = getContact(conf, _conf);
+								for (Contact contact : contacts)
+								{
+									//clone the map and add to list
+									HashMap<MBR,Contact> _contactMap = new HashMap<MBR,Contact>();
+									  for(MBR key:  contactMap.keySet())
+									  {
+										  if(key.equals(key))
+										   _contactMap.put(key, contact);
+										  else
+										  		_contactMap.put(key,  contactMap.get(key).clone() );
+									  }
+									  maps.add(_contactMap);
+								}
+						   }
+							contactMaps.clear();
+							contactMaps.addAll(maps);
+						}
 					}
 				}
-				else // pop up the contactmap in the list and split...
-				{
-					LinkedList<HashMap<MBR,Contact>> maps = new LinkedList<HashMap<MBR,Contact>>();
-					for (HashMap<MBR,Contact> contactMap : contactMaps)
-					{
-						LinkedList<Contact> contacts = getContact(conf, _conf);
-						for (Contact contact : contacts)
-						{
-							//clone the map and add to list
-							HashMap<MBR,Contact> _contactMap = new HashMap<MBR,Contact>();
-							  for(MBR key:  contactMap.keySet())
-							  {
-								  if(key.equals(key))
-								   _contactMap.put(key, contact);
-								  else
-								  		_contactMap.put(key,  contactMap.get(key).clone() );
-							  }
-							  maps.add(_contactMap);
-						}
-				   }
-					contactMaps.clear();
-					contactMaps.addAll(maps);
-				}
 			}
-		}
 	}
 	return contactMaps;
 

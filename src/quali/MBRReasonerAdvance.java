@@ -38,18 +38,27 @@ public class MBRReasonerAdvance {
 		else
 		{
 		    LinkedList<TestNode> refinements = refine(node);
-		  //  System.out.println(node.current_id + "   " + refinements.size());
+		    //System.out.println(node.current_id + "   " + refinements.size());
+		    
+		    // if refinements should not be empty when a mbr has no neighbors.
 		    if(!refinements.isEmpty())
 		    {
 		    	for(TestNode refinement: refinements)
-		    		if(search(refinement)) 
+		    	{	
+		    	//	int counter = node.current_id;
+		    	//	System.out.println(" refine the mbr conf : " +  node.current_id);
+		    		boolean result = search(refinement);
+		    	//	System.out.println(" result  : " + result + "   id: " + counter);
+		    		if(result) 
 		    			return true;
+		    	}
 		    		
 		    }
 		}
 		return false;
 		
 	}
+	//refine should return at least one TestNode if no properties have been violated
 	public LinkedList<TestNode> refine(final TestNode node)
 	{   
 		
@@ -87,11 +96,15 @@ public class MBRReasonerAdvance {
 							while(!cconf.isCompleted())
 							{
 								cconf.nextInitialization();
+								//System.out.println(cconf);
+								
 								//test the solid properties
 								if(solidValidity(cconf , node)){
 								
 									//----- one unique configuration will have various contactmap..
-									LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
+									LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
+									//System.out.println(cconf.getMbr().getId() + "    " + lscontacts.size());
+								
 									for (HashMap<MBR,Contact> contactmap: lscontacts)
 									{
 										/*
@@ -101,7 +114,9 @@ public class MBRReasonerAdvance {
 										}*/
 									   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 									   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
-										refinements.add(_node);
+										
+									   
+									   refinements.add(_node);
 									
 								   }
 								   
@@ -118,10 +133,10 @@ public class MBRReasonerAdvance {
     //------ test ----
     public boolean checkSolution(TestNode node)
     {
-    
+//    	System.out.println(" node current id : " + node.current_id);
     	if(node.isCompleted())
     	{
-    		//System.out.println(" node completed, check statbility");
+    		System.out.println(" node completed, check statbility\n" + node);
     		 for (Integer id : node.getConfs().keySet())
     		 {
     			 if (!node.getConfs().get(id).isSupport())
@@ -228,7 +243,7 @@ public class MBRReasonerAdvance {
     	}
     	
     	
-    	return node;
+    	return node.clone();
     }
 
 	public boolean reason(Node initial)
@@ -478,39 +493,6 @@ public class MBRReasonerAdvance {
 	  
    }
 
-	public static void main(String args[])
-	{
-	//	 RA Calcuate
-	
-	/*	Rectangle rec = new Rectangle(200,200,1000,10);
-	
-		MBRRegister.registerRectangle(rec,true);
-	
-		Rectangle rec1 = new Rectangle(200,100,100,100);
-		MBRRegister.registerRectangle(rec1,false);
-		
-       //  System.out.println(rec.intersection(rec1).contains(200,200));
-		
 
-	//	Rectangle rec2 = new Rectangle(100,50,105,50);
-	//	MBRRegister.registerRectangle(rec2,false);
-		
-		Rectangle rec2 = new Rectangle(500,30,300,170);
-		MBRRegister.registerRectangle(rec2,false);
-		
-		
-		Rectangle rec3 = new Rectangle(225,0,300,100);
-		MBRRegister.registerRectangle(rec3,false);
-		
-		Node node = MBRRegister.constructNode();
-	
-		
-		
-		MBRReasoner MBRR = new MBRReasoner();
-		
-		MBRR.reason(node);*/
-
-		
-	}
 	
 }
