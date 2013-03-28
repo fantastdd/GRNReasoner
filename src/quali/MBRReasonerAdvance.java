@@ -38,11 +38,13 @@ public class MBRReasonerAdvance {
 		else
 		{
 		    LinkedList<TestNode> refinements = refine(node);
-		   
+		  //  System.out.println(node.current_id + "   " + refinements.size());
 		    if(!refinements.isEmpty())
 		    {
 		    	for(TestNode refinement: refinements)
-		    		if(search(refinement)) {return true;};
+		    		if(search(refinement)) 
+		    			return true;
+		    		
 		    }
 		}
 		return false;
@@ -52,6 +54,7 @@ public class MBRReasonerAdvance {
 	{   
 		
 		LinkedList<TestNode> refinements = new LinkedList<TestNode>();
+
 	   if(!node.isCompleted()){
 	
 				Configuration cconf = node.pop().clone(); 
@@ -61,16 +64,20 @@ public class MBRReasonerAdvance {
 					
 						//----- one unique configuration will have various contactmap..
 						LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
-						
+						//System.out.println(lscontacts.size());
 						for (HashMap<MBR,Contact> contactmap: lscontacts)
 						{
 							//test the solid properties
-					
+					        
 						   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 						   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
 							refinements.add(_node);
 							
 					   }
+						if (lscontacts.isEmpty()) // will happen when this block is isolated or its neighbors are not initialized yet 
+						{
+							refinements.add(node.clone());
+						}
 						
 					}
 				   
@@ -80,14 +87,18 @@ public class MBRReasonerAdvance {
 							while(!cconf.isCompleted())
 							{
 								cconf.nextInitialization();
+								//test the solid properties
 								if(solidValidity(cconf , node)){
 								
 									//----- one unique configuration will have various contactmap..
 									LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
 									for (HashMap<MBR,Contact> contactmap: lscontacts)
 									{
-										//test the solid properties
-								
+										/*
+										for (MBR key: contactmap.keySet())
+										{
+											System.out.println(key + "   " + contactmap.get(key));
+										}*/
 									   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 									   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
 										refinements.add(_node);
@@ -163,27 +174,31 @@ public class MBRReasonerAdvance {
     	{
     		 Configuration testConf = node.lookup(i);
     		 LinkedList<Neighbor> neighbors = testConf.getNeighbors();
+    	
+    		 int conf_index =  	 neighbors.contains(conf.getMbr())? neighbors.indexOf(conf.getMbr()) : -1;// the index of conf in the testConf's neighbor
     		 
-    		 // test local stability
+    				 // test local stability
     		 for (Neighbor neighbor : neighbors)
     		 {
     			 int index = neighbors.indexOf(neighbor);
-    			  //do not do the test when gap is greater than the threshold
+    			
+    			 //do not do the test when gap is greater than the threshold
     			 if(index > testConf.lastValidNeighborId)
     			 {
     				 break;
     			 } 
     			 else //do not do the test on the tested neighbors again. 
-    				 if (index <= testConf.lastTestNeighborId) 
+    				 if (index <= testConf.lastTestNeighborId || conf_index == -1) 
     					 continue;
     				 else
-    				 {
+    				 {     // !! the index of the neighor is not the same as the one of the node. 
     				       //test
     	                   testConf.lastTestNeighborId = index;
     	                   //To-do rewrite the support function
     	                   Configuration _conf = conf.clone();
+    	                   
     	                   _conf.setContact_map(contactmap);
-    	                   //update profiles in the older ones. 
+    	                 
     	                
     	                   boolean support = testConf.isNowSupport(_conf);
     	                   if(!support && testConf.lastTestNeighborId >= testConf.lastValidNeighborId)
@@ -196,6 +211,8 @@ public class MBRReasonerAdvance {
 	    	                   {
 	    	                      
 	    	                         TestNode _node = node.clone();
+	    	                         //update profiles in the older ones. 
+	    	                         //System.out.println(_node);
 	    	                         _node.update(_conf);
 	    	                         if(support)
 	    	                         {

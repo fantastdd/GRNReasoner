@@ -112,9 +112,23 @@ public void initialize()
 	    for (Neighbor neighbor : conf.getNeighbors())
 	    {
 	    	if(neighbor.getGap() > WorldinVision.gap) 
+	    	{	
 	    		conf.lastValidNeighborId =  conf.getNeighbors().indexOf(neighbor) - 1; 
+	    	    break;
+	    	}
+	    	else
+	    	{
+	    		//initialize the contact map
+	    		conf.getContact_map().put(neighbor.getMbr(), new Contact());
+	    		//System.out.println(conf.getMbr() + "   " + neighbor.getMbr());
+	    	}
 	    }
-	   
+	    // the mbr touches all others.
+	    if(conf.lastValidNeighborId == -1)
+	    	conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
+	    
+	    //System.out.println("  conf " + conf.getMbr() + "   " +  " last valid id:  " + conf.lastValidNeighborId);
+	     
 	}
 	
 }
@@ -196,6 +210,7 @@ public void update(Configuration conf)
 		  Configuration _conf = lookup(_mbr);
 		  HashMap<MBR,Contact> _contactMap = _conf.getContact_map();
 		  MBR mbr = conf.getMbr();
+		  //System.out.println(_contactMap.get(mbr));
 		  if(!_contactMap.get(mbr).isInitialized())
 		  {
 	    		Contact contact =  MBRRegisterAdvance.getPairContact(conf, _conf);

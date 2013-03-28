@@ -78,7 +78,12 @@ public int lastValidNeighborId = -1; //id = -1, no valid neighbors
 public boolean isNowSupport(final Configuration tconf )
 {
 	boolean result = false;
+
+  if(!tconf.getMbr().equals(mbr))
+  { 
+	//  System.out.println(tconf.getMbr() + "  " + mbr);
 	Contact contact =  MBRRegisterAdvance.getPairContact(tconf, this);
+	
 	if(this.isEdge())
 		result = true;
 	else{
@@ -101,6 +106,7 @@ public boolean isNowSupport(final Configuration tconf )
 		result = left_support && right_support;
 	    return result;
 	}
+  }
 	return result;
 }
 public Configuration(MBR mbr)
@@ -490,6 +496,10 @@ public Configuration clone()
 }
 
 public int getAngular() {
+	if(unary == 0)
+		angular = 0;
+	else
+		angular = 1;
 	return angular;
 }
 

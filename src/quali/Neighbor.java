@@ -22,6 +22,22 @@ public class Neighbor {
 	public double getGap() {
 		return gap;
 	}
+	public int hashcode()
+	{
+		 int hash  = 7;
+		 hash = 31 *hash + mbr.hashcode();
+		 return hash;
+		
+
+	}
+
+	public boolean equals(Neighbor neighbor)
+	{
+	   if(neighbor.getMbr().equals(mbr))
+			   return true;
+	   return false;
+	   
+	}
 	
 	
 }

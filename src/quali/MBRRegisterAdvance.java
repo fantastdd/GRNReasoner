@@ -241,9 +241,12 @@ private static LinkedList<Configuration> instantiateConf(final MBR mbr, Node nod
 public static Contact getPairContact(Configuration tconf, Configuration conf)
 {
      Contact _contact = tconf.getContact_map().get(conf.getMbr());
+    // System.out.println(conf.getMbr() + "   " + tconf.getMbr());
+     //System.out.println(tconf + "  " + conf + "   " + _contact);
      Contact contact = new Contact();
 	 if(conf.unary != 0 && tconf.unary != 0)
      {
+		
 	  	if(_contact.getTangential_area() == 1)
           {
     		  contact.setTangential_area(3);
@@ -2536,7 +2539,7 @@ private static int testFreeRegion24(final Configuration conf,final Configuration
 			if(conf.getPermit_regions()[3] == 1)
 				conf.getRegion(region);
 			else
-				//问题在这，如果用大区域描�?，那么会导致vertex touch的极端情�?
+				//问题在这，如果用大区域描�?，那么会导致vertex touch的极端情�?
 				if(conf.getPermit_regions()[2] == 1)
 					conf.getRegionLarge(region);
 			
