@@ -8,6 +8,7 @@ import main.ScenarioPanel;
 import quali.MBR;
 import quali.MBRReasonerAdvance;
 import quali.MBRRegister;
+import quali.MBRRegisterAdvance;
 import quali.TestNode;
 
 public class WorldinVision {
@@ -28,7 +29,7 @@ public class WorldinVision {
   public void showWorldinVision()
   {
 	  ScenarioPanel sp = new ScenarioPanel();
-	  sp.run(MBRRegister.getMbrs());
+	  sp.run(MBRRegisterAdvance.getMbrs());
 	  
 	  
   }
@@ -38,8 +39,9 @@ public class WorldinVision {
   }
   private void reason()
   {
-      MBRRegister.batchRegister(mbrs);
-  	  TestNode node = MBRRegister.constructTestNode();
+      MBRRegisterAdvance.batchRegister(mbrs, mbrs.get(0));
+  	  TestNode node = MBRRegisterAdvance.constructTestNode();
+  
   	  MBRReasonerAdvance MBRR = new MBRReasonerAdvance();
   	  MBRR.search(node);
 

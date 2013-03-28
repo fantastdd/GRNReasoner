@@ -20,7 +20,7 @@ public void setId(int id) {
 
 
 public MBR(Rectangle rec) {
-	// TODO Auto-generated constructor stub
+	
 
     this.width = (int) rec.getWidth();
     this.height = (int) rec.getHeight();

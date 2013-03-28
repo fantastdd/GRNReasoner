@@ -73,8 +73,36 @@ public int lastTestNeighborId = -1;
 public boolean left_support = false;
 public boolean right_support = false;
 public int lastValidNeighborId = -1; //id = -1, no valid neighbors
+//TODO write a isNowSupport method in configuration
 
-
+public boolean isNowSupport(final Configuration tconf )
+{
+	boolean result = false;
+	Contact contact =  MBRRegisterAdvance.getPairContact(tconf, this);
+	if(this.isEdge())
+		result = true;
+	else{
+				//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
+				if(contact.getType() == 1)
+				{
+					if(contact.getTangential_area() == 3)
+						left_support = true;
+					else
+						if(contact.getTangential_area() == 4)
+							right_support = true;
+						else
+							if(contact.getTangential_area() == 34)
+							{
+								left_support = true;
+								right_support = true;
+							}
+				}
+			
+		result = left_support && right_support;
+	    return result;
+	}
+	return result;
+}
 public Configuration(MBR mbr)
 {
 	
@@ -445,7 +473,7 @@ public Configuration clone()
 		  conf.blocked_regions.get(key).add(mbr);
   }
   
-  for(MBR key: this.contact_map.keySet())
+  for(MBR key:  contact_map.keySet())
   {
 	  conf.contact_map.put(key, contact_map.get(key).clone());
   }
@@ -827,8 +855,15 @@ public int nextInitialization()
     if(!isEdge())
     {  
     	unary = (unary + 1 > 3)?-2:++unary;
-    
+    	   if (unary == 1)
+    		   setPermit_regions(0,1,1,0);
+    	   else if (unary == 2)
+    		   setPermit_regions(0,1,0,1);
+    	   else
+    		   setPermit_regions(0,0,0,0);
 	}
+ 
+    	
       return unary;
 }
 

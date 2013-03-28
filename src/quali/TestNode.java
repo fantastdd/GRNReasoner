@@ -4,9 +4,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
-import ab.WorldinVision;
-
 import quanti.QuantiShapeCalculator;
+import ab.WorldinVision;
 
 public class TestNode {
 
@@ -45,12 +44,11 @@ public TestNode(List<MBR> mbrs, List<MBR> edges)
 	for (MBR mbr : mbrs)
 	{
 		confs.put(mbr.getId(),  new Configuration(mbr));
-		
+		if(edges.contains(mbr))
+			confs.get(mbr.getId()).setEdge(true);
 	}
-	for (MBR edge : edges)
-	{
-		confs.get(edge).setEdge(true);
-	}
+
+	
 	 initialize();
 	
 
@@ -191,6 +189,19 @@ public TestNode clone()
 public void update(Configuration conf)
 {
 	   confs.put(conf.getMbr().getId(), conf);
+	   //also update the contact map if necessary
+	  for (MBR _mbr  : conf.getContact_map().keySet())
+	  {
+		
+		  Configuration _conf = lookup(_mbr);
+		  HashMap<MBR,Contact> _contactMap = _conf.getContact_map();
+		  MBR mbr = conf.getMbr();
+		  if(!_contactMap.get(mbr).isInitialized())
+		  {
+	    		Contact contact =  MBRRegisterAdvance.getPairContact(conf, _conf);
+	    		_contactMap.put(mbr, contact);		  
+		  }
+	  }
 }
 public String toString()
 {

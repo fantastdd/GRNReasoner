@@ -12,7 +12,6 @@ public class MBRReasoner {
 		try {
 			new PrintStream("test.txt");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
 	 

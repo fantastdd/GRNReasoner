@@ -56,7 +56,6 @@ public static void batchRegister (List<MBR> mbrs, MBR... edge)
      	{	
      	  if(_edge.equals(mbr))
      		  isEdge = true;
-     		
      	}
          registerMBR(mbr, isEdge);  
      }
@@ -1524,7 +1523,7 @@ private static int testFreeRegion24(final Configuration conf,final Configuration
 			if(conf.getPermit_regions()[3] == 1)
 				conf.getRegion(region);
 			else
-				//问题在这，如果用大区域描述2，那么会导致vertex touch的极端情况
+				//闂鍦ㄨ繖锛屽鏋滅敤澶у尯鍩熸弿杩�锛岄偅涔堜細瀵艰嚧vertex touch鐨勬瀬绔儏鍐�
 				if(conf.getPermit_regions()[2] == 1)
 					conf.getRegionLarge(region);
 			

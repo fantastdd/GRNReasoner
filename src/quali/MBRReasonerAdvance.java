@@ -12,7 +12,7 @@ public class MBRReasonerAdvance {
 		try {
 			new PrintStream("test.txt");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		}  
 	 
@@ -38,6 +38,7 @@ public class MBRReasonerAdvance {
 		else
 		{
 		    LinkedList<TestNode> refinements = refine(node);
+		   
 		    if(!refinements.isEmpty())
 		    {
 		    	for(TestNode refinement: refinements)
@@ -52,14 +53,15 @@ public class MBRReasonerAdvance {
 		
 		LinkedList<TestNode> refinements = new LinkedList<TestNode>();
 	   if(!node.isCompleted()){
+	
 				Configuration cconf = node.pop().clone(); 
-				//there are three types, namely, regular, left, right
-				while(!cconf.isCompleted())
-				{
-					cconf.nextInitialization();
+			   if(cconf.isEdge())
+			   {
 					if(solidValidity(cconf , node)){
+					
 						//----- one unique configuration will have various contactmap..
 						LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
+						
 						for (HashMap<MBR,Contact> contactmap: lscontacts)
 						{
 							//test the solid properties
@@ -67,22 +69,54 @@ public class MBRReasonerAdvance {
 						   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 						   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
 							refinements.add(_node);
-						
+							
 					   }
-					   
+						
+					}
 				   
-				}
-				}
+			   }
+			   else {
+							//there are three types, namely, regular, left, right
+							while(!cconf.isCompleted())
+							{
+								cconf.nextInitialization();
+								if(solidValidity(cconf , node)){
+								
+									//----- one unique configuration will have various contactmap..
+									LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
+									for (HashMap<MBR,Contact> contactmap: lscontacts)
+									{
+										//test the solid properties
+								
+									   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
+									   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
+										refinements.add(_node);
+									
+								   }
+								   
+							   
+							}
+							}
+				
+			   }
 		}
+
 		return refinements;
 	}
 
     //------ test ----
     public boolean checkSolution(TestNode node)
     {
+    
     	if(node.isCompleted())
     	{
-    		return true;
+    		//System.out.println(" node completed, check statbility");
+    		 for (Integer id : node.getConfs().keySet())
+    		 {
+    			 if (!node.getConfs().get(id).isSupport())
+    				 return false;
+    		 }
+    		 return true;
     		
     	}
     	else
@@ -149,7 +183,9 @@ public class MBRReasonerAdvance {
     	                   //To-do rewrite the support function
     	                   Configuration _conf = conf.clone();
     	                   _conf.setContact_map(contactmap);
-    	                   boolean support = _conf.isSupport();
+    	                   //update profiles in the older ones. 
+    	                
+    	                   boolean support = testConf.isNowSupport(_conf);
     	                   if(!support && testConf.lastTestNeighborId >= testConf.lastValidNeighborId)
     	                   {
     	                	   

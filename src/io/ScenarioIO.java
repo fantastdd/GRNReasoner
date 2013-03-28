@@ -21,7 +21,7 @@ public ScenarioIO(String filename) {
 	this.filename = filename;
 }
 public ScenarioIO() {
-	// TODO Auto-generated constructor stub
+
 }
 
 public  LinkedList<LinkedList<MBR>> load(String filename) throws IOException
