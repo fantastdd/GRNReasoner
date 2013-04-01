@@ -46,10 +46,23 @@ public int hashcode()
 
 }
 
-public boolean equals(MBR mbr)
+public boolean equals(Object obj)
 {
-   if(mbr.getLocation().equals(this.getLocation()) && mbr.getHeight() == this.height && mbr.width == this.width)
-		   return true;
+	MBR mbr = null;
+   if(obj instanceof MBR)
+   {  
+	   mbr = (MBR) obj;
+	
+   }
+   else
+	   if (obj instanceof Neighbor)
+	   {
+		   mbr = ( (Neighbor) obj ).getMbr();
+	   }
+   
+   if(mbr!= null  & mbr.getLocation().equals(this.getLocation()) & mbr.getHeight() == this.height && mbr.width == this.width)
+	   return true;
+	 
    return false;
    
 }

@@ -96,6 +96,25 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		 
 		 return isIntersected(p1,p2);
 	 }
+	 
+	 public static boolean isIntersected(Rectangle r1, Rectangle r2, boolean includeTouch)
+	 {
+		 Polygon p1 = new Polygon();
+		 p1.addPoint(r1.x, r1.y);
+		 p1.addPoint(r1.x,r1.y + r1.height );
+		 p1.addPoint(r1.x + r1.width, r1.y + r1.height);
+		 p1.addPoint(r1.x + r1.width, r1.y);
+		 
+		 Polygon p2 = new Polygon();
+		 p2.addPoint(r2.x, r2.y);
+		 p2.addPoint(r2.x,r2.y + r2.height );
+		 p2.addPoint(r2.x + r2.width, r2.y + r2.height);
+		 p2.addPoint(r2.x + r2.width, r2.y);
+		 
+		 return isIntersected(p1,p2, includeTouch);
+	 }
+	 
+	 
 	 public static LinkedList<Point> isIntersected(Polygon p1, Polygon p2)
 	 {
 		 LinkedList<Point> points = new LinkedList<Point>();
@@ -173,13 +192,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 			 }
 			 else
 				 result = false;
-			 
-			 
-		 
-		 
-		 
-		 
-		 
+			 		 
 		 }
 			/* contained relationship*/ 
 			for(int i  = 0; i < p1.npoints;i++)

@@ -31,10 +31,15 @@ public class Neighbor {
 
 	}
 
-	public boolean equals(Neighbor neighbor)
+	public boolean equals(Object object)
 	{
-	   if(neighbor.getMbr().equals(mbr))
-			   return true;
+		//  System.out.println(object instanceof Neighbor && getMbr().equals(((Neighbor)object).getMbr()) );
+	   if(object instanceof Neighbor && getMbr().equals(((Neighbor)object).getMbr()))
+	   {	   
+		 
+		   return true ;
+	   
+	   }
 	   return false;
 	   
 	}

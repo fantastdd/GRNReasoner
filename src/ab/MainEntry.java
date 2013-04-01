@@ -34,11 +34,11 @@ public class MainEntry {
 	   wiv.buildWorld(worldInVision);
 	   wiv.showWorldinVision();*/
 					
-			ScenarioIO sio = new ScenarioIO("s1");
+			ScenarioIO sio = new ScenarioIO("s61");
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
-				scenarios = sio.load("s1");
+				scenarios = sio.load("s61");
 				LinkedList<MBR> s1 = scenarios.get(0);
 				LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 				for (MBR mbr : s1)

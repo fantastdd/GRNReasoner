@@ -22,22 +22,19 @@ public class MBRReasonerAdvance {
     
     
     
-	private LinkedList<Node> candidnates_solid = new LinkedList<Node>();
-	private LinkedList<Node> candidnates_gravity = new LinkedList<Node>();
-	private LinkedList<Node> candidnates_result = new LinkedList<Node>();
-    
 	//search ----
 	public boolean search(TestNode node)
 	{
 		if(checkSolution(node))
 		{
 		    //output the solutions	
-			System.out.println("solution is found:   " + node);
+			System.out.println("solution is found:   \n" + node);
 			return true;
 		}
 		else
 		{
 		    LinkedList<TestNode> refinements = refine(node);
+		    //System.out.println(node + "    " + refinements.size());
 		    //System.out.println(node.current_id + "   " + refinements.size());
 		    
 		    // if refinements should not be empty when a mbr has no neighbors.
@@ -45,7 +42,6 @@ public class MBRReasonerAdvance {
 		    {
 		    	for(TestNode refinement: refinements)
 		    	{	
-		    	//	int counter = node.current_id;
 		    	//	System.out.println(" refine the mbr conf : " +  node.current_id);
 		    		boolean result = search(refinement);
 		    	//	System.out.println(" result  : " + result + "   id: " + counter);
@@ -61,10 +57,10 @@ public class MBRReasonerAdvance {
 	//refine should return at least one TestNode if no properties have been violated
 	public LinkedList<TestNode> refine(final TestNode node)
 	{   
-		
 		LinkedList<TestNode> refinements = new LinkedList<TestNode>();
-
-	   if(!node.isCompleted()){
+        
+        //System.out.println(" go to the refine ");
+	   	if(!node.isCompleted()){
 	
 				Configuration cconf = node.pop().clone(); 
 			   if(cconf.isEdge())
@@ -73,20 +69,26 @@ public class MBRReasonerAdvance {
 					
 						//----- one unique configuration will have various contactmap..
 						LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
-						//System.out.println(lscontacts.size());
-						for (HashMap<MBR,Contact> contactmap: lscontacts)
-						{
-							//test the solid properties
-					        
-						   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
-						   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
-							refinements.add(_node);
-							
-					   }
+						//System.out.println("*********:  " + lscontacts.size());
 						if (lscontacts.isEmpty()) // will happen when this block is isolated or its neighbors are not initialized yet 
 						{
 							refinements.add(node.clone());
 						}
+						else
+						{	
+							for (HashMap<MBR,Contact> contactmap: lscontacts)
+							{
+								//test the solid properties
+						        
+							   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
+							   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
+							   // System.out.println(_node);
+							   //System.out.println(" after form local stability:  " + _node );
+							   if (_node != null)
+								   refinements.add(_node);
+								
+						   }
+					   }
 						
 					}
 				   
@@ -96,29 +98,42 @@ public class MBRReasonerAdvance {
 							while(!cconf.isCompleted())
 							{
 								cconf.nextInitialization();
-								//System.out.println(cconf);
 								
+								//System.out.println(cconf + "   \n  " + node + "    " +  solidValidity(cconf , node));
 								//test the solid properties
-								if(solidValidity(cconf , node)){
-								
+								if(solidValidity(cconf , node))
+								{
+									
 									//----- one unique configuration will have various contactmap..
 									LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
-									//System.out.println(cconf.getMbr().getId() + "    " + lscontacts.size());
-								
-									for (HashMap<MBR,Contact> contactmap: lscontacts)
-									{
-										/*
-										for (MBR key: contactmap.keySet())
-										{
-											System.out.println(key + "   " + contactmap.get(key));
-										}*/
-									   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
-									   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
-										
-									   
-									   refinements.add(_node);
-									
-								   }
+									//System.out.println(" after solid check " + cconf+"  "+ lscontacts.size());
+									if (lscontacts.isEmpty()) // will happen when this block is isolated or its neighbors are not initialized yet 
+									{    
+										TestNode _node = node.clone();
+										_node.update(cconf);
+										refinements.add(_node.clone());
+									}
+									else
+									    {
+
+												for (HashMap<MBR,Contact> contactmap: lscontacts)
+												{
+													
+											/*		System.out.println("  contactmap of " + cconf.getMbr() + "\n");
+													for (MBR key: contactmap.keySet())
+													{
+														System.out.println(key + "   " + contactmap.get(key));
+													}
+													*/
+												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
+												   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
+												 
+												   // System.out.println(" to form stability  " +  cconf + "    " + _node);
+												 	if(_node != null)  
+													 	refinements.add(_node);
+												
+											   }
+										}
 								   
 							   
 							}
@@ -133,10 +148,12 @@ public class MBRReasonerAdvance {
     //------ test ----
     public boolean checkSolution(TestNode node)
     {
-//    	System.out.println(" node current id : " + node.current_id);
+		//System.out.println(" node current id : " + node.current_id);
+  		//System.out.println(" node is incompleted, :  " + node);
     	if(node.isCompleted())
     	{
-    		System.out.println(" node completed, check statbility\n" + node);
+    		// System.out.println(node);
+    		// System.out.println(" node completed, check stability \n" + node);
     		 for (Integer id : node.getConfs().keySet())
     		 {
     			 if (!node.getConfs().get(id).isSupport())
@@ -161,7 +178,8 @@ public class MBRReasonerAdvance {
     	{
              MBR mbr_neighbor = neighbor.getMbr();
              Configuration conf_neighbor =  confs.lookup(mbr_neighbor);
-           //  System.out.println( cconf.getMbr() + "   " + cconf.unary + conf_neighbor.getMbr() + "   " + conf_neighbor.unary);
+           	//  System.out.println( cconf.getMbr() + "   " + cconf.unary + conf_neighbor.getMbr() + "   " + conf_neighbor.unary);
+         	//   System.out.println( cconf +  "  the neighbor type is   " + neighbor.getNeighborType());
              if(neighbor.getNeighborType() == 0)
              {
             	
@@ -176,322 +194,134 @@ public class MBRReasonerAdvance {
 	
     	
     } 
-   
-    public TestNode formLocalStability(Configuration conf , HashMap<MBR,Contact> contactmap, TestNode node)
+    // This method will verify the stability of the each instantiated mbr in the tree. 
+    public TestNode formLocalStability(Configuration newUpdatedConf , HashMap<MBR,Contact> contactmap, TestNode node)
     {
-        //Test by enumerating all possible local configurations. // there are so many tricks in selection of the root. e.g. the root can be the one with the most neighbor and its immediately child could be the one with the least negihbor
-    	// in this version, we randomly pick up a mbr as the root.
+        // Test by enumerating all possible local configurations. there are so many tricks in the selection of the root. e.g. the root can be the one with the most neighbor and its immediately child could be the one with the least negihbor
+    	//  n this version, we randomly pick up a mbr as the root.
     	
-        //stability_id = the id of the mbr that waiting to be tested
-    	//current_id = the maximum id of the instantiated confs.
-    	
-    	for (int i = node.stability_id; i <= node.current_id; i++)
-    	{
-    		 Configuration testConf = node.lookup(i);
-    		 LinkedList<Neighbor> neighbors = testConf.getNeighbors();
-    	
-    		 int conf_index =  	 neighbors.contains(conf.getMbr())? neighbors.indexOf(conf.getMbr()) : -1;// the index of conf in the testConf's neighbor
+        // stability_id = the id of the mbr that waiting to be tested
+    	//	current_id = the maximum id of the instantiated confs.
+        TestNode _node = null;    		 
+        Configuration   _newUpdatedConf = newUpdatedConf.clone();
+        _newUpdatedConf.setContact_map(contactmap);
+    outerloop:	for (int i = node.stability_id; i <= node.current_id; i++)
+				{
+						    		 // Get the current test node.
+						             Configuration testConf;
+						             if ( i == _newUpdatedConf.getMbr().getId())
+						            	 testConf = _newUpdatedConf;
+						             else
+						            	  testConf = node.lookup(i);
+						             
+						    		 LinkedList<Neighbor> neighbors = testConf.getNeighbors();
+						             // System.out.println(testConf + "    " + neighbors.size());
+						    		 // For those who do not have a neighbor, 1. If not supported (not an edge)  --> return null. 2. yes continue
+						    	     if (neighbors.isEmpty())
+						    	     {
+						    	    	
+						    	    	 if (testConf.isSupport())
+						    	    	 {
+						    	    		    _node = node.clone();
+						                        _node.nextStabilityVerificationCandidate();
+						                        
+						                  }
+						    	    	// System.out.println(" no neighbors");
+						    	    	 
+						    	     } 
+						             else 
+						             {
+						                 //System.out.println( " go to here ");
+						            	 // test the testConf with all instantiated nodes
+						             	  for (Neighbor neighbor : neighbors)
+						             	  {
+                                               Configuration curConf;
+                                               if (neighbor.getMbr().getId() == newUpdatedConf.getMbr().getId())
+                                               	    curConf = _newUpdatedConf;
+                                               	else
+                                               		curConf = node.lookup(neighbor.getMbr());
+                                               	int nid_curConf = neighbors.indexOf(neighbor);
+                                               	if( nid_curConf > testConf.lastValidNeighborId)
+                                               		break outerloop;
+                                               	else 
+                                               	{
+                                               		  boolean support = testConf.isNowSupport(curConf);
+                                               		  if(!support && nid_curConf == testConf.lastValidNeighborId)   
+							                                 //all tested and no support
+							                                   break outerloop;
+							                          else
+					                                   {
+					                            	         _node = node.clone();
+					                                         //update profiles in the older ones. 
+					                                         if(support)
+					                                         {
+					                                             _node.nextStabilityVerificationCandidate();
+					                                        }   
+					                                   } 
+
+                                               	}    
+
+						             	  }
+						            	 /*for (int j = 0 ;  j <= node.current_id ; j++)
+						            	 {
+						            	 
+							            		 Configuration curConf ;
+							            		 if (j == newUpdatedConf.getMbr().getId())
+							            			 curConf = _newUpdatedConf;
+							            		 else
+							            		     curConf = node.lookup(j);
+							            		 //System.out.println("   contain test :  " + testConf.getMbr() + "   " + curConf.getMbr() + "   " + neighbors.contains(curConf.getMbr()) );
+							            		 int nid_curConf =  neighbors.contains(curConf.getMbr())? neighbors.indexOf(curConf.getMbr()) : -1;// the index of conf in the testConf's neighbor
+							            		 if ( nid_curConf == -1)
+							            		 {
+							            			 continue;
+							            		 }
+							            		 else
+
+							            			 if (nid_curConf > testConf.lastValidNeighborId)
+							            			 {
+							            				// System.out.println(" go to this branch " + testConf.getMbr() + "   " + nid_curConf + "   " + testConf.lastValidNeighborId);
+							            				 break outerloop;
+							            			 }
+							            			 else 
+							            			 {
+							            				   //   !! the index of the neighbor is not the same as the one of the node. 
+							                              //    the stability of conf1 cannot be tested with conf0, should be a loop for all initialized confs.
+							                              //TODO degbug
+							                              // testConf.lastTestNeighborId = nid_curConf;
+							                          
+							                               boolean support = testConf.isNowSupport(curConf);
+							                               if(!support && nid_curConf >= testConf.lastValidNeighborId)
+							                               {     
+							                                 //all tested and no support
+							                                   break outerloop;
+							                               }
+							                               else
+							                                   {
+							                            	         _node = node.clone();
+							                                         //update profiles in the older ones. 
+							                                         if(support)
+							                                         {
+							                                             _node.nextStabilityVerificationCandidate();
+							                                        }   
+							                                   }          
+							            			 }
+				            		 
+				            			 }*/
+    
+				             }
+
+             	}	
     		 
-    				 // test local stability
-    		 for (Neighbor neighbor : neighbors)
-    		 {
-    			 int index = neighbors.indexOf(neighbor);
-    			
-    			 //do not do the test when gap is greater than the threshold
-    			 if(index > testConf.lastValidNeighborId)
-    			 {
-    				 break;
-    			 } 
-    			 else //do not do the test on the tested neighbors again. 
-    				 if (index <= testConf.lastTestNeighborId || conf_index == -1) 
-    					 continue;
-    				 else
-    				 {     // !! the index of the neighor is not the same as the one of the node. 
-    				       //test
-    	                   testConf.lastTestNeighborId = index;
-    	                   //To-do rewrite the support function
-    	                   Configuration _conf = conf.clone();
-    	                   
-    	                   _conf.setContact_map(contactmap);
-    	                 
-    	                
-    	                   boolean support = testConf.isNowSupport(_conf);
-    	                   if(!support && testConf.lastTestNeighborId >= testConf.lastValidNeighborId)
-    	                   {
-    	                	   
-    	                	 //all tested and no support
-	                		   return null;
-    	                   }
-    	                   else
-	    	                   {
-	    	                      
-	    	                         TestNode _node = node.clone();
-	    	                         //update profiles in the older ones. 
-	    	                         //System.out.println(_node);
-	    	                         _node.update(_conf);
-	    	                         if(support)
-	    	                         {
-	    	                        	 _node.nextStabilityVerificationCandidate();
-	    	                         }
-	    	                    
-	    	                         return _node;
-	    	                   }          
-    	                                
-    				 }
-    			 
-    		 }
-    	}
-    	
-    	
-    	return node.clone();
+
+    		if(_node != null)
+    		{
+	            _node.update( _newUpdatedConf);
+	        	//System.out.println("  updates the conf " + _newUpdatedConf +  "\n node description   "  +  _node);                      
+    		}
+	 
+    		return _node;
     }
-
-	public boolean reason(Node initial)
-	{
-
-	    candidnates_solid.add(initial);
-	 	while(!candidnates_solid.isEmpty())
-		{
-			Node node = candidnates_solid.pop();
-			if(node.isCompleted())
-			{
-				node.reset();
-				candidnates_gravity.add(node);
-			}
-			else{
-				
-				LinkedList<Node> nodes = expandOnSolidProperty(node);
-			 
-				if(!nodes.isEmpty())
-				{	
-					candidnates_solid.addAll(nodes);
-			
-				}
-			 }
-			
-		}
-	 
-		System.out.println("gravity candidnate size: "+ candidnates_gravity.size());
-		/*for(Node node: candidnates_gravity)
-		{
-			System.out.println(node);
-		}*/
-	 	
-		while(!candidnates_gravity.isEmpty())
-		{
-			Node node = candidnates_gravity.pop();
-			//Debug.echo(null,node);
-			if(node.isCompleted())
-			{
-				node.reset();
-				candidnates_result.add(node);
-			}
-			else
-			/* only return valid (stable) results */
-			{
-				LinkedList<Node> nodes = MBRRegister.expandOnGravityProperty(node);
-				//System.out.println(candidnates_gravity.size() + "  " +nodes.size());
-			    if(!nodes.isEmpty())
-			    {
-			    	candidnates_gravity.addAll(nodes);
-			    }
-			}
-			
-			
-			
-		//	
-			
-		}
-		
-	System.out.println(" result candidnate size: " + candidnates_result.size()+"\n");
-		
-		for(Node node:candidnates_result)
-		{
-		    boolean stable = true;
-			for(MBR mbr:node.mbrs)
-			{
-				if(!testGravity(mbr,node))
-				{	
-					//Debug.echo(this, node);
-					//Debug.echo(this, node.lookupConf(mbr));
-					//Debug.echo(this, " unstable block: ", mbr,node.lookupConf(mbr));
-					//System.out.println("unstable block: " + mbr + " " + node.lookupConf(mbr));
-					//System.out.println("unstable configurations: " + node);
-					
-					stable = false;
-				
-				}
-			}
-	 
-		  if(stable)
-		  {   System.out.println("valid configuration found");
-			  System.out.println(node);
-		   }
-		  else
-		  {
-			  //  Debug.echo(this, "Invalid configuration found");
-			  //  Debug.echo(this,node);
-		  }
-		}
-		
-		return true;
-	}
-	
-
-	public LinkedList<Node> expandOnSolidProperty(Node node)
-	{
-	    LinkedList<Node> nodes = new LinkedList<Node>();
-	    
-	    /* set to regular */
-	    MBR mbr = node.pop();
-	  if(mbr != null){ 
-		  if(node.lookupConf(mbr).isEdge())
-		  {
-			  Configuration conf1 = node.lookupConf(mbr).clone();
-			  conf1.setAngular(0);
-			    if(testSolid(mbr,conf1,node))
-			    {
-			    	Node _node = node.clone();
-			    	_node.push(mbr);
-			    	_node.updateRecord(mbr, conf1);
-			    	nodes.add(_node);
-			    }    
-			   
-		  }
-		  else
-		  {
-			  
-		    Configuration conf1 = node.lookupConf(mbr).clone();
-		    conf1.setAngular(0);
-	
-		    if(testSolid(mbr,conf1,node))
-		    {
-		    	Node _node = node.clone();
-		    	_node.push(mbr);
-		    	_node.updateRecord(mbr, conf1);
-		    	nodes.add(_node);
-		    	//System.out.println(_node);
-		    }    
-		   
-		    if(!this.earlyDetermination(mbr, node.lookupConf(mbr), node)){
-
-		    Configuration conf4 = node.lookupConf(mbr).clone();
-		    conf4.setAngular(1);
-		    conf4.setPermit_regions(0,1,1,0);
-		    if(testSolid(mbr,conf4,node))
-		    {
-		    	Node _node = node.clone();
-		    	_node.push(mbr);
-		    	_node.updateRecord(mbr, conf4);
-		    	nodes.add(_node);
-		    } 
-		    
-		    Configuration conf5 = node.lookupConf(mbr).clone();
-		    conf5.setAngular(1);
-		    conf5.setPermit_regions(0,1,0,1);
-		    if(testSolid(mbr,conf5,node))
-		    {
-		    	Node _node = node.clone();
-		    	_node.push(mbr);
-		    	_node.updateRecord(mbr, conf5);
-		    	nodes.add(_node);
-		    } 
-		    
-		    }
-		    else
-		    {
-		    	System.out.println("early determination: " + mbr);
-		    }
-		    
-	    
-	  }
-	  }
-	  else
-		  nodes.add(node);
-	  return nodes;
-	  
-		
-	}
-	// add on Jan.  if it touches the ground and has no bounding box surround, then must be regular.
-	private boolean earlyDetermination(MBR mbr, Configuration conf, Node node)
-	{
-		boolean result = true;
-		LinkedList<MBR> overlapping_mbrs = conf.getOverlapping_mbrs();
-		for(MBR _mbr:overlapping_mbrs)
-		{
-			if(_mbr.getCenterY() + _mbr.getHeight()/2 > mbr.getCenterY() - mbr.getHeight()/2 && !node.lookupConf(_mbr).isEdge())
-					result = false;
-		}
-		return result;
-	}
-	private boolean testSolid(MBR mbr, Configuration conf,Node node) {
-		/* firstly, test the regular/angular property*/
-		LinkedList<MBR> overlapping_mbrs = conf.getOverlapping_mbrs();
-				
-      if(conf.getAngular() == 0)
-      {
-		for(MBR ombr:overlapping_mbrs)
-		{
-		    Configuration oconf = node.lookupConf(ombr);
-			if(oconf.getAngular() == 0)
-			{
-		      /* Using java Rectangle.Intersect(rec1,rec2) will return false when rec1 tocuhes rec2. However, using QuantiShapeCalculator.intersect(rec1,rec2) will return true when they touch
-		       * Touched Rectangles are registered as overlapping, but here, we focus on the cases of real overlapping excluding touching
-		       * */
-				if(mbr.intersects(ombr))
-				{ 
-					
-					return false;
-				}
-			}
-		    else
-		    	/* judge block regions */
-		    	 for (Integer region_id:oconf.getBlocked_regions().keySet())
-		  	   {
-		  		   if(oconf.getPermit_regions()[region_id] == 1 && oconf.getBlocked_regions().get(region_id).contains(mbr))
-		  		   { 
-		  			   return false; 
-		  		   }
-		  	   }	
-		}
-		   
-		}
-	 
-	else
-	{
-
-	   for (Integer region_id:conf.getBlocked_regions().keySet())
-	   {
-		   LinkedList<MBR> blockingMBRs = conf.getBlocked_regions().get(region_id);
-		   if(conf.getPermit_regions()[region_id] == 1)
-		   
-		   {  
-			   for(MBR bmbr : blockingMBRs)
-			   { 
-				   if(node.lookupConf(bmbr).getAngular() == 0)
-				   {   
-					 
-					   return false;
-					 }
-			   }
-			  
-			   
-			   }
-	   }	
-	}
-     return true;  
-	
-
-	}
-   private boolean testGravity(MBR mbr, Node node)
-   {
-	  Configuration conf = node.lookupConf(mbr);
-	  if(conf.isSupport())
-		  return true;  
-     
-	  return false;
-	  
-   }
 
 
 	

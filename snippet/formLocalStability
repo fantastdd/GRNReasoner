@@ -1,0 +1,83 @@
+ public TestNode formLocalStability(Configuration newUpdatedConf , HashMap<MBR,Contact> contactmap, TestNode node)
+    {
+        // Test by enumerating all possible local configurations. there are so many tricks in the selection of the root. e.g. the root can be the one with the most neighbor and its immediately child could be the one with the least negihbor
+    	//  n this version, we randomly pick up a mbr as the root.
+    	
+        // stability_id = the id of the mbr that waiting to be tested
+    	//	current_id = the maximum id of the instantiated confs.
+
+    	
+    	for (int i = node.stability_id; i <= node.current_id; i++)
+    	{
+    		 // Get the current test node.
+             Configuration testConf = node.lookup(i);
+    		 LinkedList<Neighbor> neighbors = testConf.getNeighbors();
+             TestNode _node = null;    		 
+    		 // For those who do not have a neighbor, 1. If not supported (not an edge)  --> return null. 2. yes continue
+    	     if (neighbors.isEmpty())
+    	     {
+    	    	 if (testConf.isSupport())
+    	    	 {
+    	    		    _node = node.clone();
+                        _node.nextStabilityVerificationCandidate();
+                        
+                  }
+    	    	 
+    	     } 
+             else 
+             {
+                 
+                 int nid_NewUpdatedConf =    neighbors.contains(newUpdatedConf.getMbr())? neighbors.indexOf(newUpdatedConf.getMbr()) : -1;// the index of conf in the testConf's neighbor
+                 // 1. if the newly updated conf does not exist in the neighbors
+                  if (nid_NewUpdatedConf == -1)
+                  {
+                      continue;
+                  } 
+                  else 
+                  {
+                    //do not do the test when gap is greater than the threshold
+                    if (nid_NewUpdatedConf > testConf.lastValidNeighborId)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        // !! the index of the neighor is not the same as the one of the node. 
+                         testConf.lastTestNeighborId = nid_NewUpdatedConf; 
+                         Configuration _conf = newUpdatedConf.clone();
+                          _conf.setContact_map(contactmap);
+                          boolean support = testConf.isNowSupport(_conf);
+                          if(!support && testConf.lastTestNeighborId >= testConf.lastValidNeighborId)
+                           {   
+                             //all tested and no support
+                               break;
+                           }
+                           else
+                               {
+                                     //update profiles in the older ones. 
+                                     if(support)
+                                     {
+                                         _node.nextStabilityVerificationCandidate();
+                                     }
+                                   
+                                    
+                               }          
+
+                    }
+
+
+                  }
+
+             }
+    		 
+    		if(_node != null)
+            {
+
+                Configuration _conf = newUpdatedConf.clone();
+                _conf.setContact_map(contactmap);
+                _node.update(_conf);
+                      
+            }
+    	
+    	return null;
+    }

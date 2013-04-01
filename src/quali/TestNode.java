@@ -77,33 +77,33 @@ public boolean isCompleted()
 public void initialize()
 {
 		
-	for (int i = 0; i < confs.size() -1 ; i++)
+	for (int i = 0; i < confs.size(); i++)
 	{
 		Configuration conf = lookup(i);
 		MBR mbr = conf.getMbr();
-		for (int j = i + 1; j < confs.size(); j++)
-		{			
-			Configuration _conf = lookup(j);
-			MBR mbr1 = _conf.getMbr();
-			if(!QuantiShapeCalculator.isIntersected(mbr, mbr1 ).isEmpty())
-			{
-				
-				conf.getOverlapping_mbrs().add(mbr1);
-				conf.getContact_map().put(mbr1,new Contact() );
-				
-				Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
-	             conf.getNeighbors().add(neighbor);
-			    		
-				
-				Neighbor _neighbor = new Neighbor(mbr,(byte)0,0);			    
-				_conf.getNeighbors().add(_neighbor);
-			}
-			else
-			{
-				Neighbor _neighbor  = createNeighbor(mbr,mbr1);
-				if(	_neighbor != null	)
-					conf.getNeighbors().add(_neighbor);
-			}
+		for (int j = 0; j < confs.size() ; j++)
+		{
+		 if (i != j) {
+					Configuration _conf = lookup(j);
+					MBR mbr1 = _conf.getMbr();
+					if(QuantiShapeCalculator.isIntersected(mbr, mbr1, false))
+					{
+						
+						conf.getOverlapping_mbrs().add(mbr1);
+						conf.getContact_map().put(mbr1,new Contact() );
+						
+						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
+			             conf.getNeighbors().add(neighbor);
+						
+					}
+					else
+					{
+						Neighbor _neighbor  = createNeighbor(mbr,mbr1);
+						//System.out.println(mbr + "  construct  " + mbr1 + "   " + _neighbor.getGap() + "   " + _neighbor.getNeighborType());
+						if(	_neighbor != null	)
+							conf.getNeighbors().add(_neighbor);
+					}
+		 }
 		}
 		
 		// sort the neighbors according to the gap in between in the ascending order.
@@ -126,10 +126,27 @@ public void initialize()
 	    // the mbr touches all others.
 	    if(conf.lastValidNeighborId == -1)
 	    	conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
+	      
+	    //=====================DEBUG output the neighbor 
+	    {
+	    	System.out.println(conf.getMbr() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId);
+	    	for (Neighbor neighbor: conf.getNeighbors())
+	    	{
+	    		
+	    		System.out.println("    " + neighbor.getMbr() + "    " + neighbor.getGap() + "   index:  " + conf.getNeighbors().indexOf(neighbor.getMbr()));
+	    		
+	    	}
+	    	
+	    }
+	    //===========================
 	    
 	    //System.out.println("  conf " + conf.getMbr() + "   " +  " last valid id:  " + conf.lastValidNeighborId);
 	     
 	}
+	
+
+
+	
 	
 }
 
@@ -149,35 +166,31 @@ private Neighbor createNeighbor(MBR pmbr, MBR rmbr)
 	double my = pmbr.getY() + pmbr.getHeight();
 	
 	Neighbor neighbor = null;
-	
-	if(r_my > y || r_y < my)
-	{
-		if ( r_x >= mx)
-		
-		{
+	//System.out.println("   go to here " + (r_my > y || r_y < my) );
+
+		if ( r_x >= mx && r_my > y && r_y < my )
+       {
 			//in the view region 4.
-	       neighbor = new Neighbor(rmbr,(byte)4, r_x - mx);				
-		    
+	       neighbor = new Neighbor(rmbr,(byte)4, r_x - mx);						    
 		}
 		else
-			if(r_mx <= x)
+			if(r_mx <= x && r_my > y && r_y < my)
 			{
 				//in the view region 2
-				 neighbor = new Neighbor(rmbr,(byte)2, r_mx - x);				
+				 neighbor = new Neighbor(rmbr,(byte)2, x - r_mx);				
 			
 			}
-		
-	}
-	else if (r_mx > x || r_x < mx)
-	{
-		if (r_y >= my)
-			//in the view region 3
-			 neighbor = new Neighbor(rmbr,(byte)3, r_y - my);				
-		else
-			if(r_my <= y)
-				// in the view region 1
-				neighbor = new Neighbor(rmbr,(byte)1, r_my - y);			
-	}
+			else 
+				if (r_y >= my && r_x < mx && r_mx > x)
+					//in the view region 3
+						neighbor = new Neighbor(rmbr,(byte)3, r_y - my);				
+			else
+				if(r_my <= y  && r_x < mx && r_mx > x)
+					// in the view region 1
+					{
+						neighbor = new Neighbor(rmbr,(byte)1, y - r_my);	
+				   }
+	
 
 	
 	return neighbor;
@@ -202,6 +215,7 @@ public TestNode clone()
 }
 public void update(Configuration conf)
 {
+
 	   confs.put(conf.getMbr().getId(), conf);
 	   //also update the contact map if necessary
 	  for (MBR _mbr  : conf.getContact_map().keySet())
@@ -210,12 +224,17 @@ public void update(Configuration conf)
 		  Configuration _conf = lookup(_mbr);
 		  HashMap<MBR,Contact> _contactMap = _conf.getContact_map();
 		  MBR mbr = conf.getMbr();
-		  //System.out.println(_contactMap.get(mbr));
-		  if(!_contactMap.get(mbr).isInitialized())
+	
+		//  if(!_contactMap.get(mbr).isInitialized())
+	//	  {
+		  if (_contactMap.containsKey(mbr))
 		  {
 	    		Contact contact =  MBRRegisterAdvance.getPairContact(conf, _conf);
-	    		_contactMap.put(mbr, contact);		  
-		  }
+	    		_contactMap.put(mbr, contact);	
+	    		//  System.out.println( _mbr +  " updates   the contact map   " + mbr + "    " + contact);
+	    }	  
+	    	
+	//	  }
 	  }
 }
 public String toString()

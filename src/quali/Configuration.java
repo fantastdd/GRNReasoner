@@ -640,7 +640,7 @@ public MyPolygon getRegionLine(int region)
    
    if(region == 1)
    { 
-	 if( angular == 0)
+	 if( unary == 0)
 	 { 
 	   result.addPoint(x + width, y);
 	   result.addPoint(x + width/2, y);
@@ -653,7 +653,7 @@ public MyPolygon getRegionLine(int region)
    }
    else if(region == 2)
    {  
-	   if( angular == 0)
+	   if( unary == 0)
 	   {
 	     result.addPoint(( getX()), ( getY()));
 		 result.addPoint(( getX() +  getWidth()/2), ( getY()));
@@ -666,7 +666,7 @@ public MyPolygon getRegionLine(int region)
    }
    else if(region == 3)
    {
-	   if( angular == 0)
+	   if(unary == 0)
 	   {
 	    result.addPoint(( getX()), ( getY() +  getHeight()));
 		 result.addPoint(( getX() +  getWidth()/2), ( getY() +  getHeight()));
@@ -679,7 +679,7 @@ public MyPolygon getRegionLine(int region)
    }
    else if(region == 4)
    {
-	   if( angular == 0)
+	   if( unary == 0)
 	   {
 		  result.addPoint(( getX() +  getWidth()/2), ( getY() +  getHeight()));
 		  result.addPoint(( getX() +  getWidth()), ( getY() +  getHeight()));
@@ -920,16 +920,16 @@ public String toString()
 	  result += " regular ";
   else
 	  if( unary == 1)
-	     result += " lean to left ";
+	     result += " lean to right ";
 	  else
 		  if(unary == 2)
-			  result += "lean to right";
+			  result += "lean to left";
 		  else if(unary == -2)
 			  result += " completed";
 		  else
 			  result += " not initialized ";
 
-  for (MBR mbr: this.contact_map.keySet())
+  for (MBR mbr: contact_map.keySet())
   {
 	  result+= " contacted with [ " + mbr + " at " +  contact_map.get(mbr) + " ] "; 
 	  }
