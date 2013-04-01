@@ -100,11 +100,12 @@ public static 	LinkedList<HashMap<MBR,Contact>> getPossibleContacts(Configuratio
 									//TODO non-used work if.
 									if(contactMaps.isEmpty())
 									{
+										    //System.out.println(" Get Contact:  " + conf.toShortString() + "   " + neighbor_conf.toShortString());
 												LinkedList<Contact> contacts = getContact(conf, neighbor_conf);
 												
 												for (Contact contact : contacts)
 												{
-															//System.out.println(" conf    " + conf.getMbr() + "    tconf    " +   _conf.getMbr() + "     " + contact  );
+															//System.out.println(" conf    " + conf.getMbr() + "    tconf    " +  neighbor_conf.getMbr() + "     " + contact  );
 															HashMap<MBR,Contact> _contactMap = new HashMap<MBR,Contact>();
 															//clone the map and add to list
 															HashMap<MBR,Contact>  contactMap = conf.getContact_map();
@@ -124,9 +125,11 @@ public static 	LinkedList<HashMap<MBR,Contact>> getPossibleContacts(Configuratio
 											LinkedList<HashMap<MBR,Contact>> maps = new LinkedList<HashMap<MBR,Contact>>();
 											for (HashMap<MBR,Contact> contactMap : contactMaps)
 											{
+												 // System.out.println(" Get Contact:  " + conf.toShortString() + "   " + neighbor_conf.toShortString());
 														LinkedList<Contact> contacts = getContact(conf, neighbor_conf);
 														for (Contact contact : contacts)
 														{
+															//System.out.println(" conf    " + conf.getMbr() + "    tconf    " +  neighbor_conf.getMbr() + "     " + contact  );
 															//clone the map and add to list
 															HashMap<MBR,Contact> _contactMap = new HashMap<MBR,Contact>();
 															for(MBR key:  contactMap.keySet())
@@ -921,22 +924,21 @@ public static LinkedList<Contact> getContact(Configuration conf, Configuration t
     			 boolean tr14 = testRegionR_A(conf,tconf,14);
     			 
     			 boolean vertex_1 = (testVertexR_A13(conf,tconf,1) ==  2 ) &&(testVertexR_A13(conf,tconf,14) ==  2 ) ; // right-top corner
-    			
-    			 boolean vertex_3 = (testVertexR_A13(conf,tconf,3) ==  2 ) &&(testVertexR_A13(conf,tconf,23) ==  2 ) ;
     			 boolean vertex_2 = (testVertexR_A24(conf,tconf,2) ==  2 ) &&(testVertexR_A24(conf,tconf,23) ==  2 ) ;
+    			 boolean vertex_3 = (testVertexR_A13(conf,tconf,3) ==  2 ) &&(testVertexR_A13(conf,tconf,23) ==  2 ) ;
     			 boolean vertex_4 = (testVertexR_A24(conf,tconf,4) ==  2 ) &&(testVertexR_A24(conf,tconf,14) ==  2 ) ;
-    			// System.out.println(conf.getMbr()+ "   " + conf + "  " + tconf.getMbr() + "  " + tr1 + " " + tr2 + "  " + tr3 + "  " + tr4 + "  " + vertex_1 +
-    			//		 "  " + vertex_2 + "  " + vertex_3 + "  " + vertex_4);
+    			//System.out.println("  In Get Contact:   " + conf.toShortString() + "   "  + "  " + tconf.toShortString()+ "  " + tr1 + " " + tr2 + "  " + tr3 + "  " + tr4 + "  " + tr23 + "    " + tr14 + "    " +  vertex_1 +
+    		//		 "  " + vertex_2 + "  " + vertex_3 + "  " + vertex_4);
     			 if(vertex_1)
     			 {
     			  
 	 	        	 Contact __contact = new Contact();
-	    			 __contact.setType(0);
+	    			 __contact.setType(1);
 	    			 __contact.setTangential_area(114);
 	    			 __contact.points[0] =  new Point(conf.x + conf.width, conf.y);
 	    			  contacts.add(__contact);
 	        	  	 
-	    			  if(!conf.v1)
+	    			/*  if(!conf.v1)
 	    			   {
 	    				  //TODO conf updates .v1
 	    				 Contact _contact = new Contact();
@@ -944,59 +946,59 @@ public static LinkedList<Contact> getContact(Configuration conf, Configuration t
 		    			 _contact.setType(1);
 		    			 _contact.setTangential_area(114);
 		    			    contacts.add(_contact);
-	    			   }  
+	    			   }  */
 	    			 
     			 }
     			 else if(vertex_2)
     			 {
     				   Contact __contact = new Contact();
-  	    			 __contact.setType(0);
+  	    			 __contact.setType(1);
   	    			 __contact.setTangential_area(223);
   	    			 __contact.points[0] =   new Point(conf.x, conf.y);
   	    		    contacts.add(__contact);
 
-  				   if(!conf.v2)
+  				 /*  if(!conf.v2)
       			   {
   					   Contact _contact = new Contact();
   					   _contact.points[0] = __contact.points[0];
   					   _contact.setType(1);
   					   _contact.setTangential_area(223);
   					    contacts.add(_contact);
-      			   }
+      			   }*/
 	    			
     			 }else if(vertex_3)
     			 {
     				   
     				 Contact __contact = new Contact();
-  	    			 __contact.setType(0);
+  	    			 __contact.setType(1);
   	    			 __contact.setTangential_area(233);
   	    			 __contact.points[0] = new Point(conf.x, conf.y + conf.height);
   	    		    contacts.add(__contact);
   	        	  	 
-  	        	  	if(!conf.v3)
+  	        	  	/*if(!conf.v3)
      			   {
  					   Contact _contact = new Contact();
  					   _contact.points[0] = __contact.points[0];
  					   _contact.setType(1);
  					   _contact.setTangential_area(233);
  					    contacts.add(_contact);
-     			   }
+     			   }*/
     			 }else if(vertex_4)
     			 {
     				 
     				   Contact __contact = new Contact();
-    				   __contact.setType(0);
+    				   __contact.setType(1);
     				   __contact.setTangential_area(414);
     				   __contact.points[0] = new Point(conf.x + conf.width, conf.y + conf.height);
     				    contacts.add(__contact);
-    				   if(!conf.v4)
+    				/*   if(!conf.v4)
         			   {
     					   Contact _contact = new Contact();
     					   _contact.setType(1);
     					   _contact.points[0] =  __contact.points[0];
     					   _contact.setTangential_area(414);
     					    contacts.add(_contact);
-        			   }
+        			   }*/
     				
 	    			 
     			 }else if(tr1) //must touch
@@ -1114,7 +1116,7 @@ private static boolean testRegularRegion34(final Configuration conf, final Confi
 	MyPolygon trline = tconf.getRegionLine(12);
 	//Debug.echo(null,mbr,rline, tmbr,trline,QuantiShapeCalculator.isIntersected(rline, trline).size() > 1);
 	//System.out.println(QuantiShapeCalculator.isIntersected(rline, trline));
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 	
 }
 private static boolean testRegularRegion12(final Configuration conf, final Configuration tconf, int region)
@@ -1124,7 +1126,7 @@ private static boolean testRegularRegion12(final Configuration conf, final Confi
 	
 	MyPolygon trline = tconf.getRegionLine(34);
 	//Debug.echo(null, " test ",rline,trline,QuantiShapeCalculator.isIntersected(rline, trline));
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 	
 
 }
@@ -1137,7 +1139,7 @@ private static boolean testRegularRegion23(final Configuration conf, final Confi
 	
 	MyPolygon trline = tconf.getRegionLine(14);
 	
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 	
 }
 
@@ -1149,7 +1151,7 @@ private static boolean testRegularRegion14(final Configuration conf, final Confi
 	
 	MyPolygon trline = tconf.getRegionLine(23);
 	
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 	
 }
 
@@ -1196,7 +1198,7 @@ private static boolean testRegionR_A(final Configuration conf, final Configurati
 		
 	}
 	
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 
 
 
@@ -1238,15 +1240,10 @@ private static int testVertexR_A13(final Configuration conf, final Configuration
   		MyPolygon _region = new MyPolygon();
         
   		_region = max;
-  		/*if(region == 23 && mbr.getId() == 1 && tconf.getAngular() == 1)
-  		{
-  			Debug.echo(null, min,max,tmin,tmax);
-  		}*/
-  		//Debug.echo(null,"look here",max,tmax,QuantiShapeCalculator.isIntersected(tmax, _region,true));
  
 	if(QuantiShapeCalculator.isIntersected(tmax, _region,true))
 	{	
-	//	
+	
 		if(!testSolidOverlapping(conf.getRegion(5),tmin))		  
 		 {
 
@@ -1265,7 +1262,7 @@ private static int testVertexR_A13(final Configuration conf, final Configuration
 
 }
 /* use this when mbr is regular and tmbr is not regular
- * No different between tmin or tmax, at least one should be touch, another one should disjoint
+ * No different between tmin or tmax, at least one should be touching , another one should be disjoint
  * */
 private static int testVertexR_A24(final Configuration conf, final Configuration tconf, int region)
 {
@@ -1304,10 +1301,10 @@ private static int testVertexR_A24(final Configuration conf, final Configuration
   		{
   			Debug.echo(null, min,max,tmin,tmax);
   		}*/
-		
+  		//System.out.println("  In test VertexRA_24 before the tmax _region test" + conf.toShortString() + "   " + tconf.toShortString() + "    " + tmax + "    " + _region);
 	if(QuantiShapeCalculator.isIntersected(tmax, _region,true))
 	{	
-		//Debug.echo(null,"look here",mbr,tmbr,mbr.getRegion(5),tmin,!testSolidOverlapping(mbr.getRegion(5),tmin));
+          //System.out.println("  In test VertexRA_24 and pass the tmax _region test" + conf.toShortString() + "   " + tconf.toShortString() + "    ");
 	       if(!testSolidOverlapping(conf.getRegion(5),tmin))		  
 	  		 result = testPotentialContact(min,max,tmin,tmax);
 	         else 
@@ -1473,8 +1470,8 @@ private static int testFreeRegion13(final Configuration conf,final Configuration
 
 /* when MAX INTERSECTING MAX, MIN DISJOINT MIN
  * 
- * 1: Must Touching
- * 0: Must Non-Touching
+ * 1: Must be Touching ?
+ * 0: Must be Non-Touching
  * 2: Touching or Non-Touching
  * -1: Invalid. Intersecting 
  * */
@@ -1508,7 +1505,7 @@ private static int testPotentialContact(MyPolygon min,MyPolygon max,MyPolygon tm
 
 private static boolean testSolidOverlapping(MyPolygon m, MyPolygon n)
 {
-	return QuantiShapeCalculator.isIntersected(m, n).size() > 1;
+	return QuantiShapeCalculator.isIntersectedWCA(m, n).size() > 1;
 
 }
 }

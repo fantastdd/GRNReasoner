@@ -86,6 +86,7 @@ public void initialize()
 		 if (i != j) {
 					Configuration _conf = lookup(j);
 					MBR mbr1 = _conf.getMbr();
+					//System.out.println(" test  " + mbr +  "   "+ mbr1   );
 					if(QuantiShapeCalculator.isIntersected(mbr, mbr1, false))
 					{
 						
@@ -95,6 +96,7 @@ public void initialize()
 						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
 			             conf.getNeighbors().add(neighbor);
 						
+			           // System.out.println(" trigger the containing case" +  mbr +  "  " + mbr1);
 					}
 					else
 					{
@@ -106,7 +108,7 @@ public void initialize()
 		 }
 		}
 		
-		// sort the neighbors according to the gap in between in the ascending order.
+		// sort the neighbors according the gap in between in ascending order.
 	    Collections.sort(conf.getNeighbors(), new NeighborComparator());
 	    
 	    for (Neighbor neighbor : conf.getNeighbors())
@@ -124,8 +126,10 @@ public void initialize()
 	    	}
 	    }
 	    // the mbr touches all others.
-	    if(conf.lastValidNeighborId == -1)
+	    if(conf.lastValidNeighborId == -2)
 	    	conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
+
+	    		
 	      
 	    //=====================DEBUG output the neighbor 
 	    {
@@ -133,7 +137,7 @@ public void initialize()
 	    	for (Neighbor neighbor: conf.getNeighbors())
 	    	{
 	    		
-	    		System.out.println("    " + neighbor.getMbr() + "    " + neighbor.getGap() + "   index:  " + conf.getNeighbors().indexOf(neighbor.getMbr()));
+	    		System.out.println("    " + neighbor.getMbr() + "    " + neighbor.getGap() + "   index:  " + conf.getNeighbors().indexOf(neighbor.getMbr()) + " neighbor type:  " + neighbor.getNeighborType());
 	    		
 	    	}
 	    	

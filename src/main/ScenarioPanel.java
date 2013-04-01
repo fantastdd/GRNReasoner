@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics;
+import java.awt.Polygon;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;
@@ -19,7 +20,7 @@ public class ScenarioPanel extends JFrame {
 	{
 		this.mbrs = mbrs;
 		
-		this.buildInitialCanvas();
+		buildInitialCanvas();
 		
 		
 	}
@@ -29,7 +30,7 @@ public class ScenarioPanel extends JFrame {
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setTitle(" Simulator for Angular Rectangle Representation");
 		this.setVisible(true);
-	    super.paint(this.getGraphics());
+	    super.paint(getGraphics());
 	}
 	public void paint(Graphics g) {
        for(MBR mbr:mbrs)
@@ -57,4 +58,5 @@ public class ScenarioPanel extends JFrame {
 	{
 	   new ScenarioPanel();
 	}
+
 }

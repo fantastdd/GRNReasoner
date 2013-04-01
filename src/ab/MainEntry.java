@@ -23,7 +23,7 @@ public class MainEntry {
 
 	public static void main(String argsp[])
 	{
-/*	  new ActionRobot();
+	  new ActionRobot();
 	   BufferedImage screenshot = ActionRobot.doScreenShot();
 	   Vision vision = new Vision(screenshot);
 	   LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
@@ -32,13 +32,13 @@ public class MainEntry {
 	   worldInVision.addAll(vision.findIce());
 	   WorldinVision wiv = new WorldinVision();
 	   wiv.buildWorld(worldInVision);
-	   wiv.showWorldinVision();*/
+	   wiv.showWorldinVision();
 					
-			ScenarioIO sio = new ScenarioIO("s61");
+/*			ScenarioIO sio = new ScenarioIO("s5");
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
-				scenarios = sio.load("s61");
+				scenarios = sio.load("s7");
 				LinkedList<MBR> s1 = scenarios.get(0);
 				LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 				for (MBR mbr : s1)
@@ -51,7 +51,7 @@ public class MainEntry {
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}*/
 			
 		
 	}

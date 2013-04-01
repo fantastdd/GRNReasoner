@@ -28,23 +28,23 @@ public class MBRReasonerAdvance {
 		if(checkSolution(node))
 		{
 		    //output the solutions	
-			System.out.println("solution is found:   \n" + node);
+			 System.out.println("solution is found:   \n" + node);
 			return true;
 		}
 		else
 		{
 		    LinkedList<TestNode> refinements = refine(node);
-		    //System.out.println(node + "    " + refinements.size());
-		    //System.out.println(node.current_id + "   " + refinements.size());
+		    // System.out.println(node + "    " + refinements.size());
+		    // System.out.println(node.current_id + "   " + refinements.size());
 		    
 		    // if refinements should not be empty when a mbr has no neighbors.
 		    if(!refinements.isEmpty())
 		    {
 		    	for(TestNode refinement: refinements)
 		    	{	
-		    	//	System.out.println(" refine the mbr conf : " +  node.current_id);
+		    	//	// System.out.println(" refine the mbr conf : " +  node.current_id);
 		    		boolean result = search(refinement);
-		    	//	System.out.println(" result  : " + result + "   id: " + counter);
+		    	//	// System.out.println(" result  : " + result + "   id: " + counter);
 		    		if(result) 
 		    			return true;
 		    	}
@@ -59,7 +59,7 @@ public class MBRReasonerAdvance {
 	{   
 		LinkedList<TestNode> refinements = new LinkedList<TestNode>();
         
-        //System.out.println(" go to the refine ");
+        // System.out.println(" go to the refine ");
 	   	if(!node.isCompleted()){
 	
 				Configuration cconf = node.pop().clone(); 
@@ -69,7 +69,7 @@ public class MBRReasonerAdvance {
 					
 						//----- one unique configuration will have various contactmap..
 						LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
-						//System.out.println("*********:  " + lscontacts.size());
+						// System.out.println("*********:  " + lscontacts.size());
 						if (lscontacts.isEmpty()) // will happen when this block is isolated or its neighbors are not initialized yet 
 						{
 							refinements.add(node.clone());
@@ -82,8 +82,8 @@ public class MBRReasonerAdvance {
 						        
 							   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 							   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
-							   // System.out.println(_node);
-							   //System.out.println(" after form local stability:  " + _node );
+							   // // System.out.println(_node);
+							   // System.out.println(" after form local stability:  " + _node );
 							   if (_node != null)
 								   refinements.add(_node);
 								
@@ -99,14 +99,14 @@ public class MBRReasonerAdvance {
 							{
 								cconf.nextInitialization();
 								
-								//System.out.println(cconf + "   \n  " + node + "    " +  solidValidity(cconf , node));
+								// System.out.println(cconf .toShortString()+ "   \n  " + node + "    " +  solidValidity(cconf , node));
 								//test the solid properties
 								if(solidValidity(cconf , node))
 								{
 									
 									//----- one unique configuration will have various contactmap..
 									LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
-									//System.out.println(" after solid check " + cconf+"  "+ lscontacts.size());
+									// System.out.println(" after solid check " + cconf.getMbr()+"  "+ lscontacts.size());
 									if (lscontacts.isEmpty()) // will happen when this block is isolated or its neighbors are not initialized yet 
 									{    
 										TestNode _node = node.clone();
@@ -119,16 +119,16 @@ public class MBRReasonerAdvance {
 												for (HashMap<MBR,Contact> contactmap: lscontacts)
 												{
 													
-											/*		System.out.println("  contactmap of " + cconf.getMbr() + "\n");
+											/*		// System.out.println("  contactmap of " + cconf.getMbr() + "\n");
 													for (MBR key: contactmap.keySet())
 													{
-														System.out.println(key + "   " + contactmap.get(key));
+														// System.out.println(key + "   " + contactmap.get(key));
 													}
 													*/
 												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 												   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
 												 
-												   // System.out.println(" to form stability  " +  cconf + "    " + _node);
+												   // System.out.println(" to form stability     " + _node);
 												 	if(_node != null)  
 													 	refinements.add(_node);
 												
@@ -148,12 +148,11 @@ public class MBRReasonerAdvance {
     //------ test ----
     public boolean checkSolution(TestNode node)
     {
-		//System.out.println(" node current id : " + node.current_id);
-  		//System.out.println(" node is incompleted, :  " + node);
+		// System.out.println(" node current id : " + node.current_id);
+  		// System.out.println(" node is incompleted, :  " + node);
     	if(node.isCompleted())
     	{
-    		// System.out.println(node);
-    		// System.out.println(" node completed, check stability \n" + node);
+    		 // System.out.println(" node completed, check stability \n" + node);
     		 for (Integer id : node.getConfs().keySet())
     		 {
     			 if (!node.getConfs().get(id).isSupport())
@@ -172,14 +171,14 @@ public class MBRReasonerAdvance {
     {
     	
     	/* test the regular/angular property*/
-	   //System.out.println(cconf.getNeighbors().size());
+	   // System.out.println(cconf.getNeighbors().size());
 
     	for (Neighbor neighbor: cconf.getNeighbors())
     	{
              MBR mbr_neighbor = neighbor.getMbr();
              Configuration conf_neighbor =  confs.lookup(mbr_neighbor);
-           	//  System.out.println( cconf.getMbr() + "   " + cconf.unary + conf_neighbor.getMbr() + "   " + conf_neighbor.unary);
-         	//   System.out.println( cconf +  "  the neighbor type is   " + neighbor.getNeighborType());
+           	//  // System.out.println( cconf.getMbr() + "   " + cconf.unary + conf_neighbor.getMbr() + "   " + conf_neighbor.unary);
+         	//   // System.out.println( cconf +  "  the neighbor type is   " + neighbor.getNeighborType());
              if(neighbor.getNeighborType() == 0)
              {
             	
@@ -215,7 +214,7 @@ public class MBRReasonerAdvance {
 						            	  testConf = node.lookup(i);
 						             
 						    		 LinkedList<Neighbor> neighbors = testConf.getNeighbors();
-						             // System.out.println(testConf + "    " + neighbors.size());
+						             // // System.out.println(testConf + "    " + neighbors.size());
 						    		 // For those who do not have a neighbor, 1. If not supported (not an edge)  --> return null. 2. yes continue
 						    	     if (neighbors.isEmpty())
 						    	     {
@@ -226,12 +225,12 @@ public class MBRReasonerAdvance {
 						                        _node.nextStabilityVerificationCandidate();
 						                        
 						                  }
-						    	    	// System.out.println(" no neighbors");
+						    	    	// // System.out.println(" no neighbors");
 						    	    	 
 						    	     } 
 						             else 
 						             {
-						                 //System.out.println( " go to here ");
+						                 // System.out.println( " go to here ");
 						            	 // test the testConf with all instantiated nodes
 						             	  for (Neighbor neighbor : neighbors)
 						             	  {
@@ -262,52 +261,7 @@ public class MBRReasonerAdvance {
                                                	}    
 
 						             	  }
-						            	 /*for (int j = 0 ;  j <= node.current_id ; j++)
-						            	 {
-						            	 
-							            		 Configuration curConf ;
-							            		 if (j == newUpdatedConf.getMbr().getId())
-							            			 curConf = _newUpdatedConf;
-							            		 else
-							            		     curConf = node.lookup(j);
-							            		 //System.out.println("   contain test :  " + testConf.getMbr() + "   " + curConf.getMbr() + "   " + neighbors.contains(curConf.getMbr()) );
-							            		 int nid_curConf =  neighbors.contains(curConf.getMbr())? neighbors.indexOf(curConf.getMbr()) : -1;// the index of conf in the testConf's neighbor
-							            		 if ( nid_curConf == -1)
-							            		 {
-							            			 continue;
-							            		 }
-							            		 else
-
-							            			 if (nid_curConf > testConf.lastValidNeighborId)
-							            			 {
-							            				// System.out.println(" go to this branch " + testConf.getMbr() + "   " + nid_curConf + "   " + testConf.lastValidNeighborId);
-							            				 break outerloop;
-							            			 }
-							            			 else 
-							            			 {
-							            				   //   !! the index of the neighbor is not the same as the one of the node. 
-							                              //    the stability of conf1 cannot be tested with conf0, should be a loop for all initialized confs.
-							                              //TODO degbug
-							                              // testConf.lastTestNeighborId = nid_curConf;
-							                          
-							                               boolean support = testConf.isNowSupport(curConf);
-							                               if(!support && nid_curConf >= testConf.lastValidNeighborId)
-							                               {     
-							                                 //all tested and no support
-							                                   break outerloop;
-							                               }
-							                               else
-							                                   {
-							                            	         _node = node.clone();
-							                                         //update profiles in the older ones. 
-							                                         if(support)
-							                                         {
-							                                             _node.nextStabilityVerificationCandidate();
-							                                        }   
-							                                   }          
-							            			 }
-				            		 
-				            			 }*/
+						  
     
 				             }
 
@@ -317,7 +271,7 @@ public class MBRReasonerAdvance {
     		if(_node != null)
     		{
 	            _node.update( _newUpdatedConf);
-	        	//System.out.println("  updates the conf " + _newUpdatedConf +  "\n node description   "  +  _node);                      
+	        	// System.out.println("  updates the conf " + _newUpdatedConf +  "\n node description   "  +  _node);                      
     		}
 	 
     		return _node;

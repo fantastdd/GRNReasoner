@@ -1,10 +1,12 @@
 package quanti.test;
 
 import java.awt.Point;
+import java.awt.Polygon;
+import java.awt.Rectangle;
 
-import quanti.PolygonRegister;
+import quanti.QuantiShapeCalculator;
 
-import common.MyPolygon;
+import main.ScenarioPanelPoly;
 
 
 public class Test {
@@ -35,12 +37,42 @@ public class Test {
 		 PolygonRegister.register(pl3);
 		 PolygonRegister.verifySolidProperty();
 		 PolygonRegister.verifyGravity();*/
-		System.out.println(getId());
+		//System.out.println(getId());
               		
-		Test t1 = new Test();
+		//Test t1 = new Test();
 		
-		t1.test = true;
-
-		
+		//t1.test = true;
+        Polygon p1 = new Polygon();
+        
+        p1.addPoint(510, 530);
+        p1.addPoint(586, 660);
+        p1.addPoint(810, 530);
+        p1.addPoint(734, 400);
+       /* p1.xpoints[0] = 510;
+        p1.xpoints[1] = 510;
+        p1.xpoints[2] = 810;
+        p1.xpoints[3] = 810;
+        
+        p1.ypoints[0] = 400;
+        p1.ypoints[1] = 660;
+        p1.ypoints[2] = 660;
+        p1.ypoints[3] = 400;*/
+        
+    
+/*        Rectangle rec = p1.getBounds();
+        System.out.println(rec);
+        System.out.println(p1.npoints);*/
+   
+/*        System.out.println(p1.contains(new Point(200, 670)));
+        System.out.println(p1.contains(new Point(200, 660)));
+        System.out.println(p1.contains(new Point(1200, 660)));
+        System.out.println(p1.contains(new Point(1200, 670)));*/
+        
+        Polygon p2 = new Polygon();
+        p2.addPoint(720, 480);
+        p2.addPoint(760, 480);
+        ScenarioPanelPoly scenario = new ScenarioPanelPoly();
+        scenario.run(p1,p2);
+        System.out.println(QuantiShapeCalculator.isIntersected(p1, p2, true ));
 	}
 }

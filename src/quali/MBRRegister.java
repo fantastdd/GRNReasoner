@@ -1269,7 +1269,7 @@ private static boolean testRegularRegion34(final Configuration conf, final Confi
 	MyPolygon trline = tconf.getRegionLine(12);
 	//Debug.echo(null,mbr,rline, tmbr,trline,QuantiShapeCalculator.isIntersected(rline, trline).size() > 1);
 	//System.out.println(QuantiShapeCalculator.isIntersected(rline, trline));
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 	
 }
 private static boolean testRegularRegion12(final Configuration conf, final Configuration tconf, int region)
@@ -1279,7 +1279,7 @@ private static boolean testRegularRegion12(final Configuration conf, final Confi
 	
 	MyPolygon trline = tconf.getRegionLine(34);
 	//Debug.echo(null, " test ",rline,trline,QuantiShapeCalculator.isIntersected(rline, trline));
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 	
 
 }
@@ -1292,7 +1292,7 @@ private static boolean testRegularRegion23(final Configuration conf, final Confi
 	
 	MyPolygon trline = tconf.getRegionLine(14);
 	
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 	
 }
 
@@ -1304,7 +1304,7 @@ private static boolean testRegularRegion14(final Configuration conf, final Confi
 	
 	MyPolygon trline = tconf.getRegionLine(23);
 	
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 	
 }
 
@@ -1351,7 +1351,7 @@ private static boolean testRegionR_A(final Configuration conf, final Configurati
 		
 	}
 	
-	return QuantiShapeCalculator.isIntersected(rline, trline).size() > 1;	
+	return QuantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;	
 
 
 
@@ -1663,7 +1663,7 @@ private static int testPotentialContact(MyPolygon min,MyPolygon max,MyPolygon tm
 
 private static boolean testSolidOverlapping(MyPolygon m, MyPolygon n)
 {
-	return QuantiShapeCalculator.isIntersected(m, n).size() > 1;
+	return QuantiShapeCalculator.isIntersectedWCA(m, n).size() > 1;
 
 }
 }

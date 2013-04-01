@@ -117,7 +117,7 @@ public LinkedList<Edge> getUnSupportEdges(LinkedList<MyPolygon> polygons)
 			for (Edge edge: this.getSupportEdges())
 			{
 			     if ( 
-			    		 verifySupport(QuantiShapeCalculator.isIntersected(mypolygon, this),edge)
+			    		 verifySupport(QuantiShapeCalculator.isIntersectedWCA(mypolygon, this),edge)
 			        )
 			     {
 			    	 supportedEdges.add(edge);

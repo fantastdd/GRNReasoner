@@ -72,7 +72,7 @@ public int y;
 public int lastTestNeighborId = -1;
 public boolean left_support = false;
 public boolean right_support = false;
-public int lastValidNeighborId = -1; //id = -1, no valid neighbors
+public int lastValidNeighborId = -2; //id = -2, touches all others -1, no neighbors
 //TODO write a isNowSupport method in configuration
 
 public boolean isNowSupport(final Configuration tconf )
@@ -180,7 +180,7 @@ public Configuration(MBR mbr)
    	core_right.addPoint( x +  width -  limit_horizontal,  y);
    	
    	
- 	  core_right2.addPoint( x,  y +  height -  limit_vertical);
+    core_right2.addPoint( x,  y +  height -  limit_vertical);
    	core_right2.addPoint(( x +  limit_horizontal+ x)/2, ( y +  height +  y +  height -  limit_vertical)/2);
    	core_right2.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
    	core_right2.addPoint( x +  width -  limit_horizontal,  y);
@@ -596,9 +596,9 @@ public MyPolygon getRegion(int region)
    else if(region == 5)
    {
 	   result.addPoint( x,  y);
-	   result.addPoint( x, ( y +  getHeight()));
-	   result.addPoint(( getX() +  getWidth()),( getY() +  getHeight()));
-	   result.addPoint(( getX() +  getWidth()),getY());
+	   result.addPoint( x, y + height);
+	   result.addPoint( x +  width, y + height);
+	   result.addPoint( x + width ,y);
    }
    
    return result;
@@ -865,7 +865,7 @@ public int nextInitialization()
     if(!isEdge())
     {  
     	unary = (unary + 1 > 3)?-2:++unary;
-    	   if (unary == 1)
+    	   if (unary == 1) // lean to right
     		   setPermit_regions(0,1,1,0);
     	   else if (unary == 2)
     		   setPermit_regions(0,1,0,1);
@@ -911,6 +911,26 @@ public void setX(int x) {
 }
 public void setY(int y) {
 	this.y = y;
+}
+public String toShortString()
+{
+  String result =  mbr + "  ";
+  if(unary == 0)
+	  result += " regular ";
+  else
+	  if( unary == 1)
+	     result += " lean to right ";
+	  else
+		  if(unary == 2)
+			  result += "lean to left";
+		  else if(unary == -2)
+			  result += " completed";
+		  else
+			  result += " not initialized ";
+
+  return result;
+	  
+  
 }
 @Override
 public String toString()

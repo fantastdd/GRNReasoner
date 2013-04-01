@@ -94,7 +94,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		 p2.addPoint(r2.x + r2.width, r2.y + r2.height);
 		 p2.addPoint(r2.x + r2.width, r2.y);
 		 
-		 return isIntersected(p1,p2);
+		 return isIntersectedWCA(p1,p2);
 	 }
 	 
 	 public static boolean isIntersected(Rectangle r1, Rectangle r2, boolean includeTouch)
@@ -114,10 +114,11 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		 return isIntersected(p1,p2, includeTouch);
 	 }
 	 
-	 
-	 public static LinkedList<Point> isIntersected(Polygon p1, Polygon p2)
+	 // isIntersectedWCA = is intersected without containing/contained adjudgement
+	 public static LinkedList<Point> isIntersectedWCA(Polygon p1, Polygon p2)
 	 {
 		 LinkedList<Point> points = new LinkedList<Point>();
+		 // test the intersecting case
 		 for ( int i = 0; i < p1.npoints   ; i ++ )
 				 for ( int j = 0; j < p2.npoints ; j++)
 				 {
@@ -128,8 +129,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 								 new Point(p2.xpoints[j],p2.ypoints[j]),
 								 new Point(p2.xpoints[(j+1>=p2.npoints)?0:j+1],p2.ypoints[(j+1>=p2.npoints)?0:j+1])
 								 );
-						 if( points != null)
-						 {
+				
 							 for(Point p:_points)
 							 {
 								if(!points.contains(p))
@@ -137,15 +137,9 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 							 }
 								 // Debug.echo(null ,p1," and ", p2, "\n Intersects at : ",p);
 						 
-						 }
-						 
-						
-				 }
-       if(points.size() == 0)
-       {
-    	   //   Debug.echo(null, p1 + " sepearte from " + p2);
-       }
-		
+				}
+
+		 
     	   return points;
 	 }
 	 
@@ -159,58 +153,71 @@ public class QuantiShapeCalculator extends ShapeCalculator {
       		 return false;
 		 
 	 }
-	/* including touch or not.   touched/intersected, including "contain" relationship*/
+	/* including touch or not.   touched/intersected, including "contain" relationship
+	 * touch = true: if touch/overlapping/contertained, return true.
+	 * */
 	 public static boolean isIntersected(Polygon p1, Polygon p2,boolean touch)
 	 {
 		 boolean result = false;
-		 boolean containing = true;
-			boolean contained = true;
+		 boolean containing = false;
+			boolean contained = false;
 		 if(touch)
-		 {
-			
-			result = /* overlapping */!isIntersected(p1,p2).isEmpty(); 
-			
-		
+		 {			
+			result = /* overlapping */!isIntersectedWCA(p1,p2).isEmpty(); 
 		 }
 		 
 		 else
 		 {
 			
-			 LinkedList<Point> points = isIntersected(p1,p2);
-			 //Debug.echo(null,points);
+			 LinkedList<Point> points = isIntersectedWCA(p1,p2);
 			 if(!points.isEmpty())
 			 {
 				 result = false;
 				 for(Point p:points)
 				 {
-				      if(! (testCornerPoint(p1,p.x,p.y) || testCornerPoint(p2,p.x,p.y)) 
-				    		  
-				        /* predicular */ )
+				      if(! (testCornerPoint(p1,p.x,p.y) || testCornerPoint(p2,p.x,p.y)) /* predicular */ )
 				    	  result = true;
-				    	  
-				 }
+				   }
 			 }
 			 else
 				 result = false;
 			 		 
 		 }
 			/* contained relationship*/ 
+		  // NOTE: either p1 contains p2 or p2 contains p1. assuming each poly has only four points. Contain only return the points which are inside the polygon. Those on the edge will not be considered
+		 int count = 0;
 			for(int i  = 0; i < p1.npoints;i++)
 			{
-				if(!p2.contains(new Point(p1.xpoints[i],p1.ypoints[i])))
-				    contained = false;
-				    
-					
+	           int[] x = new int[1];
+	           x[0] = p1.xpoints[i];
+	           int[] y = new int[1];
+	           y[0] = p1.ypoints[i];
+				if(p2.contains(new Point(p1.xpoints[i],p1.ypoints[i])) 
+						 //check boundary
+						||  !isIntersectedWCA(p2, new Polygon(x,y,1)).isEmpty())
+				{   
+				   /*System.out.println("go into this loop");
+				    System.out.println(p2.getBounds());
+				    System.out.println(p1.xpoints[i] + "    " + p1.ypoints[i]);*/
+					//contained = true;
+					count++;
+				}
 			}
+			contained = (count == p1.npoints)?true : false;
+			count = 0;
 			/* containing relationship*/
 			for(int i  = 0; i < p2.npoints;i++)
 			{
-				if(!p1.contains(new Point(p2.xpoints[i],p2.ypoints[i])))
-				    containing = false;
-				  
-					
+				 int[] x = new int[1];
+		           x[0] = p2.xpoints[i];
+		           int[] y = new int[1];
+		           y[0] = p2.ypoints[i];
+				if(p1.contains(new Point(p2.xpoints[i],p2.ypoints[i]))
+						||  !isIntersectedWCA(p1, new Polygon(x,y,1)).isEmpty())
+				    count ++;
 			}
-		
+			containing = (count == p2.npoints)?true : false;
+			//System.out.println(result + "   " + contained + "   " + containing);
 			result |= contained || containing;
           		 
 		 return result;
@@ -393,7 +400,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 
 		System.out.println(QuantiShapeCalculator.FindLineIntersection(new Point(200,100), new Point(200,150), new Point(200,100), new Point(200,130)));*/
 		//System.out.println(QuantiShapeCalculator.isIntersected(m4, m5));
-		System.out.println(QuantiShapeCalculator.isIntersected(m4,m6));
+		System.out.println(QuantiShapeCalculator.isIntersectedWCA(m4,m6));
 	     System.out.println(m1.contains(new Point(300,480)));
 	/*	LinkedList<Integer> test1 = new LinkedList<Integer>();
 		test1.add(1);
