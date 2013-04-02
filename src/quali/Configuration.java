@@ -72,8 +72,7 @@ public int y;
 
 
 public int lastTestNeighborId = -1;
-public boolean left_support = false;
-public boolean right_support = false;
+
 public int lastValidNeighborId = -2; //id = -2, touches all others -1, no neighbors
 //TODO write a isNowSupport method in configuration
 
@@ -531,8 +530,6 @@ public Configuration clone()
   
   conf.unary = unary;
   conf.lastTestNeighborId = lastTestNeighborId;
-  conf.right_support = right_support;
-  conf.left_support =  left_support;
   conf.lastValidNeighborId = lastValidNeighborId;
   
   
@@ -1018,7 +1015,7 @@ public String toShortString()
 @Override
 public String toString()
 {
-  String result =  mbr + "  ";
+  String result =  mbr + " unary: ";
   if(unary == 0)
 	  result += " regular ";
   else
@@ -1031,7 +1028,7 @@ public String toString()
 			  result += " completed";
 		  else
 			  result += " not initialized ";
-
+  
   for (Integer mbr: contact_map.keySet())
   {
 	  result+= " contacted with [ MBR " + mbr + " at " +  contact_map.get(mbr) + " ] "; 
