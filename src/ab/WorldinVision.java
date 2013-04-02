@@ -7,13 +7,12 @@ import java.util.List;
 import main.ScenarioPanel;
 import quali.MBR;
 import quali.MBRReasonerAdvance;
-import quali.MBRRegister;
 import quali.MBRRegisterAdvance;
 import quali.TestNode;
 
 public class WorldinVision {
   private LinkedList<MBR> mbrs = new LinkedList<MBR>();
-  public static int gap = 0;
+  public static int gap = 10;
   public void buildWorld(List<Rectangle> objs)
   {
 	   // hardcode the objects in this sList<MBR> mbrsr (Rectangle rec : objs)
@@ -39,8 +38,12 @@ public class WorldinVision {
   }
   private void reason()
   {
-      MBRRegisterAdvance.batchRegister(mbrs, mbrs.get(0));
-  	  TestNode node = MBRRegisterAdvance.constructTestNode();
+	  // the first mbr is the edge
+      //MBRRegisterAdvance.batchRegister(mbrs, mbrs.get(0));
+	  
+	  MBRRegisterAdvance.batchRegister(mbrs);
+  	  
+	  TestNode node = MBRRegisterAdvance.constructTestNode();
   
   	  MBRReasonerAdvance MBRR = new MBRReasonerAdvance();
   	  MBRR.search(node);

@@ -4,13 +4,15 @@ import java.awt.Point;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import ab.WorldinVision;
+
 import common.MyPolygon;
 
 public class Configuration {
 	
 private int angular;
 private HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
-private HashMap<MBR,Contact> contact_map = new HashMap<MBR,Contact>();
+private HashMap<Integer,Contact> contact_map = new HashMap<Integer,Contact>();
 private MyPolygon core_left = new MyPolygon();
 
 private MyPolygon core_left1 = new MyPolygon();
@@ -77,34 +79,44 @@ public int lastValidNeighborId = -2; //id = -2, touches all others -1, no neighb
 
 public boolean isNowSupport(final Configuration tconf )
 {
+	boolean weaksupport = false;
 	boolean result = false;
-
+   
   if(!tconf.getMbr().equals(mbr))
   { 
 	//  System.out.println(tconf.getMbr() + "  " + mbr);
-	Contact contact =  MBRRegisterAdvance.getPairContact(tconf, this);
+	Contact contact =  ContactManager.getPairContact(tconf, this , WorldinVision.gap);
 	
 	if(this.isEdge())
 		result = true;
-	else{
-				//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
-				if(contact.getType() == 1)
-				{
-					if(contact.getTangential_area() == 3)
-						left_support = true;
+	else
+	{
+			boolean left_support = false;
+			boolean right_support = false;		
+			if(contact.getType() == 1)
+			{
+				if(contact.getTangential_area() == 3)
+					{
+					  weaksupport = true;
+					  left_support = true;
+					}
+				else
+					if(contact.getTangential_area() == 4)
+					 {
+					    weaksupport = true;
+						right_support = true;
+					 }
 					else
-						if(contact.getTangential_area() == 4)
+						if(contact.getTangential_area() == 34)
+						{
+							left_support = true;
 							right_support = true;
-						else
-							if(contact.getTangential_area() == 34)
-							{
-								left_support = true;
-								right_support = true;
-							}
+						}
 				}
 			
-		result = left_support && right_support;
-	    return result;
+			result = left_support && right_support;
+			if(unary == 0)
+				result |= weaksupport;
 	}
   }
 	return result;
@@ -118,112 +130,126 @@ public Configuration(MBR mbr)
 	   permit_regions[2] = 1;
 	   permit_regions[3] = 1;
 	   angular = 2;
-	    getBlocked_regions().put(0, new LinkedList<MBR>());
-	    getBlocked_regions().put(1, new LinkedList<MBR>());
-	    getBlocked_regions().put(2, new LinkedList<MBR>());
-	    getBlocked_regions().put(3, new LinkedList<MBR>());
-        this.mbr = mbr;
-        x = mbr.x;
-        y = mbr.y;
-        height = mbr.height;
-        width = mbr.width;
-       
-       if( height > width)
-       {
-       	 limit_horizontal = width/2;
-       	 limit_vertical = height/2 - (int) Math.sqrt( (height/2) * (height/2) - (width/2)*(width/2) );
-       }
-       else
-       {
-       	
-       	 limit_vertical = height/2;
-       	 limit_horizontal = width/2 - (int) Math.sqrt(  (width/2)*(width/2) - (height/2) * (height/2) );
-       }
-  
-    triangle4.addPoint( x +  width -  limit_horizontal, y +  height);
-   	triangle4.addPoint( x +  width, y +  height);
-   	triangle4.addPoint( x +  width, y +  height -  limit_vertical);
-       
-   	triangle3.addPoint( x, y +  height -  limit_vertical);
-   	triangle3.addPoint( x, y +  height);
-   	triangle3.addPoint( x +  limit_vertical, y +  height);
+	   this.mbr = mbr;
+       configureRegions();
        
        
-   	triangle2.addPoint( x, y);
-   	triangle2.addPoint( x, y +  limit_vertical);
-   	triangle2.addPoint( x +  limit_horizontal, y);
-       
-   	triangle1.addPoint( x +  width -  limit_horizontal, y);
-   	triangle1.addPoint( x +  width, y);
-   	triangle1.addPoint( x +  width, y +  limit_horizontal);
-   	
-   	triangle44.addPoint( x, y +  height);
-   	triangle44.addPoint( x +  width, y +  height);
-   	triangle44.addPoint( x +  width, y);
-       
-   	triangle33.addPoint( x, y);
-   	triangle33.addPoint( x, y +  height);
-   	triangle33.addPoint( x +  width, y +  height);
-       
-       
-   	triangle22.addPoint( x, y);
-   	triangle22.addPoint( x, y +  height);
-   	triangle22.addPoint( x +  width, y);
-       
-   	triangle11.addPoint( x, y);
-   	triangle11.addPoint( x +  width, y +  height);
-   	triangle11.addPoint( x +  width, y);
-   	
-   	core_right.addPoint( x,  y +  height -  limit_vertical);
-   	core_right.addPoint( x +  limit_horizontal,  y +  height);
-   	core_right.addPoint( x +  width,  y +  limit_vertical);
-   	core_right.addPoint( x +  width -  limit_horizontal,  y);
-   	
-   	
-    core_right2.addPoint( x,  y +  height -  limit_vertical);
-   	core_right2.addPoint(( x +  limit_horizontal+ x)/2, ( y +  height +  y +  height -  limit_vertical)/2);
-   	core_right2.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
-   	core_right2.addPoint( x +  width -  limit_horizontal,  y);
-   	
-   	
-     	
-   	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
-    core_right4.addPoint( x +  limit_horizontal,  y +  height);
-  	core_right4.addPoint( x +  width,  y +  limit_vertical);
-   	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
- 	
- 	
-
-   	diagonal_right.addPoint( x,  y +  height);
-   	diagonal_right.addPoint( x +  width,  y);
-
-   	
-
-   	core_left.addPoint( x +  limit_horizontal,  y);
-   	core_left.addPoint( x,  y +  limit_vertical);
-   	core_left.addPoint( x +  width -  limit_horizontal,  y +  height);
-   	core_left.addPoint( x +  width,  y +  height -  limit_vertical);
-   	
-   	core_left1.addPoint( x +  limit_horizontal,  y);
-   	core_left1.addPoint(( x +  x +  limit_horizontal)/2, ( y +  limit_vertical +  y)/2);
-   	core_left1.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);
-   	core_left1.addPoint( x +  width,  y +  height -  limit_vertical);
-   	
-   	core_left3.addPoint(( x +  x +  limit_horizontal)/2, ( y +  limit_vertical +  y)/2);
-   	core_left3.addPoint( x,  y +  limit_vertical);
-  	core_left3.addPoint( x +  width -  limit_horizontal,  y +  height);
-  	core_left3.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);
-   	
-   	diagonal_left.addPoint( x +  width,  y +  height);
-   	diagonal_left.addPoint( x , y);
-   	
-   	vertices[0] = new Point( x +  width,  y);
-   	vertices[1]  = new Point( x, y);
-   	vertices[2]  = new Point( x,  y +  height);
-   	vertices[3]  = new Point( x +  width, y +  height);
         
 }
 
+public void configureRegions()
+{
+	
+	  x = mbr.x;
+      y = mbr.y;
+      height = mbr.height;
+      width = mbr.width;
+	 getBlocked_regions().put(0, new LinkedList<MBR>());
+     getBlocked_regions().put(1, new LinkedList<MBR>());
+     getBlocked_regions().put(2, new LinkedList<MBR>());
+     getBlocked_regions().put(3, new LinkedList<MBR>());
+
+	if( height > width)
+    {
+    	 limit_horizontal = width/2;
+    	 limit_vertical = height/2 - (int) Math.sqrt( (height/2) * (height/2) - (width/2)*(width/2) );
+    }
+    else
+    {
+    	
+    	 limit_vertical = height/2;
+    	 limit_horizontal = width/2 - (int) Math.sqrt(  (width/2)*(width/2) - (height/2) * (height/2) );
+    }
+
+ triangle4.addPoint( x +  width -  limit_horizontal, y +  height);
+	triangle4.addPoint( x +  width, y +  height);
+	triangle4.addPoint( x +  width, y +  height -  limit_vertical);
+    
+	triangle3.addPoint( x, y +  height -  limit_vertical);
+	triangle3.addPoint( x, y +  height);
+	triangle3.addPoint( x +  limit_vertical, y +  height);
+    
+    
+	triangle2.addPoint( x, y);
+	triangle2.addPoint( x, y +  limit_vertical);
+	triangle2.addPoint( x +  limit_horizontal, y);
+    
+	triangle1.addPoint( x +  width -  limit_horizontal, y);
+	triangle1.addPoint( x +  width, y);
+	triangle1.addPoint( x +  width, y +  limit_horizontal);
+	
+	triangle44.addPoint( x, y +  height);
+	triangle44.addPoint( x +  width, y +  height);
+	triangle44.addPoint( x +  width, y);
+    
+	triangle33.addPoint( x, y);
+	triangle33.addPoint( x, y +  height);
+	triangle33.addPoint( x +  width, y +  height);
+    
+    
+	triangle22.addPoint( x, y);
+	triangle22.addPoint( x, y +  height);
+	triangle22.addPoint( x +  width, y);
+    
+	triangle11.addPoint( x, y);
+	triangle11.addPoint( x +  width, y +  height);
+	triangle11.addPoint( x +  width, y);
+	
+	core_right.addPoint( x,  y +  height -  limit_vertical);
+	core_right.addPoint( x +  limit_horizontal,  y +  height);
+	core_right.addPoint( x +  width,  y +  limit_vertical);
+	core_right.addPoint( x +  width -  limit_horizontal,  y);
+	
+	
+	core_right2.addPoint( x,  y +  height -  limit_vertical);
+	core_right2.addPoint(( x +  limit_horizontal+ x)/2, ( y +  height +  y +  height -  limit_vertical)/2);
+	core_right2.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
+	core_right2.addPoint( x +  width -  limit_horizontal,  y);
+	
+	
+  	
+	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
+	core_right4.addPoint( x +  limit_horizontal,  y +  height);
+	core_right4.addPoint( x +  width,  y +  limit_vertical);
+	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
+	
+	
+
+	diagonal_right.addPoint( x,  y +  height);
+	diagonal_right.addPoint( x +  width,  y);
+
+	
+
+	core_left.addPoint( x +  limit_horizontal,  y);
+	core_left.addPoint( x,  y +  limit_vertical);
+	core_left.addPoint( x +  width -  limit_horizontal,  y +  height);
+	core_left.addPoint( x +  width,  y +  height -  limit_vertical);
+	
+	core_left1.addPoint( x +  limit_horizontal,  y);
+	core_left1.addPoint(( x +  x +  limit_horizontal)/2, ( y +  limit_vertical +  y)/2);
+	core_left1.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);
+	core_left1.addPoint( x +  width,  y +  height -  limit_vertical);
+	
+	core_left3.addPoint(( x +  x +  limit_horizontal)/2, ( y +  limit_vertical +  y)/2);
+	core_left3.addPoint( x,  y +  limit_vertical);
+	core_left3.addPoint( x +  width -  limit_horizontal,  y +  height);
+	core_left3.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);
+	
+	diagonal_left.addPoint( x +  width,  y +  height);
+	diagonal_left.addPoint( x , y);
+	
+	vertices[0] = new Point( x +  width,  y);
+	vertices[1]  = new Point( x, y);
+	vertices[2]  = new Point( x,  y +  height);
+	vertices[3]  = new Point( x +  width, y +  height);
+
+
+
+
+
+
+
+}
 public boolean addRestrictedPoints(Point point, int region,boolean contacted)
 {
 	boolean result = true;
@@ -440,6 +466,58 @@ public boolean addRestrictedPoints(Point point, int region,boolean contacted)
 }
 
 
+// transform the conf to the tconf by eliminating the gap
+public Configuration translate(Configuration tconf, int threshold)
+{
+	//find out the neighbor region
+	MBR tmbr = tconf.getMbr();
+	Neighbor neighbor = neighbors.get(neighbors.indexOf(tmbr));
+	byte type = neighbor.getNeighborType();
+	// only transform the configuration which are not overlapping/contained/containg
+	int gap = (int)neighbor.getGap();
+	if ( gap > threshold || type == 0)
+		return this;
+	
+	
+	MBR _mbr = new MBR();
+	_mbr.x = mbr.x;
+	_mbr.y = mbr.y;
+	_mbr.height = mbr.height;
+	_mbr.width = mbr.width;
+	_mbr.setId(mbr.getId());
+	Configuration conf;
+   	
+	switch (type)
+    {
+    	case 1: 
+    		{
+    		  _mbr.translate(0,-gap);
+    		  break;
+    		  //System.out.println(" enter this " + mbr + "   " + mbr.getBounds() + "   " + _mbr.getBounds());
+    		}
+    	case 2:
+    		{
+    			_mbr.translate(-gap, 0);
+    		    break;
+    		}
+    	case 3:
+    		{
+    			_mbr.translate(0, gap);
+    		    break;
+    		}
+    	case 4:
+    		{
+    			_mbr.translate(gap, 0);
+    		    break;
+    		}
+    
+    }
+	conf  = new Configuration(_mbr);
+	conf.unary = this.unary;
+	
+	return conf;
+  }
+
 @Override
 public Configuration clone()
 {
@@ -479,19 +557,14 @@ public Configuration clone()
 		  conf.blocked_regions.get(key).add(mbr);
   }
   
-  for(MBR key:  contact_map.keySet())
+  for(Integer key:  contact_map.keySet())
   {
 	  conf.contact_map.put(key, contact_map.get(key).clone());
   }
 
   conf.setEdge(edge);
-  
-
-
-
-		  
+  		  
   return conf;
-
 
 }
 
@@ -511,7 +584,7 @@ public HashMap<Integer, LinkedList<MBR>> getBlocked_regions() {
 }
 
 
-public HashMap<MBR, Contact> getContact_map() {
+public HashMap<Integer, Contact> getContact_map() {
 	return contact_map;
 }
 
@@ -828,6 +901,8 @@ public boolean isEdge() {
 public boolean isSupport() {
 	
 
+	//weak support parameter included for the regular mbr
+	boolean weaksupport = false;
 	boolean result = false;
 	
 	if(this.isEdge())
@@ -835,17 +910,23 @@ public boolean isSupport() {
 	else{
 			boolean left_support = false;
 			boolean right_support = false;
-			for(MBR mbr: this.contact_map.keySet())
+			for(Integer mbr: this.contact_map.keySet())
 			{
 				Contact contact = this.contact_map.get(mbr);
 				//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 				if(contact.getType() == 1)
 				{
 					if(contact.getTangential_area() == 3)
-						left_support = true;
+						{
+						  weaksupport = true;
+						  left_support = true;
+						}
 					else
 						if(contact.getTangential_area() == 4)
+						 {
+						    weaksupport = true;
 							right_support = true;
+						 }
 						else
 							if(contact.getTangential_area() == 34)
 							{
@@ -855,6 +936,8 @@ public boolean isSupport() {
 				}
 			}
 			result = left_support && right_support;
+			if(unary == 0)
+				result |= weaksupport;
 	}
 	return result;
 }
@@ -883,7 +966,7 @@ public void setAngular(int angular) {
 public void setBlocked_regions(HashMap<Integer, LinkedList<MBR>> blocked_regions) {
 	this.blocked_regions = blocked_regions;
 }
-public void setContact_map(HashMap<MBR, Contact> contact_map) {
+public void setContact_map(HashMap<Integer, Contact> contact_map) {
 	this.contact_map = contact_map;
 }
 public void setEdge(boolean edge) {
@@ -949,9 +1032,9 @@ public String toString()
 		  else
 			  result += " not initialized ";
 
-  for (MBR mbr: contact_map.keySet())
+  for (Integer mbr: contact_map.keySet())
   {
-	  result+= " contacted with [ " + mbr + " at " +  contact_map.get(mbr) + " ] "; 
+	  result+= " contacted with [ MBR " + mbr + " at " +  contact_map.get(mbr) + " ] "; 
 	  }
   return result;
 	  

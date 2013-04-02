@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import ab.WorldinVision;
+
 public class MBRReasonerAdvance {
      
 	static
@@ -68,7 +70,7 @@ public class MBRReasonerAdvance {
 					if(solidValidity(cconf , node)){
 					
 						//----- one unique configuration will have various contactmap..
-						LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs.
+						LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node , WorldinVision.gap);//get the possible contacts with the instantiated MBRs.
 						// System.out.println("*********:  " + lscontacts.size());
 						if (lscontacts.isEmpty()) // will happen when this block is isolated or its neighbors are not initialized yet 
 						{
@@ -76,7 +78,7 @@ public class MBRReasonerAdvance {
 						}
 						else
 						{	
-							for (HashMap<MBR,Contact> contactmap: lscontacts)
+							for (HashMap<Integer,Contact> contactmap: lscontacts)
 							{
 								//test the solid properties
 						        
@@ -97,16 +99,17 @@ public class MBRReasonerAdvance {
 							//there are three types, namely, regular, left, right
 							while(!cconf.isCompleted())
 							{
+								//System.out.println(cconf.toShortString());
 								cconf.nextInitialization();
 								
-								// System.out.println(cconf .toShortString()+ "   \n  " + node + "    " +  solidValidity(cconf , node));
+								// System.out.println(cconf .toShortString()+ "   \n  " + "node" + "    " +  solidValidity(cconf , node));
 								//test the solid properties
 								if(solidValidity(cconf , node))
 								{
 									
 									//----- one unique configuration will have various contactmap..
-									LinkedList<HashMap<MBR,Contact>> lscontacts = MBRRegisterAdvance.getPossibleContacts(cconf,node);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
-									// System.out.println(" after solid check " + cconf.getMbr()+"  "+ lscontacts.size());
+									LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node,WorldinVision.gap);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
+									// System.out.println(" after solid check " + cconf.toShortString()+"  "+ lscontacts.size());
 									if (lscontacts.isEmpty()) // will happen when this block is isolated or its neighbors are not initialized yet 
 									{    
 										TestNode _node = node.clone();
@@ -116,15 +119,15 @@ public class MBRReasonerAdvance {
 									else
 									    {
 
-												for (HashMap<MBR,Contact> contactmap: lscontacts)
+												for (HashMap<Integer,Contact> contactmap: lscontacts)
 												{
-													
-											/*		// System.out.println("  contactmap of " + cconf.getMbr() + "\n");
-													for (MBR key: contactmap.keySet())
+													/*
+													// System.out.println("  contactmap of " + cconf.getMbr() + "\n");
+													for (Integer key: contactmap.keySet())
 													{
-														// System.out.println(key + "   " + contactmap.get(key));
-													}
-													*/
+														 System.out.println(key + "   " + contactmap.get(key));
+													}*/
+													
 												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 												   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
 												 
@@ -152,7 +155,7 @@ public class MBRReasonerAdvance {
   		// System.out.println(" node is incompleted, :  " + node);
     	if(node.isCompleted())
     	{
-    		 // System.out.println(" node completed, check stability \n" + node);
+    		// System.out.println(" node completed, check stability \n" + node);
     		 for (Integer id : node.getConfs().keySet())
     		 {
     			 if (!node.getConfs().get(id).isSupport())
@@ -194,7 +197,7 @@ public class MBRReasonerAdvance {
     	
     } 
     // This method will verify the stability of the each instantiated mbr in the tree. 
-    public TestNode formLocalStability(Configuration newUpdatedConf , HashMap<MBR,Contact> contactmap, TestNode node)
+    public TestNode formLocalStability(Configuration newUpdatedConf , HashMap<Integer,Contact> contactmap, TestNode node)
     {
         // Test by enumerating all possible local configurations. there are so many tricks in the selection of the root. e.g. the root can be the one with the most neighbor and its immediately child could be the one with the least negihbor
     	//  n this version, we randomly pick up a mbr as the root.
@@ -225,12 +228,11 @@ public class MBRReasonerAdvance {
 						                        _node.nextStabilityVerificationCandidate();
 						                        
 						                  }
-						    	    	// // System.out.println(" no neighbors");
+						    	    	//System.out.println(" no neighbors");
 						    	    	 
 						    	     } 
 						             else 
 						             {
-						                 // System.out.println( " go to here ");
 						            	 // test the testConf with all instantiated nodes
 						             	  for (Neighbor neighbor : neighbors)
 						             	  {
@@ -247,7 +249,9 @@ public class MBRReasonerAdvance {
                                                		  boolean support = testConf.isNowSupport(curConf);
                                                		  if(!support && nid_curConf == testConf.lastValidNeighborId)   
 							                                 //all tested and no support
-							                                   break outerloop;
+                                               		  {  
+                                               			  break outerloop;
+                                               		  }
 							                          else
 					                                   {
 					                            	         _node = node.clone();
@@ -261,8 +265,6 @@ public class MBRReasonerAdvance {
                                                	}    
 
 						             	  }
-						  
-    
 				             }
 
              	}	
@@ -271,7 +273,7 @@ public class MBRReasonerAdvance {
     		if(_node != null)
     		{
 	            _node.update( _newUpdatedConf);
-	        	// System.out.println("  updates the conf " + _newUpdatedConf +  "\n node description   "  +  _node);                      
+	        	 //System.out.println("  updates the conf " + _newUpdatedConf +  "\n node description   "  +  _node);                      
     		}
 	 
     		return _node;

@@ -47,7 +47,6 @@ public TestNode(List<MBR> mbrs, List<MBR> edges)
 		if(edges.contains(mbr))
 			confs.get(mbr.getId()).setEdge(true);
 	}
-
 	
 	 initialize();
 	
@@ -91,7 +90,7 @@ public void initialize()
 					{
 						
 						conf.getOverlapping_mbrs().add(mbr1);
-						conf.getContact_map().put(mbr1,new Contact() );
+						conf.getContact_map().put(mbr1.getId(),new Contact() );
 						
 						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
 			             conf.getNeighbors().add(neighbor);
@@ -121,7 +120,7 @@ public void initialize()
 	    	else
 	    	{
 	    		//initialize the contact map
-	    		conf.getContact_map().put(neighbor.getMbr(), new Contact());
+	    		conf.getContact_map().put(neighbor.getMbr().getId(), new Contact());
 	    		//System.out.println(conf.getMbr() + "   " + neighbor.getMbr());
 	    	}
 	    }
@@ -131,9 +130,30 @@ public void initialize()
 
 	    		
 	      
+
+	    
+	    
+	    //========================== Early Determination: Those who do not have neighbors from region 3 will be considered to be regular ======================
+	    {
+	          if(conf.lastValidNeighborId == -1 )
+	        	  conf.setEdge(true);
+	          else
+	          {
+	        	  int count = 0;
+	        	  for (Neighbor neighbor : conf.getNeighbors())
+	        	  {
+	        		  if(neighbor.getNeighborType() == 3)
+	        			  count++;
+	        	  }
+	        	  if(count == 0)
+	        		  conf.setEdge(true);
+	          }
+	    }
+	    
+	    
 	    //=====================DEBUG output the neighbor 
 	    {
-	    	System.out.println(conf.getMbr() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId);
+	    	System.out.println(conf.getMbr() +"  " + conf.getMbr().getBounds() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId + "     edge:  " + conf.isEdge() + "  unary " + conf.unary);
 	    	for (Neighbor neighbor: conf.getNeighbors())
 	    	{
 	    		
@@ -217,28 +237,26 @@ public TestNode clone()
    
 	return _node;
 }
-public void update(Configuration conf)
+public void update(Configuration newlyUpdatedConf)
 {
 
-	   confs.put(conf.getMbr().getId(), conf);
+	   confs.put(newlyUpdatedConf.getMbr().getId(), newlyUpdatedConf);
 	   //also update the contact map if necessary
-	  for (MBR _mbr  : conf.getContact_map().keySet())
+	  for (Integer neighbor_mbrid  : newlyUpdatedConf.getContact_map().keySet())
 	  {
 		
-		  Configuration _conf = lookup(_mbr);
-		  HashMap<MBR,Contact> _contactMap = _conf.getContact_map();
-		  MBR mbr = conf.getMbr();
+		  Configuration neighbor_conf = lookup(neighbor_mbrid);
+		  HashMap<Integer,Contact> neighbor_contactMap = neighbor_conf.getContact_map();
+		  Integer mbr = newlyUpdatedConf.getMbr().getId();
 	
-		//  if(!_contactMap.get(mbr).isInitialized())
-	//	  {
-		  if (_contactMap.containsKey(mbr))
+		  if (neighbor_contactMap.containsKey(mbr))
 		  {
-	    		Contact contact =  MBRRegisterAdvance.getPairContact(conf, _conf);
-	    		_contactMap.put(mbr, contact);	
-	    		//  System.out.println( _mbr +  " updates   the contact map   " + mbr + "    " + contact);
+	    		Contact contact =  ContactManager.getPairContact(newlyUpdatedConf,neighbor_conf,WorldinVision.gap);
+	    		neighbor_contactMap.put(mbr, contact);	
+	    		//System.out.println( neighbor_mbrid +  " updates   the contact map using  " + mbr + "    " + newlyUpdatedConf.getContact_map().get(neighbor_mbrid) + " on  " + contact);
 	    }	  
 	    	
-	//	  }
+	
 	  }
 }
 public String toString()
