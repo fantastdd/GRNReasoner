@@ -12,7 +12,7 @@ import quali.TestNode;
 
 public class WorldinVision {
   private LinkedList<MBR> mbrs = new LinkedList<MBR>();
-  public static int gap = 10;
+  public static int gap = 0;
   public void buildWorld(List<Rectangle> objs)
   {
 	   // hardcode the objects in this sList<MBR> mbrsr (Rectangle rec : objs)
