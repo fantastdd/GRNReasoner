@@ -1,9 +1,5 @@
 package quanti.test;
-
-import java.awt.Point;
 import java.awt.Polygon;
-import java.awt.Rectangle;
-
 import quanti.QuantiShapeCalculator;
 
 import main.ScenarioPanelPoly;

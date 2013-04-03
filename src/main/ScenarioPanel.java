@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Graphics;
-import java.awt.Polygon;
 import java.util.LinkedList;
 
 import javax.swing.JFrame;

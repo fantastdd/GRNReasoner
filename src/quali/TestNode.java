@@ -7,6 +7,8 @@ import java.util.List;
 import quanti.QuantiShapeCalculator;
 import ab.WorldinVision;
 
+import common.util.NeighborComparator;
+
 public class TestNode {
 
 private HashMap<Integer,Configuration> confs ;

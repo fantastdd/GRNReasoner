@@ -5,6 +5,8 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import quali.util.StabilityConfigurationOutput;
+
 import ab.WorldinVision;
 
 public class MBRReasonerAdvance {
@@ -31,12 +33,13 @@ public class MBRReasonerAdvance {
 		{
 		    //output the solutions	
 			 System.out.println("solution is found:   \n" + node);
+			 System.out.println(StabilityConfigurationOutput.getStabilityReport(node));
 			return true;
 		}
 		else
 		{
 		    LinkedList<TestNode> refinements = refine(node);
-		    // System.out.println(node + "    " + refinements.size());
+		   //  System.out.println(node + "    " + refinements.size());
 		    // System.out.println(node.current_id + "   " + refinements.size());
 		    
 		    // if refinements should not be empty when a mbr has no neighbors.
@@ -68,7 +71,7 @@ public class MBRReasonerAdvance {
 			   if(cconf.isEdge())
 			   {
 					if(solidValidity(cconf , node)){
-					
+					   // System.out.println(cconf.toShortString());
 						//----- one unique configuration will have various contactmap..
 						LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node , WorldinVision.gap);//get the possible contacts with the instantiated MBRs.
 						// System.out.println("*********:  " + lscontacts.size());
@@ -84,7 +87,7 @@ public class MBRReasonerAdvance {
 						        
 							   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 							   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
-							   // // System.out.println(_node);
+							   //System.out.println(_node);
 							   // System.out.println(" after form local stability:  " + _node );
 							   if (_node != null)
 								   refinements.add(_node);
@@ -219,7 +222,8 @@ public class MBRReasonerAdvance {
 						    		 LinkedList<Neighbor> neighbors = testConf.getNeighbors();
 						             // // System.out.println(testConf + "    " + neighbors.size());
 						    		 // For those who do not have a neighbor, 1. If not supported (not an edge)  --> return null. 2. yes continue
-						    	     if (neighbors.isEmpty())
+						    		 // TODO last neighbor id == -1 implies neighbors.isEmpty()
+						    	     if (neighbors.isEmpty() || testConf.lastValidNeighborId == -1)
 						    	     {
 						    	    	
 						    	    	 if (testConf.isSupport())
@@ -243,13 +247,18 @@ public class MBRReasonerAdvance {
                                                		curConf = node.lookup(neighbor.getMbr());
                                                	int nid_curConf = neighbors.indexOf(neighbor);
                                                	if( nid_curConf > testConf.lastValidNeighborId)
+                                               	{	
+                                               	   //System.out.println("  entre this block ");
                                                		break outerloop;
+                                               	
+                                               	}
                                                	else 
                                                	{
                                                		  boolean support = testConf.isNowSupport(curConf);
                                                		  if(!support && nid_curConf == testConf.lastValidNeighborId)   
 							                                 //all tested and no support
                                                		  {  
+                                               			 
                                                			  break outerloop;
                                                		  }
 							                          else

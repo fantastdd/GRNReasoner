@@ -2,12 +2,7 @@ package main;
 
 import java.awt.Graphics;
 import java.awt.Polygon;
-import java.util.LinkedList;
-
 import javax.swing.JFrame;
-
-import quali.Configuration;
-import quali.MBR;
 
 
 public class ScenarioPanelPoly extends JFrame {

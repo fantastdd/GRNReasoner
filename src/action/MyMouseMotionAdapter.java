@@ -8,14 +8,14 @@ import javax.swing.JFrame;
 
 
 public class MyMouseMotionAdapter extends MouseMotionAdapter{
-    private Graphics g;
+
     private MouseController mc;
 
     
 	public MyMouseMotionAdapter(JFrame frame,MouseController mc)
 	{
 		this.mc = mc;
-		g = frame.getGraphics();
+
 	}
 
 	

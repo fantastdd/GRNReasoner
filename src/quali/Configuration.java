@@ -994,19 +994,19 @@ public void setY(int y) {
 }
 public String toShortString()
 {
-  String result =  mbr + "  ";
+  String result =  mbr + " ";
   if(unary == 0)
-	  result += " regular ";
+	  result += "( regular )";
   else
 	  if( unary == 1)
-	     result += " lean to right ";
+	     result += "( lean to right )";
 	  else
 		  if(unary == 2)
-			  result += "lean to left";
+			  result += "( lean to left )";
 		  else if(unary == -2)
-			  result += " completed";
+			  result += "( completed )";
 		  else
-			  result += " not initialized ";
+			  result += "( not initialized )";
 
   return result;
 	  
