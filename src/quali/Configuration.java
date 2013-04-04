@@ -114,8 +114,9 @@ public boolean isNowSupport(final Configuration tconf )
 				}
 			
 			result = left_support && right_support;
-			if(unary == 0)
-				result |= weaksupport;
+	     //TODO
+			/*		if(unary == 0)
+				result |= weaksupport;*/
 	}
   }
 	return result;
@@ -933,8 +934,9 @@ public boolean isSupport() {
 				}
 			}
 			result = left_support && right_support;
-			if(unary == 0)
-				result |= weaksupport;
+			//TODO
+		/*	if(unary == 0)
+				result |= weaksupport;*/
 	}
 	return result;
 }

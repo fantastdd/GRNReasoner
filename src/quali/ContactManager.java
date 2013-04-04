@@ -25,51 +25,66 @@ public class ContactManager {
 		if (conf.lastValidNeighborId == -1)
 			contactMaps.add(conf.getContact_map());
 		else {
-			for (Neighbor neighbor : neighbors) {
-				if (neighbors.indexOf(neighbor) > conf.lastValidNeighborId) {
+			for (Neighbor neighbor : neighbors) 
+			{
+				if (neighbors.indexOf(neighbor) > conf.lastValidNeighborId)
+				{
 					break;
-				} else {
+				} 
+				else
+				{
 					Configuration neighbor_conf = node.lookup(neighbor.getMbr());
 					MBR neighbor_mbr = neighbor_conf.getMbr();
 					// neighbor must be instantiated
-					if (neighbor_mbr.getId() < conf.getMbr().getId()) {
+					if (neighbor_mbr.getId() < conf.getMbr().getId()) 
+					{
 						// TODO non-used work if.
 						if (contactMaps.isEmpty()) {
 							
 							//System.out.println(" Get Contact:  " + conf.toShortString() + "   " + neighbor_conf.toShortString());
 							
 							LinkedList<Contact> contacts = getContact(conf, neighbor_conf, threshold);
-                            
-							for (Contact contact : contacts) {
-								// System.out.println(" conf    " + conf.getMbr() + "    tconf    " + neighbor_conf.getMbr() + "     " + contact );
+							/*  if(conf.getMbr().getId() == 12 && node.lookup(5).unary == 0 && conf.unary == 2)
+							        System.out.println(" Get Contacts :  " +  contacts.size());*/
+						
+							for (Contact contact : contacts) 
+							{
+							 //print
+							/*	if(conf.getMbr().getId() == 12 && node.lookup(5).unary == 0 && conf.unary == 2)
+								 				System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact );*/
+								
 								HashMap<Integer, Contact> _contactMap = new HashMap<Integer, Contact>();
 								// clone the map and add to list
 								HashMap<Integer, Contact> contactMap = conf.getContact_map();
 
+						
 								for (Integer key : contactMap.keySet()) {
 									if (key == neighbor_mbr.getId())
-										_contactMap.put(key, contact);
+											_contactMap.put(key, contact);
 									else
-										_contactMap.put(key, contactMap
-												.get(key).clone());
+										_contactMap.put(key, contactMap.get(key).clone());
 								}
 								contactMaps.add(_contactMap);
 							}
+							
+							/*  if(conf.getMbr().getId() == 12 && node.lookup(5).unary == 0&& conf.unary == 2 )
+							  {	 
+									System.out.println(" map size :  " + contactMaps.size());
+								  for (HashMap<Integer,Contact> contactMap : contactMaps)
+								  {
+									  System.out.println(contactMap.get(5));
+								  }
+							  }*/
+							  
 						} 
 						else // pop up the contactmap in the list and split...
 						{
 							LinkedList<HashMap<Integer, Contact>> maps = new LinkedList<HashMap<Integer, Contact>>();
-							for (HashMap<Integer, Contact> contactMap : contactMaps) {
-								// System.out.println(" Get Contact:  " +
-								// conf.toShortString() + "   " +
-								// neighbor_conf.toShortString());
+							for (HashMap<Integer, Contact> contactMap : contactMaps)
+							{
 								LinkedList<Contact> contacts = getContact(conf, neighbor_conf , threshold);
-								for (Contact contact : contacts) {
-									// System.out.println(" conf    " +
-									// conf.getMbr() + "    tconf    " +
-									// neighbor_conf.getMbr() + "     " +
-									// contact );
-									// clone the map and add to list
+								for (Contact contact : contacts) 
+								{
 									HashMap<Integer, Contact> _contactMap = new HashMap<Integer, Contact>();
 									for (Integer key : contactMap.keySet()) {
 										if (key == neighbor_mbr.getId())
@@ -81,8 +96,13 @@ public class ContactManager {
 									maps.add(_contactMap);
 								}
 							}
-							contactMaps.clear();
-							contactMaps.addAll(maps);
+							//bug fix: MBR A has two contacts, MBR B has 0, MBR C has two contacts. without the following if, the contactsMaps will be cleared
+							if(maps.isEmpty())
+								continue;
+							else{
+										contactMaps.clear();
+										contactMaps.addAll(maps);
+							}
 						}
 					}
 					// DEBUG TODO refine this branch later
@@ -95,6 +115,14 @@ public class ContactManager {
 				}
 			}
 		}
+		
+		//print 
+	/*	  if(conf.getMbr().getId() == 12 && node.lookup(5).unary == 0&& conf.unary == 2 )
+			  for (HashMap<Integer,Contact> contactMap : contactMaps)
+			  {
+				  System.out.println(contactMap.get(5));
+			  }*/
+		
 		return contactMaps;
 
 	}
@@ -151,7 +179,8 @@ public class ContactManager {
 				contact.setTangential_area(0);
 				contact.setType(0);
 			}
-		} else
+		} 
+		else
 
 		/* ombr regular supported by regular mbr */
 		if (conf.unary == 0 && tconf.unary == 0) {
@@ -211,15 +240,20 @@ public class ContactManager {
 				System.out.println(" Tangential Area = 0 detected");
 			}
 
-		} else if (conf.unary != 0 && tconf.unary == 0) {
+		} 
+		else if (conf.unary != 0 && tconf.unary == 0) {
 			if (_contact.getTangential_area() == 1
 					|| _contact.getTangential_area() == 2) {
 
-				if (conf.getPermit_regions()[2] == 1) {
+				if (conf.getPermit_regions()[2] == 1)
+				{
+					//TODO could be 2
 					contact.setTangential_area(3);
 					contact.setType(1);
-				} else if (conf.getPermit_regions()[3] == 1) {
-					contact.setTangential_area(2);
+				}
+				else if (conf.getPermit_regions()[3] == 1) {
+					//TODO 
+					contact.setTangential_area(4);
 					contact.setType(1);
 				}
 
@@ -241,10 +275,9 @@ public class ContactManager {
 					contact.setType(1);
 				}
 
-			} else if (_contact.getTangential_area() == 3
-					|| _contact.getTangential_area() == 4) {
-
-				/* no need to distinguish between region 1 or 2 */
+			} else if (_contact.getTangential_area() == 3 || _contact.getTangential_area() == 4)
+			{
+            	/* no need to distinguish between region 1 or 2 */
 				if (conf.getPermit_regions()[2] == 1) {
 					contact.setTangential_area(1);
 					contact.setType(1);
@@ -1099,7 +1132,7 @@ public class ContactManager {
 		if (conf.getPermit_regions()[3] == 1)
 			conf.getRegion(region);
 		else
-		// 闂鍦ㄨ繖锛屽鏋滅敤澶у尯鍩熸弿锟�锛岄偅涔堜細瀵艰嚧vertex touch鐨勬瀬绔儏锟�
+		// 闂傤噣顣介崷銊ㄧ箹閿涘苯顪嗛弸婊呮暏婢堆冨隘閸╃喐寮块敓锟介敍宀勫亝娑斿牅绱扮�鑹板毀vertex touch閻ㄥ嫭鐎粩顖涘剰閿燂拷
 		if (conf.getPermit_regions()[2] == 1)
 			conf.getRegionLarge(region);
 
