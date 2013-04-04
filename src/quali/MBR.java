@@ -68,7 +68,7 @@ public boolean equals(Object obj)
 }
 public String toString()
 {
-   String result = " MBR " + this.id;
+   String result = " MBR " + id;
    return result;
 
 }
