@@ -390,7 +390,7 @@ public class ContactManager {
 
 		}
 
-       //Fat GSRs fixed , Apirl 4
+       //Fat GSRs fixed , April 4
 		if (conf.unary == 0 && tconf.unary != 0) 
 		{
 			boolean tr2 = testRegionR_A(conf, tconf, 2);
@@ -977,7 +977,7 @@ public class ContactManager {
 
 	}
    // This method tests whether the conf's (regular)  edge can touch a specific sector of the tconf
-  //Fixed April 4
+  //Fixed April 4, correct April 5
 	private static boolean testRegionR_A(final Configuration conf,  final Configuration tconf, int region)
 	{
 		MyPolygon rline = conf.getRegionLine(region);
@@ -1040,7 +1040,7 @@ public class ContactManager {
 	 * A: angular
 	 * 13: test the space area 1 or 3 of the angular rectangle, whether it touches the region of the conf
 	 * 
-	 * fixed April 4
+	 * fixed April 4, correct April 5
 	 */
 	private static int testVertexR_A13(final Configuration conf, final Configuration tconf, int region) {
 		
@@ -1056,7 +1056,6 @@ public class ContactManager {
 
 		if (tconf.unary == 1) {
 			tmin = tconf.getCore_right();
-			// tmax = tmbr.getDiagonal_right();
 			if (region == 1 || region == 14 )
 				tmax = tconf.getRegion(3); // get the bottom left triangular space.
 			else
@@ -1069,13 +1068,31 @@ public class ContactManager {
 			 tmin = tconf.getDiagonal_left();
 		}
 		else
-			if (tconf.unary == 3 || tconf.unary == 4)
-		{
-			tmax = tconf.fullRec;
-			if (region == 1 || region == 14 )
-				tmin = tconf.approx_u3t3;
-			else
-				tmin = tconf.approx_u3t1;
+			if (tconf.unary == 3)
+			{
+				if (region == 1 || region == 14 )
+				{	
+					tmax = tconf.approx_u3t3;
+				    tmin = tconf.approx_u3t3r;
+				}
+				else
+				{	
+					tmax = tconf.approx_u3t1;
+				    tmin = tconf.approx_u3t1r;
+				}
+			}
+			else if (tconf.unary == 4)
+			{
+				if (region == 1 || region == 14 )
+				{	
+					tmax = tconf.approx_u4t3;
+					tmin = tconf.approx_u4t3r;
+				}
+				else
+				{	
+					tmax = tconf.approx_u4t1;
+					tmin = tconf.approx_u4t1r;
+				}
 		}
 	
 			
@@ -1108,7 +1125,7 @@ public class ContactManager {
 	 * A: angular
 	 * 24: test the space area 2 or 4 of the angular rectangle, whether it touches the region of the conf
 	 * 
-	 * fixed April 4
+	 * fixed April 4 , correct April 5
 	 */
 	private static int testVertexR_A24(final Configuration conf,
 			final Configuration tconf, int region) {
@@ -1134,16 +1151,33 @@ public class ContactManager {
 			{
 			tmax = tconf.getCore_right();
 			tmin = tconf.getDiagonal_right();
-		} else 
-			if(tconf.unary == 3 | tconf.unary == 4)
+		} else
+			if (tconf.unary == 3)
 			{
-				tmax = tconf.fullRec;
-				if (region == 2 | region == 23)
-					tmin = tconf.approx_u3t4;
+				if (region == 2 || region == 23 )
+				{	
+					tmax = tconf.approx_u3t4;
+				    tmin = tconf.approx_u3t4r;
+				}
 				else
-					tmin = tconf.approx_u3t2;
+				{	
+					tmax = tconf.approx_u3t2;
+				    tmin = tconf.approx_u3t2r;
+				}
 			}
-
+			else if (tconf.unary == 4)
+			{
+				if (region == 2 || region == 23 )
+				{	
+					tmax = tconf.approx_u4t4;
+					tmin = tconf.approx_u4t4r;
+				}
+				else
+				{	
+					tmax = tconf.approx_u4t2;
+					tmin = tconf.approx_u4t2r;
+				}
+		}
 		MyPolygon _region = new MyPolygon();
 
 		_region = max;
@@ -1224,6 +1258,7 @@ public class ContactManager {
   * */
 	private static int testFreeRegion13(final Configuration conf,
 			final Configuration tconf, int region) {
+		 
 		int result = 0;
 		MyPolygon min = new MyPolygon();
 		MyPolygon max = new MyPolygon();
@@ -1235,38 +1270,71 @@ public class ContactManager {
 			 * can not represent the max area using tiny diagonal. we use the
 			 * region
 			 */
-			min = conf.getCore_right();
+			min = conf.core_right;
 			max = conf.getRegion(region);
-		} else 
-			if (conf.unary == 2) {
-				min = conf.getDiagonal_left();
-			if (region == 1)
-				max = conf.getCore_left1();
-			else
-				max = conf.getCore_left3();
 		}
+		else 
+			if (conf.unary == 2)
+			{
+				min = conf.diagonal_left;
+				//4.5 comment: max should be trapezoid
+				max = (region == 1)? conf.core_left1:conf.core_left3;
+	
+			}	
+			else 
+				if (conf.unary == 3)
+				{
+					max = (region == 1)?conf.approx_u3t1:conf.approx_u3t3;
+				    min = (region == 1)?conf.approx_u3t1r:conf.approx_u3t3r;
+				}
+				else
+					if(conf.unary == 4)
+					{
+						max = (region == 1)?conf.approx_u4t1:conf.approx_u4t3;
+					    min = (region == 1)?conf.approx_u4t1r:conf.approx_u4t3r;
+					}
+		
 
 		if (tconf.unary == 1) 
 		{
-			tmin = tconf.getCore_right();
-			tmax = tconf.getDiagonal_right();
-		} else if
-		  (tconf.unary == 2)
-		{
-			  tmin = tconf.getDiagonal_left();
-     	if (region == 3)
-				tmax = tconf.getCore_left1();
-			else
-				tmax = tconf.getCore_left3();
-		}
+			tmin = tconf.core_right;
+			// because max is a region, we can still use the diagonal here
+			tmax = tconf.diagonal_right;
+		} else 
+		     if
+		     (tconf.unary == 2)
+		     {
+		    	 tmin = tconf.diagonal_left;
+		    	 	if (region == 3)
+		    	 		tmax = tconf.core_left1;
+		    	 	else
+		    	 		tmax = tconf.core_left3;
+		     } 
+		     else
+		    	 if
+		    	 (tconf.unary == 3)
+		    	 {
+		 			tmax = (region == 1)?tconf.approx_u3t3:conf.approx_u3t1;
+				    tmin = (region == 1)?tconf.approx_u3t3r:tconf.approx_u3t1r;
+		    	 } 
+		    	 else
+		    		 if
+		    		 (tconf.unary == 4)
+			    	 {
+			 			tmax = (region == 1)?tconf.approx_u4t3:tconf.approx_u4t1;
+					    tmin = (region == 1)?tconf.approx_u4t3r:tconf.approx_u4t1r;
+			    	 } 
 
 		/* pay attention to touch relationship */
 		MyPolygon _region = new MyPolygon();
 
+		//TODO edit to here...
+		
 		if (conf.unary == 1)
 			_region = conf.getRegion(region);
 		else if (conf.unary == 2)
 			_region = conf.getRegionLarge(region);
+		
 
 		// Debug.echo(null,conf.getMbr(),min,max,tconf.getMbr(),tmin,tmax," out ",testPotentialContact(min,max,tmin,tmax));
 

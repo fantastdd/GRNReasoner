@@ -10,15 +10,15 @@ import common.MyPolygon;
 
 public class Configuration {
 	
-private int angular;
-private HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
-private HashMap<Integer,Contact> contact_map = new HashMap<Integer,Contact>();
-private MyPolygon core_left = new MyPolygon();
-private MyPolygon core_left1 = new MyPolygon();
-private MyPolygon core_left3 = new MyPolygon();
-private MyPolygon core_right = new MyPolygon();
-private MyPolygon core_right2 = new MyPolygon();
-private MyPolygon core_right4 = new MyPolygon();
+public int angular;
+public HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
+public HashMap<Integer,Contact> contact_map = new HashMap<Integer,Contact>();
+public MyPolygon core_left = new MyPolygon();
+public MyPolygon core_left1 = new MyPolygon();
+public MyPolygon core_left3 = new MyPolygon();
+public MyPolygon core_right = new MyPolygon();
+public MyPolygon core_right2 = new MyPolygon();
+public MyPolygon core_right4 = new MyPolygon();
 
 // approx_u3t3 is the approx maximum space of a fat right leaning rectangle. 
 public MyPolygon approx_u3t3 = new MyPolygon();
@@ -26,50 +26,63 @@ public MyPolygon approx_u3t2 = new MyPolygon();
 public MyPolygon approx_u3t1 = new MyPolygon();
 public MyPolygon approx_u3t4 = new MyPolygon();
 
+// approx_u3t3r is the remaining part of the approx_u3t3 region 
+public MyPolygon approx_u3t3r = new MyPolygon();
+public MyPolygon approx_u3t2r = new MyPolygon();
+public MyPolygon approx_u3t1r = new MyPolygon();
+public MyPolygon approx_u3t4r = new MyPolygon();
+
 //approx_left is the approx maximum space of a fat left leaning rectangle. 
 public MyPolygon approx_u4t3 = new MyPolygon();
 public MyPolygon approx_u4t2 = new MyPolygon();
 public MyPolygon approx_u4t1 = new MyPolygon();
 public MyPolygon approx_u4t4 = new MyPolygon();
 
-private MyPolygon diagonal_left = new MyPolygon();
-private MyPolygon diagonal_right = new MyPolygon();
+//approx_u4t3r is the remaining part of the approx_u4t3 region 
+public MyPolygon approx_u4t3r = new MyPolygon();
+public MyPolygon approx_u4t2r = new MyPolygon();
+public MyPolygon approx_u4t1r = new MyPolygon();
+public MyPolygon approx_u4t4r = new MyPolygon();
+
+
+public MyPolygon diagonal_left = new MyPolygon();
+public MyPolygon diagonal_right = new MyPolygon();
 
 public MyPolygon fullRec = new MyPolygon();
-private boolean edge = false;
+public boolean edge = false;
 public int height;
 public int width;
 public int hheight = height/2;
 public int hwdith = width/2;
 public int limit_horizontal;
 public int limit_vertical;
-private MBR mbr;
-private LinkedList<Neighbor> neighbors = new LinkedList<Neighbor>();
-private LinkedList<MBR> overlapping_mbrs = new  LinkedList<MBR>();
-private int[] permit_regions;
+public MBR mbr;
+public LinkedList<Neighbor> neighbors = new LinkedList<Neighbor>();
+public LinkedList<MBR> overlapping_mbrs = new  LinkedList<MBR>();
+public int[] permit_regions;
 
-private LinkedList<Point> points1 = new LinkedList<Point>();
-private LinkedList<Point> points11 = new LinkedList<Point>();
-private LinkedList<Point> points2 = new LinkedList<Point>();
-private LinkedList<Point> points21 = new LinkedList<Point>();
+public LinkedList<Point> points1 = new LinkedList<Point>();
+public LinkedList<Point> points11 = new LinkedList<Point>();
+public LinkedList<Point> points2 = new LinkedList<Point>();
+public LinkedList<Point> points21 = new LinkedList<Point>();
 
 
-private LinkedList<Point> points3 = new LinkedList<Point>();
-private LinkedList<Point> points31 = new LinkedList<Point>();
+public LinkedList<Point> points3 = new LinkedList<Point>();
+public LinkedList<Point> points31 = new LinkedList<Point>();
 /* store all the points that potentially contact with the actual shape*/
-private LinkedList<Point> points4 = new LinkedList<Point>();
+public LinkedList<Point> points4 = new LinkedList<Point>();
 /* store all the points that contact with the actual shape*/
-private LinkedList<Point> points41 = new LinkedList<Point>();
+public LinkedList<Point> points41 = new LinkedList<Point>();
 
-private MyPolygon triangle1 = new MyPolygon();
-private MyPolygon triangle11 = new MyPolygon();
+public MyPolygon triangle1 = new MyPolygon();
+public MyPolygon triangle11 = new MyPolygon();
 
-private MyPolygon triangle2 = new MyPolygon();
-private MyPolygon triangle22 = new MyPolygon();
-private MyPolygon triangle3 = new MyPolygon();
-private MyPolygon triangle33 = new MyPolygon();
-private MyPolygon triangle4 =  new MyPolygon();
-private MyPolygon triangle44 =  new MyPolygon();
+public MyPolygon triangle2 = new MyPolygon();
+public MyPolygon triangle22 = new MyPolygon();
+public MyPolygon triangle3 = new MyPolygon();
+public MyPolygon triangle33 = new MyPolygon();
+public MyPolygon triangle4 =  new MyPolygon();
+public MyPolygon triangle44 =  new MyPolygon();
 
 public int unary = -1;//0 = regular, 1 = slim lean to right, 2 = slim lean to left, 3 = fat lean to right, 4 = fat lean to left ,   -1 = not initialized, -2 = completed.
 
@@ -174,7 +187,7 @@ public void configureRegions()
     	 limit_horizontal = width/2 - (int) Math.sqrt(  (width/2)*(width/2) - (height/2) * (height/2) );
     }
 
-   triangle4.addPoint( x +  width -  limit_horizontal, y +  height);
+	triangle4.addPoint( x +  width -  limit_horizontal, y +  height);
 	triangle4.addPoint( x +  width, y +  height);
 	triangle4.addPoint( x +  width, y +  height -  limit_vertical);
     
@@ -214,7 +227,7 @@ public void configureRegions()
 	core_right.addPoint( x +  width -  limit_horizontal,  y);
 	
 	
-	core_right2.addPoint( x,  y +  height -  limit_vertical);
+/*	core_right2.addPoint( x,  y +  height -  limit_vertical);
 	core_right2.addPoint(( x +  limit_horizontal+ x)/2, ( y +  height +  y +  height -  limit_vertical)/2);
 	core_right2.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
 	core_right2.addPoint( x +  width -  limit_horizontal,  y);
@@ -224,8 +237,19 @@ public void configureRegions()
 	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
 	core_right4.addPoint( x +  limit_horizontal,  y +  height);
 	core_right4.addPoint( x +  width,  y +  limit_vertical);
-	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);
+	core_right4.addPoint(( x +  width +  x +  width -  limit_horizontal)/2, ( y +  limit_vertical+ y)/2);*/
 	
+	core_right2.addPoint( x,  y +  height -  limit_vertical);
+	core_right2.addPoint(x , y + height);
+	core_right2.addPoint( x +  width , y);
+	core_right2.addPoint( x +  width -  limit_horizontal,  y);
+	
+	
+  	
+	core_right4.addPoint( x , y + height);
+	core_right4.addPoint( x +  limit_horizontal,  y +  height);
+	core_right4.addPoint( x +  width,  y +  limit_vertical);
+	core_right4.addPoint( x +  width, y);
 	
 
 	diagonal_right.addPoint( x,  y +  height);
@@ -238,7 +262,7 @@ public void configureRegions()
 	core_left.addPoint( x +  width -  limit_horizontal,  y +  height);
 	core_left.addPoint( x +  width,  y +  height -  limit_vertical);
 	
-	core_left1.addPoint( x +  limit_horizontal,  y);
+/*	core_left1.addPoint( x +  limit_horizontal,  y);
 	core_left1.addPoint(( x +  x +  limit_horizontal)/2, ( y +  limit_vertical +  y)/2);
 	core_left1.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);
 	core_left1.addPoint( x +  width,  y +  height -  limit_vertical);
@@ -246,7 +270,19 @@ public void configureRegions()
 	core_left3.addPoint(( x +  x +  limit_horizontal)/2, ( y +  limit_vertical +  y)/2);
 	core_left3.addPoint( x,  y +  limit_vertical);
 	core_left3.addPoint( x +  width -  limit_horizontal,  y +  height);
-	core_left3.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);
+	core_left3.addPoint(( x +  width -  limit_horizontal+ x +  width)/2, ( y +  height+ y +  height -  limit_vertical)/2);*/
+	
+	core_left1.addPoint( x +  limit_horizontal,  y);
+	core_left1.addPoint( x , y);
+	core_left1.addPoint( x + width , y + height);
+	core_left1.addPoint( x +  width,  y +  height -  limit_vertical);
+	
+	
+	core_left3.addPoint(x,y);
+	core_left3.addPoint( x, y +  limit_vertical);
+	core_left3.addPoint( x +  width -  limit_horizontal,  y +  height);
+	core_left3.addPoint( x +  width,  y +  height);
+	
 	
 	diagonal_left.addPoint( x +  width,  y +  height);
 	diagonal_left.addPoint( x , y);
@@ -268,6 +304,29 @@ public void configureRegions()
 	approx_u3t2.addPoint(x , y );
 	approx_u3t2.addPoint(x , y + limit_vertical);
 	
+	approx_u3t3r.addPoint(x, y);
+	approx_u3t3r.addPoint(x + limit_horizontal , y + height);
+	approx_u3t3r.addPoint(x + width, y + height);
+	approx_u3t3r.addPoint(x + width , y);
+	
+	approx_u3t4r.addPoint(x , y  + height);
+	approx_u3t4r.addPoint(x + width , y + height - limit_vertical);
+	approx_u3t4r.addPoint(x + width , y);
+	approx_u3t4r.addPoint(x , y);
+	
+	
+	approx_u3t1r.addPoint(x + width ,  y + height);
+	approx_u3t1r.addPoint(x + width - limit_horizontal , y);
+	approx_u3t1r.addPoint(x , y);
+	approx_u3t1r.addPoint(x + width , y);
+	
+	
+	
+	approx_u3t2r.addPoint(x + width ,  y);
+	approx_u3t2r.addPoint(x , y + limit_vertical);
+	approx_u3t2r.addPoint(x + width , y);
+	approx_u3t2r.addPoint(x + width ,  y + height);
+	
 	
 	
 	approx_u4t3.addPoint(x, y + height - limit_vertical);
@@ -285,6 +344,33 @@ public void configureRegions()
 	approx_u4t2.addPoint(x + limit_horizontal ,  y);
 	approx_u4t2.addPoint(x , y );
 	approx_u4t2.addPoint(x , y + height);
+	
+	
+	approx_u4t3r.addPoint(x, y + height - limit_vertical);
+	approx_u4t3r.addPoint(x + width , y + height);
+	approx_u4t3r.addPoint(x + width , y);
+	approx_u4t3r.addPoint(x , y );
+	
+	
+	approx_u4t4r.addPoint(x + width - limit_horizontal , y  + height);
+	approx_u4t4r.addPoint(x + width , y);
+	approx_u4t4r.addPoint(x , y);
+	approx_u4t4r.addPoint(x , y + height);
+	
+	
+	
+	approx_u4t1r.addPoint(x + width ,  y + limit_vertical);
+	approx_u4t1r.addPoint(x  , y);
+	approx_u4t1r.addPoint(x  , y + height);
+	approx_u4t1r.addPoint(x + width , y + height);
+	
+	approx_u4t2r.addPoint(x + limit_horizontal ,  y);
+	approx_u4t2r.addPoint(x , y + height);
+	approx_u4t2r.addPoint(x + width , y + height);
+	approx_u4t2r.addPoint(x + width, y );
+	
+	
+	
 	
 	fullRec.addPoint(x, y);
 	fullRec.addPoint(x, y + height);
