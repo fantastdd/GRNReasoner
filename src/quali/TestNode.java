@@ -255,7 +255,8 @@ public void update(Configuration newlyUpdatedConf)
 		  {
 	    		Contact contact =  ContactManager.getPairContact(newlyUpdatedConf,neighbor_conf,WorldinVision.gap);
 	    		neighbor_contactMap.put(mbr, contact);	
-	    	     //System.out.println( neighbor_mbrid +  " updates   the contact map using  " + mbr + "    " + newlyUpdatedConf.getContact_map().get(neighbor_mbrid) + " on  " + contact);
+	    	    /* System.out.println( neighbor_mbrid +  " updates   the contact map using  " + mbr + "    " + newlyUpdatedConf.getContact_map().get(neighbor_mbrid) + " on  " + contact
+	    	    		 + contact.points[0]);*/
 	    }	  
 	    	
 	

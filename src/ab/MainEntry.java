@@ -38,7 +38,7 @@ public class MainEntry {
 				wiv.buildWorld(worldInVision);
 				 wiv.showWorldinVision();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
+
 				e.printStackTrace();
 			}
 			

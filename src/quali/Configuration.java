@@ -14,15 +14,28 @@ private int angular;
 private HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
 private HashMap<Integer,Contact> contact_map = new HashMap<Integer,Contact>();
 private MyPolygon core_left = new MyPolygon();
-
 private MyPolygon core_left1 = new MyPolygon();
 private MyPolygon core_left3 = new MyPolygon();
 private MyPolygon core_right = new MyPolygon();
 private MyPolygon core_right2 = new MyPolygon();
 private MyPolygon core_right4 = new MyPolygon();
 
+// approx_u3t3 is the approx maximum space of a fat right leaning rectangle. 
+public MyPolygon approx_u3t3 = new MyPolygon();
+public MyPolygon approx_u3t2 = new MyPolygon();
+public MyPolygon approx_u3t1 = new MyPolygon();
+public MyPolygon approx_u3t4 = new MyPolygon();
+
+//approx_left is the approx maximum space of a fat left leaning rectangle. 
+public MyPolygon approx_u4t3 = new MyPolygon();
+public MyPolygon approx_u4t2 = new MyPolygon();
+public MyPolygon approx_u4t1 = new MyPolygon();
+public MyPolygon approx_u4t4 = new MyPolygon();
+
 private MyPolygon diagonal_left = new MyPolygon();
 private MyPolygon diagonal_right = new MyPolygon();
+
+public MyPolygon fullRec = new MyPolygon();
 private boolean edge = false;
 public int height;
 public int width;
@@ -58,7 +71,7 @@ private MyPolygon triangle33 = new MyPolygon();
 private MyPolygon triangle4 =  new MyPolygon();
 private MyPolygon triangle44 =  new MyPolygon();
 
-public int unary = -1;//0 = regular, 1 = lean to right, 2 = lean to left, -1 = not initialized, -2 = completed.
+public int unary = -1;//0 = regular, 1 = slim lean to right, 2 = slim lean to left, 3 = fat lean to right, 4 = fat lean to left ,   -1 = not initialized, -2 = completed.
 
 public boolean v1 = false;
 public boolean v2 = false;
@@ -83,7 +96,7 @@ public boolean isNowSupport(final Configuration tconf )
    
   if(!tconf.getMbr().equals(mbr))
   { 
-	//  System.out.println(tconf.getMbr() + "  " + mbr);
+		
 	Contact contact =  ContactManager.getPairContact(tconf, this , WorldinVision.gap);
 	
 	if(this.isEdge())
@@ -114,9 +127,9 @@ public boolean isNowSupport(final Configuration tconf )
 				}
 			
 			result = left_support && right_support;
-	     //TODO
-			/*		if(unary == 0)
-				result |= weaksupport;*/
+
+					if(unary == 0)
+				result |= weaksupport;
 	}
   }
 	return result;
@@ -161,7 +174,7 @@ public void configureRegions()
     	 limit_horizontal = width/2 - (int) Math.sqrt(  (width/2)*(width/2) - (height/2) * (height/2) );
     }
 
- triangle4.addPoint( x +  width -  limit_horizontal, y +  height);
+   triangle4.addPoint( x +  width -  limit_horizontal, y +  height);
 	triangle4.addPoint( x +  width, y +  height);
 	triangle4.addPoint( x +  width, y +  height -  limit_vertical);
     
@@ -237,6 +250,48 @@ public void configureRegions()
 	
 	diagonal_left.addPoint( x +  width,  y +  height);
 	diagonal_left.addPoint( x , y);
+	
+	
+	approx_u3t3.addPoint(x, y);
+	approx_u3t3.addPoint(x, y + height);
+	approx_u3t3.addPoint(x + limit_horizontal , y + height);
+	
+	approx_u3t4.addPoint(x , y  + height);
+	approx_u3t4.addPoint(x + width , y + height);
+	approx_u3t4.addPoint(x + width , y + height - limit_vertical);
+	
+	approx_u3t1.addPoint(x + width ,  y + height);
+	approx_u3t1.addPoint(x + width, y );
+	approx_u3t1.addPoint(x + width - limit_horizontal , y);
+	
+	approx_u3t2.addPoint(x + width ,  y);
+	approx_u3t2.addPoint(x , y );
+	approx_u3t2.addPoint(x , y + limit_vertical);
+	
+	
+	
+	approx_u4t3.addPoint(x, y + height - limit_vertical);
+	approx_u4t3.addPoint(x, y + height);
+	approx_u4t3.addPoint(x + width , y + height);
+	
+	approx_u4t4.addPoint(x + width - limit_horizontal , y  + height);
+	approx_u4t4.addPoint(x + width , y + height);
+	approx_u4t4.addPoint(x + width , y);
+	
+	approx_u4t1.addPoint(x + width ,  y + limit_vertical);
+	approx_u4t1.addPoint(x + width, y );
+	approx_u4t1.addPoint(x  , y);
+	
+	approx_u4t2.addPoint(x + limit_horizontal ,  y);
+	approx_u4t2.addPoint(x , y );
+	approx_u4t2.addPoint(x , y + height);
+	
+	fullRec.addPoint(x, y);
+	fullRec.addPoint(x, y + height);
+	fullRec.addPoint(x + width, y + height);
+	fullRec.addPoint(x + width, y);
+	
+	
 	
 	vertices[0] = new Point( x +  width,  y);
 	vertices[1]  = new Point( x, y);
@@ -934,9 +989,9 @@ public boolean isSupport() {
 				}
 			}
 			result = left_support && right_support;
-			//TODO
-		/*	if(unary == 0)
-				result |= weaksupport;*/
+
+			if(unary == 0)
+				result |= weaksupport;
 	}
 	return result;
 }
