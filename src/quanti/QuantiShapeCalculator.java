@@ -7,6 +7,7 @@ import java.awt.geom.Line2D;
 import java.util.Collections;
 import java.util.LinkedList;
 
+import quali.Configuration;
 import quali.ShapeCalculator;
 
 import common.Edge;
@@ -155,6 +156,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 	 }
 	/* including touch or not.   touched/intersected, including "contain" relationship
 	 * touch = true: if touch/overlapping/contertained, return true.
+	 * TODO Important: when one of the pologons is a single point, the isIntersectedWCA(p1,p2) will return true;
 	 * */
 	 public static boolean isIntersected(Polygon p1, Polygon p2,boolean touch)
 	 {
@@ -164,6 +166,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		 if(touch)
 		 {			
 			result = /* overlapping */!isIntersectedWCA(p1,p2).isEmpty(); 
+		
 		 }
 		 
 		 else
@@ -194,16 +197,17 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 	           y[0] = p1.ypoints[i];
 				if(p2.contains(new Point(p1.xpoints[i],p1.ypoints[i])) 
 						 //check boundary
-						||  !isIntersectedWCA(p2, new Polygon(x,y,1)).isEmpty())
+						|| (p2.npoints > 1 &&  !isIntersectedWCA(p2, new Polygon(x,y,1)).isEmpty() ))
 				{   
-				   /*System.out.println("go into this loop");
+				 /*  System.out.println("go into this loop");
 				    System.out.println(p2.getBounds());
-				    System.out.println(p1.xpoints[i] + "    " + p1.ypoints[i]);*/
-					//contained = true;
+				    System.out.println(p1.xpoints[i] + "    " + p1.ypoints[i]);
+				    System.out.println(!isIntersectedWCA(p2, new Polygon(x,y,1)).isEmpty()  + "    " +  isIntersectedWCA(p2, new Polygon(x,y,1)));*/
+					//contained = true; 
 					count++;
 				}
 			}
-			contained = (count == p1.npoints)?true : false;
+			contained = (count == p1.npoints && p1.npoints > 0)?true : false;
 			count = 0;
 			/* containing relationship*/
 			for(int i  = 0; i < p2.npoints;i++)
@@ -213,17 +217,49 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		           int[] y = new int[1];
 		           y[0] = p2.ypoints[i];
 				if(p1.contains(new Point(p2.xpoints[i],p2.ypoints[i]))
-						||  !isIntersectedWCA(p1, new Polygon(x,y,1)).isEmpty())
-				    count ++;
+						||  (p1.npoints > 1 && !isIntersectedWCA(p1, new Polygon(x,y,1)).isEmpty()))
+				{	   
+					 /*  System.out.println("go into containing loop");
+					    System.out.println(p2.getBounds());
+					    System.out.println(p1.xpoints[i] + "    " + p1.ypoints[i]);
+					    System.out.println(!isIntersectedWCA(p2, new Polygon(x,y,1)).isEmpty()  + "    " +  isIntersectedWCA(p2, new Polygon(x,y,1)));*/
+				
+					count ++;
+				
+				}
 			}
-			containing = (count == p2.npoints)?true : false;
+			containing = (count == p2.npoints && p2.npoints > 0)?true : false;
 			//System.out.println(result + "   " + contained + "   " + containing);
 			result |= contained || containing;
-          		 
+		
 		 return result;
 
 	 }
-	
+	 
+	 // TODO fix it later 
+	 public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)//, int region)
+	 {
+		 boolean result = false;
+		 if (conf.unary < 3 )
+		 {
+		    if(tconf.unary < 3)
+		    		result = (conf.limit_horizontal/conf.limit_vertical == tconf.limit_horizontal/tconf.limit_vertical);
+		    else 
+		    	if (tconf.unary == 3)
+		    {
+		    	int d = conf.limit_vertical / conf.limit_horizontal;
+		    	int td1 =  tconf.limit_vertical / tconf.width;
+		    	int td2 = tconf.limit_vertical/(tconf.width - tconf.limit_horizontal);
+		    	
+		    	 return false;
+		    }
+		 }
+		 else
+			 //if(tconf.unary > 3)
+                return true;
+		return result; 
+	 }
+	 
 	 public static LinkedList<Point> isIntersectedWithReasoning(Polygon p1, Polygon p2, double gap)
 	 {
 		 LinkedList<Point> points = new LinkedList<Point>();

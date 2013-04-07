@@ -9,8 +9,10 @@ import quali.util.StabilityConfigurationOutput;
 
 import ab.WorldinVision;
 
+
 public class MBRReasonerAdvance {
-     
+	public int  global_counter = 0;
+	public int formLocal_counter = 0;
 	static
 	{
 		try {
@@ -33,6 +35,7 @@ public class MBRReasonerAdvance {
 		{
 		    //output the solutions	
 			 System.out.println("solution is found:   \n" + node);
+			 System.out.println(" the number of iterations : " + global_counter + "  filtered nodes:   " + formLocal_counter);
 			 //System.out.println(StabilityConfigurationOutput.getStabilityReport(node));
 			return true;
 		}
@@ -48,14 +51,17 @@ public class MBRReasonerAdvance {
 		    	for(TestNode refinement: refinements)
 		    	{	
 		    	//	// System.out.println(" refine the mbr conf : " +  node.current_id);
+		    		global_counter++;
 		    		boolean result = search(refinement);
-		    	//	// System.out.println(" result  : " + result + "   id: " + counter);
+		    	
+		     //System.out.println(" result  : " + refinement.current_id + refinement);
 		    		if(result) 
 		    			return true;
 		    	}
 		    		
 		    }
 		}
+	
 		return false;
 		
 	}
@@ -216,9 +222,11 @@ public class MBRReasonerAdvance {
     	
         // stability_id = the id of the mbr that waiting to be tested
     	//	current_id = the maximum id of the instantiated confs.
-        TestNode _node = null;    		 
+    	  TestNode _node = null;    		 
+/*      
         Configuration   _newUpdatedConf = newUpdatedConf.clone();
         _newUpdatedConf.setContact_map(contactmap);
+        
     outerloop:	for (int i = node.stability_id; i <= node.current_id; i++)
 				{
 						    		 // Get the current test node.
@@ -247,7 +255,7 @@ public class MBRReasonerAdvance {
 						             else 
 						             {
 						            	 // test the testConf with all instantiated nodes
-						             	  for (Neighbor neighbor : neighbors)
+						             innerloop:	  for (Neighbor neighbor : neighbors)
 						             	  {
                                                Configuration curConf;
                                                if (neighbor.getMbr().getId() == newUpdatedConf.getMbr().getId())
@@ -258,21 +266,33 @@ public class MBRReasonerAdvance {
                                                	if( nid_curConf > testConf.lastValidNeighborId)
                                                	{	
                                                	//   System.out.println("  entre this block ");
+                                               		//_node = null;
                                                		break outerloop;
                                                	
                                                	}
-                                               	else 
+                                               	else  if (testConf.lastTestNeighborId [nid_curConf] == 1 ||  curConf.getMbr().getId() > node.current_id)
+                                               	{
+                                                    System.out.println("  curConf  " + curConf.getMbr().getId() +"   " + curConf.toShortString() + "   node " + node.current_id);
+                                               			//print last test id
+                                               		for (int j = 0; j < testConf.lastTestNeighborId.length ; j ++)
+                                               		System.out.println(" testConf.lastTestNeighborId  " + j + "   " + testConf.lastTestNeighborId[j]);
+                                               		System.out.println( "   testConf   " + testConf.toShortString() +  "   curConf  " + curConf.toShortString());
+                                               		   continue;
+                                               	}
+                                               	else
                                                	{
                                                		  boolean support = testConf.isNowSupport(curConf);
+                                               		 // testConf.lastTestNeighborId [nid_curConf] = 1;
+                                               		  //System.out.println(" last test neighbor id:  " + nid_curConf );
                                                		  if(!support && nid_curConf == testConf.lastValidNeighborId)   
 							                                 //all tested and no support
                                                		  {  
-                                               		
+                                               		     _node = null;
                                                			  break outerloop;
                                                		  }
 							                          else
 					                                   {
-					                            	         _node = node.clone();
+					                            	        _node = node.clone();
 					                                         //update profiles in the older ones. 
 					                                         if(support)
 					                                         {
@@ -293,7 +313,15 @@ public class MBRReasonerAdvance {
 	            _node.update( _newUpdatedConf);
 	        	//System.out.println("  updates the conf " + _newUpdatedConf +  "\n node description   "  +  _node);                      
     		}
-	 
+    		else
+    			formLocal_counter ++;*/
+	    //   System.out.println(node + "    " + _node);
+    	
+  //only return this when above codes commented
+    	_node = node.clone();
+      Configuration   _newUpdatedConf = newUpdatedConf.clone();
+        _newUpdatedConf.setContact_map(contactmap);
+        _node.update(_newUpdatedConf);
     		return _node;
     }
 

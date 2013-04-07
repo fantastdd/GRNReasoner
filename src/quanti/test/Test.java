@@ -1,8 +1,9 @@
 package quanti.test;
-import java.awt.Polygon;
+import java.awt.Point;
+
 import quanti.QuantiShapeCalculator;
 
-import main.ScenarioPanelPoly;
+import common.MyPolygon;
 
 
 public class Test {
@@ -16,12 +17,15 @@ public class Test {
 	public static void main(String args[])
 	{
 		
-		int a = 1;
+/*		int a = 1;
 		int b = 2;
 		if(a == 1 ||++b == 3)
 		{}
-		System.out.println(b);
-/*		MyPolygon pl = new MyPolygon(new Point(50,50),new Point(60,50),new Point(60,60),new Point(50,60));
+		System.out.println(b);*/
+		MyPolygon pl1 = new MyPolygon(new Point(50,50),new Point(60,50),new Point(60,60),new Point(50,60));
+		MyPolygon pl2 = new MyPolygon();
+	    System.out.println(QuantiShapeCalculator.isIntersected(pl1, pl2, true ));
+		/*		MyPolygon pl = new MyPolygon(new Point(50,50),new Point(60,50),new Point(60,60),new Point(50,60));
 
 		
 		MyPolygon pl1 = new MyPolygon(new Point(60,50),new Point(70,50),new Point(70,60),new Point(60,60));

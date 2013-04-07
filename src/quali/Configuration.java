@@ -97,7 +97,7 @@ public int x;
 public int y;
 
 
-public int lastTestNeighborId = -1;
+public int[] lastTestNeighborId;
 
 public int lastValidNeighborId = -2; //id = -2, touches all others -1, no neighbors
 //TODO write a isNowSupport method in configuration
@@ -132,7 +132,7 @@ public boolean isNowSupport(final Configuration tconf )
 						right_support = true;
 					 }
 					else
-						if(contact.getTangential_area() == 34)
+						if(contact.getTangential_area() == 34 || (unary != 0 && contact.getTangential_area() == 23))
 						{
 							left_support = true;
 							right_support = true;
@@ -1029,7 +1029,7 @@ public int getY() {
 public boolean isCompleted()
 {
 	// the next is -2...
-	boolean result = (unary == 2)||isEdge();
+	boolean result = (unary == 4)||isEdge();
      return result;	
 }
 
@@ -1067,7 +1067,7 @@ public boolean isSupport() {
 							right_support = true;
 						 }
 						else
-							if(contact.getTangential_area() == 34)
+							if(contact.getTangential_area() == 34  || (unary != 0 && contact.getTangential_area() == 23))
 							{
 								left_support = true;
 								right_support = true;
@@ -1087,15 +1087,21 @@ public int nextInitialization()
 	
     if(!isEdge())
     {  
-    	unary = (unary + 1 > 3)?-2:++unary;
+    	unary = (unary + 1 > 4)?-2:++unary;
     	   if (unary == 1) // lean to right
     		   setPermit_regions(0,1,1,0);
     	   else if (unary == 2)
     		   setPermit_regions(0,1,0,1);
     	   else
-    		   setPermit_regions(0,0,0,0);
+    		   if(unary == 3)
+    			   setPermit_regions(1,0,1,0);
+    			   else
+    				   if(unary == 4)
+    					   setPermit_regions(1,0,0,1);
+    				   else
+    					   setPermit_regions(0,0,0,0);
 	}
- 
+   //System.out.println("   unary " + unary);
     	
       return unary;
 }
@@ -1163,10 +1169,16 @@ public String toString()
 	  result += " regular ";
   else
 	  if( unary == 1)
-	     result += " lean to right ";
+	     result += " slim lean to right ";
 	  else
 		  if(unary == 2)
-			  result += "lean to left";
+			  result += "slim lean to left";
+		  else
+			  if(unary == 3)
+				  result += "fat lean to right";
+			  else
+				  if(unary == 4)
+					  result += " fat lean to left";
 		  else if(unary == -2)
 			  result += " completed";
 		  else

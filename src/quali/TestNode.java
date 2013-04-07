@@ -129,13 +129,19 @@ public void initialize()
 	    // the mbr touches all others.
 	    if(conf.lastValidNeighborId == -2)
 	    	conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
-
+       if(conf.lastValidNeighborId >= 0)
+       {
+    	   conf.lastTestNeighborId = new int[conf.lastValidNeighborId + 1];
+    	   for (int j = 0 ; j < conf.lastTestNeighborId.length ; j ++)
+    		   conf.lastTestNeighborId[j] = 0;
+       }
 	    		
 	      
 
 	    
 	    
 	    //========================== Early Determination: Those who do not have neighbors from region 3 will be considered to be regular ======================
+	    //TODO change when gap applied
 	    {
 	          if(conf.lastValidNeighborId == -1 )
 	        	  conf.setEdge(true);
@@ -144,7 +150,7 @@ public void initialize()
 	        	  int count = 0;
 	        	  for (Neighbor neighbor : conf.getNeighbors())
 	        	  {
-	        		  if(neighbor.getNeighborType() == 3)
+	        		  if(neighbor.getNeighborType() == 3 ||( neighbor.getNeighborType() == 0 && (conf.y + conf.height) < neighbor.getMbr().getCenterY()) )
 	        			  count++;
 	        	  }
 	        	  if(count == 0)

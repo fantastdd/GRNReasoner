@@ -22,12 +22,12 @@ public class MainEntry {
 	   WorldinVision wiv = new WorldinVision();
 	   wiv.buildWorld(worldInVision);
 	   wiv.showWorldinVision();*/
-					
-			ScenarioIO sio = new ScenarioIO("l4");
+			long time = System.currentTimeMillis();
+			ScenarioIO sio = new ScenarioIO("l181");
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
-				scenarios = sio.load("l4");
+				scenarios = sio.load("l181");
 				LinkedList<MBR> s1 = scenarios.get(0);
 				LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 				for (MBR mbr : s1)
@@ -42,6 +42,6 @@ public class MainEntry {
 				e.printStackTrace();
 			}
 			
-		
+		System.out.println(" TIme Consumption:  " + (System.currentTimeMillis() - time ));
 	}
 }
