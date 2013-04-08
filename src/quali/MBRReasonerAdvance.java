@@ -199,8 +199,8 @@ public class MBRReasonerAdvance {
     	{
              MBR mbr_neighbor = neighbor.getMbr();
              Configuration conf_neighbor =  confs.lookup(mbr_neighbor);
-           //System.out.println( cconf.getMbr() + "   " + cconf.unary + conf_neighbor.getMbr() + "   " + conf_neighbor.unary);
-         	//   // System.out.println( cconf +  "  the neighbor type is   " + neighbor.getNeighborType());
+           //System.out.println( cconf.getMbr() + "   " + cconf.unary + conf_neighbor.getMbr() + "   " + conf_neighbor.unary +  "  the neighbor type is   " + neighbor.getNeighborType());
+
              if(neighbor.getNeighborType() == 0)
              {
             	
@@ -222,8 +222,10 @@ public class MBRReasonerAdvance {
     	
         // stability_id = the id of the mbr that waiting to be tested
     	//	current_id = the maximum id of the instantiated confs.
-    	  TestNode _node = null;    		 
-/*      
+    /*	  TestNode  _node = node.clone();
+    	  long time = System.currentTimeMillis();
+    	
+      
         Configuration   _newUpdatedConf = newUpdatedConf.clone();
         _newUpdatedConf.setContact_map(contactmap);
         
@@ -282,9 +284,13 @@ public class MBRReasonerAdvance {
                                                	else
                                                	{
                                                		  boolean support = testConf.isNowSupport(curConf);
-                                               		 // testConf.lastTestNeighborId [nid_curConf] = 1;
+                                               		  testConf.lastTestNeighborId [nid_curConf] = 1;
                                                		  //System.out.println(" last test neighbor id:  " + nid_curConf );
-                                               		  if(!support && nid_curConf == testConf.lastValidNeighborId)   
+                                               		  boolean completed = true;
+                                               		  for (int index = 0 ; index < testConf.lastTestNeighborId.length; index ++)
+                                               			  if(testConf.lastTestNeighborId[index] == 0)
+                                               				  completed = false;
+                                               		  if(!support &&completed)   
 							                                 //all tested and no support
                                                		  {  
                                                		     _node = null;
@@ -315,10 +321,10 @@ public class MBRReasonerAdvance {
     		}
     		else
     			formLocal_counter ++;*/
-	    //   System.out.println(node + "    " + _node);
+    	 // System.out.println(" form local stability consumption: "  +  (System.currentTimeMillis() - time ) );
     	
-  //only return this when above codes commented
-    	_node = node.clone();
+      //only return this when above codes commented
+    	TestNode _node = node.clone();
       Configuration   _newUpdatedConf = newUpdatedConf.clone();
         _newUpdatedConf.setContact_map(contactmap);
         _node.update(_newUpdatedConf);

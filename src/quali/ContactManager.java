@@ -180,6 +180,19 @@ public class ContactManager {
 				contact.setTangential_area(0);
 				contact.setType(0);
 			}
+			else if (_contact.getTangential_area() == 1) {
+				contact.setTangential_area(3);
+				contact.setType(1);
+			} else if (_contact.getTangential_area() == 2) {
+				contact.setTangential_area(4);
+				contact.setType(1);
+			} else if (_contact.getTangential_area() == 3) {
+				contact.setTangential_area(1);
+				contact.setType(1);
+			} else if (_contact.getTangential_area() == 4) {
+				contact.setTangential_area(2);
+				contact.setType(1);
+			}
 		} 
 		else
 
