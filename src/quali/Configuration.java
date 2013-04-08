@@ -1067,7 +1067,17 @@ public boolean isSupport() {
 							right_support = true;
 						 }
 						else
-							if(contact.getTangential_area() == 34  || (unary != 0 && contact.getTangential_area() == 23))
+							if(
+									
+								(unary == 0 &&contact.getTangential_area() == 34)  
+								  || ( (unary == 2|| unary == 4) && contact.getTangential_area() == 23)
+								//|| ( (unary == 2|| unary == 4) && contact.getTangential_area() == 34)
+								//|| ( (unary != 0) && (contact.getTangential_area() == 23 || contact.getTangential_area() == 34 ))
+							     || ( (unary != 0) && (contact.getTangential_area() == 34 ))
+								
+								)
+								
+							  
 							{
 								left_support = true;
 								right_support = true;

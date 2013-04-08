@@ -268,13 +268,19 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 			{
 					 if(tconf.unary < 3)
 					{
-						  int d = tconf.limit_vertical / tconf.limit_horizontal;
+						  	int d = tconf.limit_vertical / tconf.limit_horizontal;
 					    	int td1 =  ( conf.height - conf.limit_vertical) / conf.limit_horizontal;
 					    	int td2 = conf.height /conf.limit_horizontal;
 					    	if(d <= td2 && d >= td1)
 					    		  result = true;
-		            }else
-		            	return true;
+		            }
+					 else
+		            {
+                         	            	
+						 return true;
+		            	
+		            }
+		            	
 		           /* 	if (tconf.unary == 3)
 				    {
 				    	int d = conf.limit_vertical / conf.limit_horizontal;
