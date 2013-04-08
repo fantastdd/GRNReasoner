@@ -318,7 +318,7 @@ public void configureRegions()
 	approx_u3t1r.addPoint(x + width ,  y + height);
 	approx_u3t1r.addPoint(x + width - limit_horizontal , y);
 	approx_u3t1r.addPoint(x , y);
-	approx_u3t1r.addPoint(x + width , y);
+	approx_u3t1r.addPoint(x, y + height);
 	
 	
 	
@@ -1052,16 +1052,17 @@ public boolean isSupport() {
 			for(Integer mbr: this.contact_map.keySet())
 			{
 				Contact contact = this.contact_map.get(mbr);
+				int tangential_area = contact.getTangential_area();
 				//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 				if(contact.getType() == 1)
 				{
-					if(contact.getTangential_area() == 3)
+					if(tangential_area == 3 ||( tangential_area == 12 &&  ( (unary == 4)) ))
 						{
 						  weaksupport = true;
 						  left_support = true;
 						}
 					else
-						if(contact.getTangential_area() == 4)
+						if(tangential_area == 4 || (tangential_area == 14 &&  ( (unary == 3)) ) )
 						 {
 						    weaksupport = true;
 							right_support = true;
@@ -1069,11 +1070,11 @@ public boolean isSupport() {
 						else
 							if(
 									
-								(unary == 0 &&contact.getTangential_area() == 34)  
-								  || ( (unary == 2|| unary == 4) && contact.getTangential_area() == 23)
-								//|| ( (unary == 2|| unary == 4) && contact.getTangential_area() == 34)
+								(unary == 0 &&tangential_area == 34)  
+								  || ( (unary == 2|| unary == 4) && tangential_area == 23)
+								  || ( (unary == 1|| unary == 3) && tangential_area == 34)
 								//|| ( (unary != 0) && (contact.getTangential_area() == 23 || contact.getTangential_area() == 34 ))
-							     || ( (unary != 0) && (contact.getTangential_area() == 34 ))
+							    // || ( (unary != 0) && (contact.getTangential_area() == 34 ))
 								
 								)
 								
@@ -1164,6 +1165,10 @@ public String toShortString()
 			  result += "( lean to left )";
 		  else if(unary == -2)
 			  result += "( completed )";
+		  else if(unary == 3)
+			  result += " ( fat lean to right )";
+		  else if (unary == 4)
+			  result += " ( fat lean to left )" ;
 		  else
 			  result += "( not initialized )";
 

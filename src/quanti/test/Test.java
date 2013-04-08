@@ -1,9 +1,15 @@
 package quanti.test;
-import java.awt.Point;
+import io.ScenarioIO;
 
-import quanti.QuantiShapeCalculator;
+import java.awt.Rectangle;
+import java.io.IOException;
+import java.util.LinkedList;
 
-import common.MyPolygon;
+import quali.Configuration;
+import quali.Contact;
+import quali.ContactManager;
+import quali.MBR;
+import ab.WorldinVision;
 
 
 public class Test {
@@ -22,9 +28,9 @@ public class Test {
 		if(a == 1 ||++b == 3)
 		{}
 		System.out.println(b);*/
-		MyPolygon pl1 = new MyPolygon(new Point(50,50),new Point(60,50),new Point(60,60),new Point(50,60));
+		/*MyPolygon pl1 = new MyPolygon(new Point(50,50),new Point(60,50),new Point(60,60),new Point(50,60));
 		MyPolygon pl2 = new MyPolygon();
-	    System.out.println(QuantiShapeCalculator.isIntersected(pl1, pl2, true ));
+	    System.out.println(QuantiShapeCalculator.isIntersected(pl1, pl2, true ));*/
 		/*		MyPolygon pl = new MyPolygon(new Point(50,50),new Point(60,50),new Point(60,60),new Point(50,60));
 
 		
@@ -79,5 +85,36 @@ public class Test {
         ScenarioPanelPoly scenario = new ScenarioPanelPoly();
         scenario.run(p1,p2);
         System.out.println(QuantiShapeCalculator.isIntersected(p1, p2, true ));*/
+		
+		ScenarioIO sio = new ScenarioIO("l6c");
+
+		LinkedList<LinkedList<MBR>> scenarios;
+		try {
+			scenarios = sio.load("l6c");
+			LinkedList<MBR> s1 = scenarios.get(0);
+			LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
+			for (MBR mbr : s1)
+			{
+				worldInVision.add(mbr);
+			}
+			WorldinVision wiv = new WorldinVision();
+			wiv.buildWorld(worldInVision);
+			Configuration conf = new Configuration(wiv.mbrs.get(0));
+			conf.unary = 3;
+			Configuration tconf = new Configuration(wiv.mbrs.get(1));
+			tconf.unary = 3;
+			LinkedList<Contact> contacts = ContactManager.getContact(tconf, conf);
+            for(Contact contact : contacts )
+            {
+            	System.out.println(conf.toShortString() + "   " + tconf.toShortString() + "   " + contact);
+            	
+            } 
+			
+			wiv.showWorldinVision();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		
 	}
 }

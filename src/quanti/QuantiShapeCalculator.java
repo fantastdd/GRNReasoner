@@ -240,6 +240,8 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 	 public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)//, int region)
 	 {
 		 boolean result = false;
+		 // when to bounding boxes just touch each other, then there wont be an edge touch
+		 
 		 if (conf.unary < 3 )
 		 {
 		    if(tconf.unary < 3)
@@ -276,7 +278,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		            }
 					 else
 		            {
-                         	            	
+                         //TODO fixed later	
 						 return true;
 		            	
 		            }

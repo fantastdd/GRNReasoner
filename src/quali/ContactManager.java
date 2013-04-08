@@ -896,6 +896,7 @@ public class ContactManager {
 						int tr3 = testFreeRegion13(conf, tconf, 3);
 						int tr4 = testFreeRegion24(conf, tconf, 4);
 						boolean potentialEdgeTouch = 	QuantiShapeCalculator.potentialEdgeTouch(conf, tconf);
+						//System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);
 						//boolean non_touching = false;
 						if (tr1 == 2) {
 							Contact _contact = new Contact();
@@ -1276,7 +1277,7 @@ public class ContactManager {
 	    	 if
 	    	 (tconf.unary == 3)
 	    	 {
-	 			tmax = (region == 4)?tconf.approx_u3t2:conf.approx_u3t4;
+	 			tmax = (region == 4)?tconf.approx_u3t2:tconf.approx_u3t4;
 			    tmin = (region == 4)?tconf.approx_u3t2r:tconf.approx_u3t4r;
 	    	 } 
 	    	 else
@@ -1384,7 +1385,7 @@ public class ContactManager {
 		    	 if
 		    	 (tconf.unary == 3)
 		    	 {
-		 			tmax = (region == 1)?tconf.approx_u3t3:conf.approx_u3t1;
+		 			tmax = (region == 1)?tconf.approx_u3t3:tconf.approx_u3t1;
 				    tmin = (region == 1)?tconf.approx_u3t3r:tconf.approx_u3t1r;
 		    	 } 
 		    	 else
@@ -1414,18 +1415,22 @@ public class ContactManager {
 		 * tmin should not be in opposite region of test region. e.g. oppisite
 		 * region of 1 is 3
 		 */
-		if (QuantiShapeCalculator.isIntersected(tmin,
-				conf.getRegionLarge((region == 1 ? 3 : 1)), true)
-				|| QuantiShapeCalculator.isIntersected(min,
-						tconf.getRegionLarge(region), true))
+		//System.out.println(QuantiShapeCalculator.isIntersected(tmin,conf.getRegionLarge((region == 1 ? 3 : 1)), true) + "   " + QuantiShapeCalculator.isIntersected(min,tconf.getRegionLarge(region), true));
+		if (QuantiShapeCalculator.isIntersected(tmin,conf.getRegionLarge((region == 1 ? 3 : 1)), true)
+				|| QuantiShapeCalculator.isIntersected(min,tconf.getRegionLarge(region), true))
 			result = -1;
 
 		if (result != -1) {
+			
+			//System.out.println(tmax + "  " + _region);
+			
 			if (QuantiShapeCalculator.isIntersected(tmax, _region, true))
 			{
 				result = minmaxEvaluation(min, max, tmin, tmax);
+			
 
-			} else {
+			} else 
+			{
 				result = 0;
 			}
 		}
@@ -1450,6 +1455,8 @@ public class ContactManager {
 
 		// Debug.echo(null, " in ",
 		// max,tmax,QuantiShapeCalculator.isIntersected(max,tmax,true));
+		//System.out.println(max + "   " + tmax + "  " + QuantiShapeCalculator.isIntersected(max, tmax, true));
+		
 		if (!QuantiShapeCalculator.isIntersected(min, tmin, false))
 			min_disjoint = true;
 

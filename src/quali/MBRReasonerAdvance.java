@@ -177,6 +177,7 @@ public class MBRReasonerAdvance {
     		/*if (node.lookup(13).unary == 1 && node.lookup(14).unary == 1 && node.lookup(15).unary == 2 && node.lookup(16).unary == 4 && node.lookup(17).unary == 4
     				&& node.lookup(18).unary == 4 && node.lookup(19).unary == 4 && node.lookup(20).unary == 4)
     			System.out.println(" node completed, check stability \n" + node);*/
+    		//System.out.println(" node completed, check stability \n" + node);
     		
     		 for (Integer id : node.getConfs().keySet())
     		 {

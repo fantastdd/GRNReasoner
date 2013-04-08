@@ -11,7 +11,7 @@ import quali.MBRRegisterAdvance;
 import quali.TestNode;
 
 public class WorldinVision {
-  private LinkedList<MBR> mbrs = new LinkedList<MBR>();
+  public LinkedList<MBR> mbrs = new LinkedList<MBR>();
   public static int gap = 0;
   public void buildWorld(List<Rectangle> objs)
   {
@@ -21,8 +21,13 @@ public class WorldinVision {
       	MBR mbr = new MBR(rec);     
       	mbrs.add(mbr);
       }
-      refine(mbrs);
-      reason();
+   // the first mbr is the edge
+      //MBRRegisterAdvance.batchRegister(mbrs, mbrs.get(0));
+	  
+	  MBRRegisterAdvance.batchRegister(mbrs);
+  	  
+
+     
 
   }
   public void showWorldinVision()
@@ -32,19 +37,10 @@ public class WorldinVision {
 	  
 	  
   }
-  private void refine(List<MBR> mbrs)
+
+  public void reason()
   {
-     
-  }
-  private void reason()
-  {
-	  // the first mbr is the edge
-      //MBRRegisterAdvance.batchRegister(mbrs, mbrs.get(0));
-	  
-	  MBRRegisterAdvance.batchRegister(mbrs);
-  	  
 	  TestNode node = MBRRegisterAdvance.constructTestNode();
-  
   	  MBRReasonerAdvance MBRR = new MBRReasonerAdvance();
   	  MBRR.search(node);
 
