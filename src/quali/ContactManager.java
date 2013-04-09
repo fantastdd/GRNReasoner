@@ -19,49 +19,58 @@ public class ContactManager {
 		LinkedList<Neighbor> neighbors = conf.getNeighbors();
 
 		// add the inititial map
-		if (conf.lastValidNeighborId == -2)
+/*		if (conf.lastValidNeighborId == -2)
 			contactMaps.add(conf.getContact_map());
-		else {
+		else {*/
 			for (Neighbor neighbor : neighbors) 
 			{
-				if (neighbor.getMbr().getId() > conf.lastValidNeighborId)
+			/*	 always > lastValidNeighborId in gap = 0 case
+			 * if (neighbor.getMbr().getId() > conf.lastValidNeighborId)
 				{
 					break;
 				} 
-				else
+				else*/
 				{
 					Configuration neighbor_conf = node.lookup(neighbor.getMbr());
 					MBR neighbor_mbr = neighbor_conf.getMbr();
+					 /* if(conf.getMbr().getId() == 10 && node.lookup(8).unary == 4 && conf.unary == 0)
+						  System.out.println( conf.toShortString() + "    " + neighbor_conf.toShortString() + (neighbor_mbr.getId() <= node.current_id));*/
 					// neighbor must be instantiated
 					if (neighbor_mbr.getId() <= node.current_id) 
 					{
-						// TODO non-used work if.
+					
 						if (contactMaps.isEmpty()) {
 							
 							//System.out.println(" Get Contact:  " + conf.toShortString() + "   " + neighbor_conf.toShortString());
 							
 							LinkedList<Contact> contacts = getContact(conf, neighbor_conf, threshold);
-							/*  if(conf.getMbr().getId() == 12 && node.lookup(5).unary == 0 && conf.unary == 2)
-							        System.out.println(" Get Contacts :  " +  contacts.size());*/
+							//  if(conf.getMbr().getId() == 10 && node.lookup(8).unary == 4 && conf.unary == 0)
+//							/ System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contacts.size() );
 						
 							for (Contact contact : contacts) 
 							{
 							 //
-							//	if(conf.getMbr().getId() == 6 && node.lookup(1).unary == 0 && conf.unary == 1)
-							//	 System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact );
-								
-								HashMap<Integer, Contact> _contactMap = new HashMap<Integer, Contact>();
-								// clone the map and add to list
-								HashMap<Integer, Contact> contactMap = conf.getContact_map();
-
-						
-								for (Integer key : contactMap.keySet()) {
-									if (key == neighbor_mbr.getId())
-											_contactMap.put(key, contact);
-									else
-										_contactMap.put(key, contactMap.get(key).clone());
-								}
-								contactMaps.add(_contactMap);
+							/*	if(conf.getMbr().getId() == 10 && node.lookup(8).unary == 4 && conf.unary == 0)
+							 System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact );*/
+								  //TODO check whether this contact is valid
+							    if(contact.getType() == -2)
+							    {
+							    	continue;
+							    }
+							    else
+							    {
+										HashMap<Integer, Contact> _contactMap = new HashMap<Integer, Contact>();
+										// clone the map and add to list
+										HashMap<Integer, Contact> contactMap = conf.getContact_map();
+		                              
+										for (Integer key : contactMap.keySet()) {
+											if (key == neighbor_mbr.getId())
+													_contactMap.put(key, contact);
+											else
+												_contactMap.put(key, contactMap.get(key).clone());
+										}
+										contactMaps.add(_contactMap);
+										}
 							}
 							
 							/*  if(conf.getMbr().getId() == 12 && node.lookup(5).unary == 0&& conf.unary == 2 )
@@ -80,22 +89,33 @@ public class ContactManager {
 							for (HashMap<Integer, Contact> contactMap : contactMaps)
 							{
 								LinkedList<Contact> contacts = getContact(conf, neighbor_conf , threshold);
+							
 								for (Contact contact : contacts) 
 								{
-									HashMap<Integer, Contact> _contactMap = new HashMap<Integer, Contact>();
-									for (Integer key : contactMap.keySet()) {
-										if (key == neighbor_mbr.getId())
-											_contactMap.put(key, contact);
-										else
-											_contactMap.put(key, contactMap
-													.get(key).clone());
-									}
-									maps.add(_contactMap);
+									/*if(conf.getMbr().getId() == 10 && node.lookup(8).unary == 4 && conf.unary == 0)
+			                                System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact.getType());*/
+								   if(contact.getType() == -2)
+								   {
+									   continue;
+								   }
+								   else{
+											HashMap<Integer, Contact> _contactMap = new HashMap<Integer, Contact>();
+											for (Integer key : contactMap.keySet()) {
+												if (key == neighbor_mbr.getId())
+													_contactMap.put(key, contact);
+												else
+													_contactMap.put(key, contactMap
+															.get(key).clone());
+											}
+											maps.add(_contactMap);
+										}
 								}
 							}
 							//bug fix: MBR A has two contacts, MBR B has 0, MBR C has two contacts. without the following if, the contactsMaps will be cleared
 							if(maps.isEmpty())
-								continue;
+								{
+								contactMaps.clear();
+								}
 							else{
 										contactMaps.clear();
 										contactMaps.addAll(maps);
@@ -111,7 +131,7 @@ public class ContactManager {
 					 */
 				}
 			}
-		}
+		//}
 		
 	
 	/*	  if(conf.getMbr().getId() == 12 && node.lookup(5).unary == 0&& conf.unary == 2 )
@@ -591,7 +611,6 @@ public class ContactManager {
 				Contact _contact = new Contact();
 				_contact.setTangential_area(12);
 				_contact.setType(1);
-
 				contacts.add(_contact);
 
 			} else if (tr3 && tr4) {
@@ -647,7 +666,14 @@ public class ContactManager {
 		}
        //FatGSR fixed April 4
 		else if (conf.unary != 0 && tconf.unary == 0) {
-
+            
+		  if(isOverlappingR_A(tconf,conf))
+		  {
+			  	Contact _contact = new Contact();			
+				_contact.setType(-2);
+				contacts.add(_contact);
+				return contacts;
+		  }
 			/* no needs to distiguish between edge 12,23,34,14 */
 			boolean tr12 = testRegionR_A(tconf, conf, 12);
 			boolean tr34 = testRegionR_A(tconf, conf, 34);
@@ -754,6 +780,13 @@ public class ContactManager {
 				}
 				contacts.add(_contact);
 			}
+			// if no contacts April 9
+			else
+			{
+				Contact _contact = new Contact();
+				_contact.setType(0);
+				contacts.add(_contact);
+			}
 			// add on Jan
 			/*//commented on April 6
 			else {
@@ -769,7 +802,16 @@ public class ContactManager {
 	    //FatGSR fixed April 4
 		else if (conf.unary == 0 && tconf.unary != 0) {
 			/* no needs to distinguish between edge 12,23,34,14 */
-			
+		/*	if(conf.getMbr().getId() == 10 && tconf.getMbr().getId() == 8)
+				System.out.println(isOverlappingR_A(conf,tconf));*/
+			  if(isOverlappingR_A(conf,tconf))
+			  {
+				  	Contact _contact = new Contact();			
+				  	
+					_contact.setType(-2);
+					contacts.add(_contact);
+					return contacts;
+			  }
 			boolean tr1 = testRegionR_A(conf, tconf, 1);// test the right half of the top edge.
 			boolean tr2 = testRegionR_A(conf, tconf, 2);
 			boolean tr3 = testRegionR_A(conf, tconf, 3);
@@ -882,6 +924,12 @@ public class ContactManager {
 				_contact.setType(1);
 				_contact.setTangential_area(14);
 				contacts.add(_contact);
+			}	// if no contacts April 9
+			else
+			{
+				Contact _contact = new Contact();
+				_contact.setType(0);
+				contacts.add(_contact);
 			}
 
 			/*
@@ -948,7 +996,13 @@ public class ContactManager {
 								_contact.setTangential_area(4);
 							contacts.add(_contact);
 						//non_touching = true;
-						}
+						}	
+						// if no contacts April 9
+						
+							Contact _contact = new Contact();
+							_contact.setType(0);
+							contacts.add(_contact);
+						
 						
 				//	Important comments	, do we need a non-touching relation..
 		/*		  
@@ -1017,7 +1071,7 @@ public class ContactManager {
 
 	}
    // This method tests whether the conf's (regular)  edge can touch a specific sector of the tconf
-  //Fixed April 4, correct April 5
+  //Fixed April 4, correct April 5, checked for invalid case
 	private static boolean testRegionR_A(final Configuration conf,  final Configuration tconf, int region)
 	{
 		MyPolygon rline = conf.getRegionLine(region);
@@ -1434,7 +1488,6 @@ public class ContactManager {
 			{
 				result = minmaxEvaluation(min, max, tmin, tmax);
 			
-
 			} else 
 			{
 				result = 0;
@@ -1483,5 +1536,12 @@ public class ContactManager {
 	private static boolean testSolidOverlapping(MyPolygon m, MyPolygon n) {
 		return QuantiShapeCalculator.isIntersectedWCA(m, n).size() > 1;
 
+	}
+	private static boolean isOverlappingR_A(Configuration rconf, Configuration aconf)
+	{
+		MyPolygon aminl = aconf.diagonal_left;
+		MyPolygon aminr = aconf.diagonal_right;
+		MyPolygon rmin = rconf.fullRec;
+		return QuantiShapeCalculator.isIntersected(aminl, rmin, false)&& QuantiShapeCalculator.isIntersected(aminr, rmin, false);
 	}
 }

@@ -4,8 +4,8 @@ import java.awt.Point;
 
 public class Contact {
 
-private int type = -1; // 1:support, 2: Be either non-touching or touching 0: non-touching, -1: un-initialized
-private int tangential_area = -2;  // -2: un-initialized -1: do not care 
+private int type = -1; // 1:support 0: non-touching, -1: un-initialized -2: invalid
+private int tangential_area = -2;  // -2: non-touching -1: do not care 
 public Point[] points = new Point[2];
 
 public int getTangential_area() {
