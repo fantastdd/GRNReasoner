@@ -5,8 +5,6 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import quali.util.StabilityConfigurationOutput;
-
 import ab.WorldinVision;
 
 
@@ -97,7 +95,8 @@ public class MBRReasonerAdvance {
 								}*/
 						        
 							   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
-							   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
+								   TestNode _node = formLocalStability(cconf,contactmap,node);
+								//TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
 							   //System.out.println(_node);
 							   // System.out.println(" after form local stability:  " + _node );
 							   if (_node != null)
@@ -148,7 +147,8 @@ public class MBRReasonerAdvance {
 													}*/
 													
 												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
-												   TestNode _node = formLocalStability(cconf,contactmap,node);// this node is a clone with the cconf updated
+													TestNode _node = formLocalStability(cconf,contactmap,node);
+													//TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
 												/*	if(cconf.getMbr().getId() == 12 && cconf.unary == 2)
 															System.out.println(" to form stability     " + _node);*/
 												 	if(_node != null)  
@@ -218,6 +218,71 @@ public class MBRReasonerAdvance {
 	
     	
     } 
+    
+    public TestNode formLocalStabilityHeuristic (final Configuration newUpdatedConf , final HashMap<Integer,Contact> contactmap, final TestNode node)
+    {
+    	TestNode _node = null;
+    	int[] stability_id = new int[node.getConfs().size()];
+    	int[] lastTestId = new int[newUpdatedConf.getNeighbors().size() ];
+    	for (int i = 0 ; i < lastTestId.length ; i ++)
+    		lastTestId[i] = -1;
+    	Configuration _newUpdatedConf = newUpdatedConf.clone();
+    	_newUpdatedConf.setContact_map(contactmap);
+    	// Test the neighbors stability
+    	int count = 0;
+       int newUpdatedConfLastTestId = 0;
+    	//Test the newUpdatedConf first
+    	if(newUpdatedConf.lastValidNeighborId >= node.current_id && !_newUpdatedConf.isSupport())
+    	{
+    		return null;
+    	}
+    	else 
+    		for (Neighbor neighbor : _newUpdatedConf.getNeighbors())
+    	{
+    		Configuration testConf = node.lookup(neighbor.getMbr());
+    		int mbr_id = testConf.getMbr().getId();
+    		if (mbr_id > node.current_id)
+    			continue;
+    		else if (node.stability_id[mbr_id] == 1)
+    		{
+    			newUpdatedConfLastTestId = mbr_id;
+    		}
+           else
+    				{
+        	   			newUpdatedConfLastTestId = mbr_id;
+        	            boolean support = testConf.isNowSupport(_newUpdatedConf);
+        	            int lastId = testConf.lastTestNeighborId;
+        	            lastTestId[count++] = mbr_id;
+        	     
+    					if(support)
+    					{
+    						stability_id[mbr_id] = 1;
+    					}
+    					else
+    					{
+    					    if(lastId >= testConf.lastValidNeighborId)
+    					    {
+    					    	return null;
+    					    }
+    					}
+    		}
+    		
+    	}
+    	
+    	_node = node.clone();
+    	for (int index : lastTestId)
+    	{
+    		if(index == -1)
+    			break;
+    		else
+    		{
+    			_node.lookup(index).lastTestNeighborId = _newUpdatedConf.getMbr().getId();
+    		}
+    	}
+    	_newUpdatedConf.lastTestNeighborId = newUpdatedConfLastTestId ;
+    	_node.update(_newUpdatedConf);
+    	return _node;
+    }
     // This method will verify the stability of the each instantiated mbr in the tree. 
     public TestNode formLocalStability(Configuration newUpdatedConf , HashMap<Integer,Contact> contactmap, TestNode node)
     {

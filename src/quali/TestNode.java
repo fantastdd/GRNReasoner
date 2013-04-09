@@ -16,21 +16,14 @@ private HashMap<Integer,Configuration> confs ;
 public int current_id= -1;
 
 //the pointer points to the next stability verification conf
-public int stability_id = 0;
+public int[] stability_id;
 
 // 0-i confs have been instantiated
 public boolean instaniatedUntilIndex(int i)
 {
 		return i <= current_id;
 }
-public int nextStabilityVerificationCandidate()
-{
-   return stability_id++; 	
-}
-public boolean isStabilityVerificationCompleted()
-{
-	return stability_id >= confs.size() - 1;
-}
+
 
 
 
@@ -77,7 +70,14 @@ public boolean isCompleted()
 //test the overlapping blocks
 public void initialize()
 {
-		
+
+	//Initialize Stability id array
+	stability_id = new int[confs.size()];
+	for (int i = 0; i < confs.size() ; i ++)
+	{
+		stability_id[i] = 0;
+	}
+	
 	for (int i = 0; i < confs.size(); i++)
 	{
 		Configuration conf = lookup(i);
@@ -103,15 +103,18 @@ public void initialize()
 					{
 						Neighbor _neighbor  = createNeighbor(mbr,mbr1);
 						//System.out.println(mbr + "  construct  " + mbr1 + "   " + _neighbor.getGap() + "   " + _neighbor.getNeighborType());
-						if(	_neighbor != null	)
+						if(	_neighbor != null	/*&&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() <= WorldinVision.gap)*/)
 							conf.getNeighbors().add(_neighbor);
 					}
 		 }
 		}
 		
 		// sort the neighbors according the gap in between in ascending order.
-	    Collections.sort(conf.getNeighbors(), new NeighborComparator());
+	   Collections.sort(conf.getNeighbors(), new NeighborComparator());
 	    
+		// sort the neighbors according the mbr id in between in ascending order.
+		//Collections.sort(conf.getNeighbors(), new NeighborComparatorByMBRID());
+		
 	    for (Neighbor neighbor : conf.getNeighbors())
 	    {
 	    	if(neighbor.getGap() > WorldinVision.gap) 
@@ -127,15 +130,9 @@ public void initialize()
 	    	}
 	    }
 	    // the mbr touches all others.
-	    if(conf.lastValidNeighborId == -2)
+	    if(conf.lastValidNeighborId == -2 /*&& !conf.getNeighbors().isEmpty()*/)
 	    	conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
-       if(conf.lastValidNeighborId >= 0)
-       {
-    	   conf.lastTestNeighborId = new int[conf.lastValidNeighborId + 1];
-    	   for (int j = 0 ; j < conf.lastTestNeighborId.length ; j ++)
-    		   conf.lastTestNeighborId[j] = 0;
-       }
-	    		
+	    	//	conf.lastValidNeighborId = conf.getNeighbors().getLast().getMbr().getId();
 	      
 
 	    
@@ -241,7 +238,9 @@ public TestNode clone()
 		_node.getConfs().put(key, confs.get(key).clone());
 	}
 	_node.current_id = current_id;
-	_node.stability_id = stability_id;
+	
+	_node.stability_id = new int[confs.size()];
+	System.arraycopy(stability_id, 0, _node.stability_id , 0, confs.size());
    
 	return _node;
 }

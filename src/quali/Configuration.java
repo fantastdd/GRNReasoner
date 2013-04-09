@@ -97,7 +97,7 @@ public int x;
 public int y;
 
 
-public int[] lastTestNeighborId;
+public int lastTestNeighborId = -1;
 
 public int lastValidNeighborId = -2; //id = -2, touches all others -1, no neighbors
 //TODO write a isNowSupport method in configuration
@@ -116,33 +116,45 @@ public boolean isNowSupport(final Configuration tconf )
 		result = true;
 	else
 	{
-			boolean left_support = false;
-			boolean right_support = false;		
+		boolean left_support = false;
+		boolean right_support = false;
+     	int tangential_area = contact.getTangential_area();
+			//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 			if(contact.getType() == 1)
 			{
-				if(contact.getTangential_area() == 3)
+				if(tangential_area == 3 ||( tangential_area == 12 &&  ( (unary == 4)) ))
 					{
 					  weaksupport = true;
 					  left_support = true;
 					}
 				else
-					if(contact.getTangential_area() == 4)
+					if(tangential_area == 4 || (tangential_area == 14 &&  ( (unary == 3)) ) )
 					 {
 					    weaksupport = true;
 						right_support = true;
 					 }
 					else
-						if(contact.getTangential_area() == 34 || (unary != 0 && contact.getTangential_area() == 23))
+						if(
+								
+							(unary == 0 &&tangential_area == 34)  
+							  || ( (unary == 2|| unary == 4) && tangential_area == 23)
+							  || ( (unary == 1|| unary == 3) && tangential_area == 34)
+							//|| ( (unary != 0) && (contact.getTangential_area() == 23 || contact.getTangential_area() == 34 ))
+						    // || ( (unary != 0) && (contact.getTangential_area() == 34 ))
+							
+							)
+							
+						  
 						{
 							left_support = true;
 							right_support = true;
 						}
-				}
-			
-			result = left_support && right_support;
+			}
+		
+		result = left_support && right_support;
 
-					if(unary == 0)
-				result |= weaksupport;
+		if(unary == 0)
+			result |= weaksupport;
 	}
   }
 	return result;

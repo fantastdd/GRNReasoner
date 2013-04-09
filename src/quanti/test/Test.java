@@ -23,6 +23,11 @@ public class Test {
 	public static void main(String args[])
 	{
 		
+      int[] a = new int[3];
+	  a[0]  = 1;
+	  for (int i : a)
+	  System.out.println(i);
+		
 /*		int a = 1;
 		int b = 2;
 		if(a == 1 ||++b == 3)
@@ -86,7 +91,7 @@ public class Test {
         scenario.run(p1,p2);
         System.out.println(QuantiShapeCalculator.isIntersected(p1, p2, true ));*/
 		
-		ScenarioIO sio = new ScenarioIO("l6c");
+/*		ScenarioIO sio = new ScenarioIO("l6c");
 
 		LinkedList<LinkedList<MBR>> scenarios;
 		try {
@@ -116,5 +121,6 @@ public class Test {
 			e.printStackTrace();
 		}
 		
-	}
+	}*/
+}
 }
