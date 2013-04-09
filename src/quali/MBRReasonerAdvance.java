@@ -96,13 +96,14 @@ public class MBRReasonerAdvance {
 								}*/
 						        
 							   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
-								 // TestNode _node = formLocalStability(cconf,contactmap,node);
+								  //TestNode _node = formLocalStability(cconf,contactmap,node);
 								  TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
 							   //System.out.println(_node);
 							   // System.out.println(" after form local stability:  " + _node );
 							   if (_node != null)
 								   refinements.add(_node);
-								
+							   else
+								   formLocal_counter++;
 						   }
 					   }
 						
@@ -157,7 +158,7 @@ public class MBRReasonerAdvance {
 															System.out.println(" to form stability     " + _node);*/
 												 	if(_node != null)  
 													 	refinements.add(_node);
-												
+												 	
 											   }
 										}
 								   
@@ -241,7 +242,7 @@ public class MBRReasonerAdvance {
     	if( !_newUpdatedConf.isSupport() && _newUpdatedConf.lastValidNeighborId <= node.current_id)
     	{
     		//System.out.println("   early end " + _newUpdatedConf.toShortString() + "   " + newUpdatedConf.lastValidNeighborId + "   "  + node.current_id + "   ");
-    		formLocal_counter++;
+    		//formLocal_counter++;
     		return null;
     	}
     	else 
@@ -276,7 +277,7 @@ public class MBRReasonerAdvance {
     					    if(newUpdatedConf.getMbr().getId() >= _conf.lastValidNeighborId)
     					    {
     					    	//System.out.println(_newUpdatedConf.toShortString() + "  " + _conf.toShortString() + "   " + node + "   " + support);
-    					    	formLocal_counter++;
+    					    	//formLocal_counter++;
     					    	return null;
     					    }
     					}
