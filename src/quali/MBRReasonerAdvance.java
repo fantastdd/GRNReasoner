@@ -48,7 +48,7 @@ public class MBRReasonerAdvance {
 		    {
 		    	for(TestNode refinement: refinements)
 		    	{	
-		    	//	// System.out.println(" refine the mbr conf : " +  node.current_id);
+		    	   //System.out.println(" refinement : " +  refinement);
 		    		global_counter++;
 		    		boolean result = search(refinement);
 		    	
@@ -74,6 +74,7 @@ public class MBRReasonerAdvance {
 				Configuration cconf = node.pop().clone(); 
 			   if(cconf.isEdge())
 			   {
+				   //System.out.println(cconf + "\n" + node);
 					if(solidValidity(cconf , node)){
 					  
 						//----- one unique configuration will have various contactmap..
@@ -95,8 +96,8 @@ public class MBRReasonerAdvance {
 								}*/
 						        
 							   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
-								   TestNode _node = formLocalStability(cconf,contactmap,node);
-								//TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
+								 // TestNode _node = formLocalStability(cconf,contactmap,node);
+								  TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
 							   //System.out.println(_node);
 							   // System.out.println(" after form local stability:  " + _node );
 							   if (_node != null)
@@ -125,30 +126,33 @@ public class MBRReasonerAdvance {
 									System.out.println(" get possible contacts ");*/
 									LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node,WorldinVision.gap);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
 									
-								//	System.out.println(" lscontacts size " + cconf.toShortString()+"  "+ lscontacts.size());
-									if (lscontacts.isEmpty()) // will happen when this block is isolated or its neighbors are not initialized yet 
+								    //System.out.println(" lscontacts size " + cconf.toShortString()+"  "+ lscontacts.size());
+									if (lscontacts.isEmpty() ) // will happen when this block is isolated or its neighbors are not initialized yet 
 									{    
 										TestNode _node = node.clone();
-										_node.update(cconf);
-										refinements.add(_node.clone());
+										//System.out.println("updates early " + cconf.toShortString());
+										_node.update(cconf.clone());
+										//System.out.println(_node);
+										refinements.add(_node);
 									}
 									else
 									    {
 
 												for (HashMap<Integer,Contact> contactmap: lscontacts)
 												{
-													
-												/*	if(cconf.getMbr().getId() == 12 && cconf.unary == 2 && node.lookup(5).unary == 0&& node.lookup(11).unary == 0)
+													/*
+													if(cconf.getMbr().getId() == 12)
 													{
+														System.out.println(cconf.toShortString());
 														for (Integer key: contactmap.keySet())
 													{
 														 System.out.println(key + "   " + contactmap.get(key));
 													}
-													}*/
-													
+													}
+*/													
 												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
-													TestNode _node = formLocalStability(cconf,contactmap,node);
-													//TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
+													//TestNode _node = formLocalStability(cconf,contactmap,node);
+													TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
 												/*	if(cconf.getMbr().getId() == 12 && cconf.unary == 2)
 															System.out.println(" to form stability     " + _node);*/
 												 	if(_node != null)  
@@ -177,7 +181,7 @@ public class MBRReasonerAdvance {
     		/*if (node.lookup(13).unary == 1 && node.lookup(14).unary == 1 && node.lookup(15).unary == 2 && node.lookup(16).unary == 4 && node.lookup(17).unary == 4
     				&& node.lookup(18).unary == 4 && node.lookup(19).unary == 4 && node.lookup(20).unary == 4)
     			System.out.println(" node completed, check stability \n" + node);*/
-    		//System.out.println(" node completed, check stability \n" + node);
+//    		/System.out.println(" node completed, check stability \n" + node);
     		
     		 for (Integer id : node.getConfs().keySet())
     		 {
@@ -224,44 +228,55 @@ public class MBRReasonerAdvance {
     	TestNode _node = null;
     	int[] stability_id = new int[node.getConfs().size()];
     	int[] lastTestId = new int[newUpdatedConf.getNeighbors().size() ];
+    	LinkedList<Configuration> effectedConfs = new LinkedList<Configuration>();
     	for (int i = 0 ; i < lastTestId.length ; i ++)
     		lastTestId[i] = -1;
     	Configuration _newUpdatedConf = newUpdatedConf.clone();
     	_newUpdatedConf.setContact_map(contactmap);
     	// Test the neighbors stability
-    	int count = 0;
+    
        int newUpdatedConfLastTestId = 0;
+       int newUpdatedConfId = _newUpdatedConf.getMbr().getId();
     	//Test the newUpdatedConf first
-    	if(newUpdatedConf.lastValidNeighborId >= node.current_id && !_newUpdatedConf.isSupport())
+    	if( !_newUpdatedConf.isSupport() && _newUpdatedConf.lastValidNeighborId <= node.current_id)
     	{
+    		//System.out.println("   early end " + _newUpdatedConf.toShortString() + "   " + newUpdatedConf.lastValidNeighborId + "   "  + node.current_id + "   ");
+    		formLocal_counter++;
     		return null;
     	}
     	else 
     		for (Neighbor neighbor : _newUpdatedConf.getNeighbors())
-    	{
-    		Configuration testConf = node.lookup(neighbor.getMbr());
-    		int mbr_id = testConf.getMbr().getId();
-    		if (mbr_id > node.current_id)
-    			continue;
-    		else if (node.stability_id[mbr_id] == 1)
     		{
-    			newUpdatedConfLastTestId = mbr_id;
-    		}
-           else
+    			Configuration testConf = node.lookup(neighbor.getMbr());
+    			int mbr_id = testConf.getMbr().getId();
+    			if (mbr_id > node.current_id)
+    				continue;
+    			else 
+    				if (node.stability_id[mbr_id] == 1)
+    			{
+    				newUpdatedConfLastTestId = mbr_id;
+    				continue;
+    			}
+    			else
     				{
         	   			newUpdatedConfLastTestId = mbr_id;
-        	            boolean support = testConf.isNowSupport(_newUpdatedConf);
-        	            int lastId = testConf.lastTestNeighborId;
-        	            lastTestId[count++] = mbr_id;
-        	     
+        	   			Configuration _conf = testConf.clone();
+        	   			
+        	            boolean support = _conf.isNowSupport(_newUpdatedConf);
+        	            //int lastId = testConf.lastTestNeighborId;
+        	            _conf.lastTestNeighborId = newUpdatedConfId;
+        	            effectedConfs.add(_conf);
+        	            //System.out.println(_newUpdatedConf.toShortString() + "  " + _conf.toShortString() + "   " + node + "   " + support);
     					if(support)
     					{
     						stability_id[mbr_id] = 1;
     					}
     					else
     					{
-    					    if(lastId >= testConf.lastValidNeighborId)
+    					    if(newUpdatedConf.getMbr().getId() >= _conf.lastValidNeighborId)
     					    {
+    					    	//System.out.println(_newUpdatedConf.toShortString() + "  " + _conf.toShortString() + "   " + node + "   " + support);
+    					    	formLocal_counter++;
     					    	return null;
     					    }
     					}
@@ -270,17 +285,13 @@ public class MBRReasonerAdvance {
     	}
     	
     	_node = node.clone();
-    	for (int index : lastTestId)
+    	for (Configuration conf : effectedConfs)
     	{
-    		if(index == -1)
-    			break;
-    		else
-    		{
-    			_node.lookup(index).lastTestNeighborId = _newUpdatedConf.getMbr().getId();
-    		}
+    	  _node.getConfs().put(conf.getMbr().getId(), conf);
     	}
     	_newUpdatedConf.lastTestNeighborId = newUpdatedConfLastTestId ;
-    	_node.update(_newUpdatedConf);
+    	_node.updateConf(_newUpdatedConf);
+    	//System.out.println(" updates in formLocalStability  " + _node);
     	return _node;
     }
     // This method will verify the stability of the each instantiated mbr in the tree. 

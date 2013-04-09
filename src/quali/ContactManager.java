@@ -19,12 +19,12 @@ public class ContactManager {
 		LinkedList<Neighbor> neighbors = conf.getNeighbors();
 
 		// add the inititial map
-		if (conf.lastValidNeighborId == -1)
+		if (conf.lastValidNeighborId == -2)
 			contactMaps.add(conf.getContact_map());
 		else {
 			for (Neighbor neighbor : neighbors) 
 			{
-				if (neighbors.indexOf(neighbor) > conf.lastValidNeighborId)
+				if (neighbor.getMbr().getId() > conf.lastValidNeighborId)
 				{
 					break;
 				} 
@@ -33,7 +33,7 @@ public class ContactManager {
 					Configuration neighbor_conf = node.lookup(neighbor.getMbr());
 					MBR neighbor_mbr = neighbor_conf.getMbr();
 					// neighbor must be instantiated
-					if (neighbor_mbr.getId() < conf.getMbr().getId()) 
+					if (neighbor_mbr.getId() <= node.current_id) 
 					{
 						// TODO non-used work if.
 						if (contactMaps.isEmpty()) {
@@ -48,7 +48,7 @@ public class ContactManager {
 							{
 							 //
 							//	if(conf.getMbr().getId() == 6 && node.lookup(1).unary == 0 && conf.unary == 1)
-							//	 				System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact );
+							//	 System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact );
 								
 								HashMap<Integer, Contact> _contactMap = new HashMap<Integer, Contact>();
 								// clone the map and add to list
@@ -424,6 +424,12 @@ public class ContactManager {
 			boolean vertex_4 = (testVertexR_A24(conf, tconf, 4) == 2)
 					&& (testVertexR_A24(conf, tconf, 14) == 2);
 
+
+			/*if(conf.getMbr().getId() == 0 && tconf.getMbr().getId() == 12)
+			{
+				System.out.println("  conf " + conf.toShortString() + "  tconf " + tconf.toShortString() + "  " + vertex_1 + "  " + vertex_2 + 
+						"  " + vertex_3 + "  " + vertex_4 + "  " + _contact);
+			}*/
 			if (_contact.getTangential_area() == 4) {
 
 				if (vertex_2) {

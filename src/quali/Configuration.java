@@ -101,23 +101,25 @@ public int lastTestNeighborId = -1;
 
 public int lastValidNeighborId = -2; //id = -2, touches all others -1, no neighbors
 //TODO write a isNowSupport method in configuration
-
+boolean left_support = false;
+boolean right_support = false;
+boolean weaksupport = false;
+//change now
 public boolean isNowSupport(final Configuration tconf )
 {
-	boolean weaksupport = false;
+	
 	boolean result = false;
    
   if(!tconf.getMbr().equals(mbr))
   { 
 		
-	Contact contact =  ContactManager.getPairContact(tconf, this , WorldinVision.gap);
-	
-	if(this.isEdge())
+	Contact contact =  ContactManager.getPairContact(tconf, this, WorldinVision.gap);
+	contact_map.put(tconf.getMbr().getId(), contact);
+	if(isEdge())
 		result = true;
 	else
 	{
-		boolean left_support = false;
-		boolean right_support = false;
+	
      	int tangential_area = contact.getTangential_area();
 			//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 			if(contact.getType() == 1)
@@ -152,7 +154,8 @@ public boolean isNowSupport(final Configuration tconf )
 			}
 		
 		result = left_support && right_support;
-
+       /* if(unary == 1 && mbr.getId() == 6 && tconf.getMbr().getId() == 7 && tconf.unary == 0)
+        	System.out.println("  " + contact + "   " + left_support + "  " + right_support + "  ");*/
 		if(unary == 0)
 			result |= weaksupport;
 	}
@@ -686,7 +689,9 @@ public Configuration clone()
   conf.lastTestNeighborId = lastTestNeighborId;
   conf.lastValidNeighborId = lastValidNeighborId;
   
-  
+  conf.left_support = left_support;
+  conf.right_support = right_support;
+  conf.weaksupport = weaksupport;
   
   for(Neighbor neighbor: neighbors)
   {
@@ -1053,14 +1058,14 @@ public boolean isSupport() {
 	
 
 	//weak support parameter included for the regular mbr
-	boolean weaksupport = false;
+	//boolean weaksupport = false;
 	boolean result = false;
 	
 	if(this.isEdge())
 		result = true;
 	else{
-			boolean left_support = false;
-			boolean right_support = false;
+			//boolean left_support = false;
+			//boolean right_support = false;
 			for(Integer mbr: this.contact_map.keySet())
 			{
 				Contact contact = this.contact_map.get(mbr);

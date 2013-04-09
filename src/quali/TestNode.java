@@ -7,7 +7,7 @@ import java.util.List;
 import quanti.QuantiShapeCalculator;
 import ab.WorldinVision;
 
-import common.util.NeighborComparator;
+import common.util.NeighborComparatorByMBRID;
 
 public class TestNode {
 
@@ -103,17 +103,17 @@ public void initialize()
 					{
 						Neighbor _neighbor  = createNeighbor(mbr,mbr1);
 						//System.out.println(mbr + "  construct  " + mbr1 + "   " + _neighbor.getGap() + "   " + _neighbor.getNeighborType());
-						if(	_neighbor != null	/*&&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() <= WorldinVision.gap)*/)
+						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() == 0))
 							conf.getNeighbors().add(_neighbor);
 					}
 		 }
 		}
 		
 		// sort the neighbors according the gap in between in ascending order.
-	   Collections.sort(conf.getNeighbors(), new NeighborComparator());
+	   //Collections.sort(conf.getNeighbors(), new NeighborComparator());
 	    
 		// sort the neighbors according the mbr id in between in ascending order.
-		//Collections.sort(conf.getNeighbors(), new NeighborComparatorByMBRID());
+		Collections.sort(conf.getNeighbors(), new NeighborComparatorByMBRID());
 		
 	    for (Neighbor neighbor : conf.getNeighbors())
 	    {
@@ -130,9 +130,9 @@ public void initialize()
 	    	}
 	    }
 	    // the mbr touches all others.
-	    if(conf.lastValidNeighborId == -2 /*&& !conf.getNeighbors().isEmpty()*/)
-	    	conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
-	    	//	conf.lastValidNeighborId = conf.getNeighbors().getLast().getMbr().getId();
+	    if(conf.lastValidNeighborId == -2 && !conf.getNeighbors().isEmpty())
+	    	//conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
+	    		conf.lastValidNeighborId = conf.getNeighbors().getLast().getMbr().getId();
 	      
 
 	    
@@ -140,14 +140,14 @@ public void initialize()
 	    //========================== Early Determination: Those who do not have neighbors from region 3 will be considered to be regular ======================
 	    //TODO change when gap applied
 	    {
-	          if(conf.lastValidNeighborId == -1 )
+	          if(conf.lastValidNeighborId == -2 )
 	        	  conf.setEdge(true);
 	          else
 	          {
 	        	  int count = 0;
 	        	  for (Neighbor neighbor : conf.getNeighbors())
 	        	  {
-	        		  if(neighbor.getNeighborType() == 3 ||( neighbor.getNeighborType() == 0 && (conf.y + conf.height) < neighbor.getMbr().getCenterY()) )
+	        		  if(neighbor.getNeighborType() == 3 ||( neighbor.getNeighborType() == 0 && (conf.y + conf.height) < neighbor.getMbr().getHeight() + neighbor.getMbr().getY()) )
 	        			  count++;
 	        	  }
 	        	  if(count == 0)
@@ -253,7 +253,10 @@ public void update(Configuration newlyUpdatedConf)
 	  {
 		
 		  Configuration neighbor_conf = lookup(neighbor_mbrid);
+		  
+		  
 		  HashMap<Integer,Contact> neighbor_contactMap = neighbor_conf.getContact_map();
+		  
 		  Integer mbr = newlyUpdatedConf.getMbr().getId();
 	
 		  if (neighbor_contactMap.containsKey(mbr))
@@ -266,6 +269,13 @@ public void update(Configuration newlyUpdatedConf)
 	    	
 	
 	  }
+}
+public void updateConf(Configuration newlyUpdatedConf)
+{
+
+	   confs.put(newlyUpdatedConf.getMbr().getId(), newlyUpdatedConf);
+	   //also update the contact map if necessary
+
 }
 public String toString()
 {
