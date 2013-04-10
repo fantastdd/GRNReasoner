@@ -101,8 +101,8 @@ public int lastTestNeighborId = -1;
 
 public int lastValidNeighborId = -2; //id = -2, touches all others -1, no neighbors
 //TODO write a isNowSupport method in configuration
-boolean left_support = false;
-boolean right_support = false;
+public int left_support = 0;
+public int right_support = 0;
 boolean weaksupport = false;
 //change now
 public boolean isNowSupport(final Configuration tconf )
@@ -127,13 +127,13 @@ public boolean isNowSupport(final Configuration tconf )
 				if(tangential_area == 3 ||( tangential_area == 12 &&  ( (unary == 4)) ))
 					{
 					  weaksupport = true;
-					  left_support = true;
+					  left_support ++;
 					}
 				else
 					if(tangential_area == 4 || (tangential_area == 14 &&  ( (unary == 3)) ) )
 					 {
 					    weaksupport = true;
-						right_support = true;
+						right_support ++;
 					 }
 					else
 						if(
@@ -148,16 +148,26 @@ public boolean isNowSupport(final Configuration tconf )
 							
 						  
 						{
-							left_support = true;
-							right_support = true;
+							left_support ++;
+							right_support++;
 						}
 			}
 		
-		result = left_support && right_support;
+		result = ((left_support > 0 ) && ( right_support > 0));
        /* if(unary == 1 && mbr.getId() == 6 && tconf.getMbr().getId() == 7 && tconf.unary == 0)
         	System.out.println("  " + contact + "   " + left_support + "  " + right_support + "  ");*/
 		if(unary == 0)
 			result |= weaksupport;
+		else
+			if(unary == 1)
+			{
+				result |= (right_support > 1);
+			}
+			else 
+				if(unary == 2)
+					result |= left_support > 1;
+					else
+						result |= (right_support > 1)||(left_support > 1);
 	}
   }
 	return result;
@@ -1076,13 +1086,13 @@ public boolean isSupport() {
 					if(tangential_area == 3 ||( tangential_area == 12 &&  ( (unary == 4)) ))
 						{
 						  weaksupport = true;
-						  left_support = true;
+						  left_support ++;
 						}
 					else
 						if(tangential_area == 4 || (tangential_area == 14 &&  ( (unary == 3)) ) )
 						 {
 						    weaksupport = true;
-							right_support = true;
+							right_support ++;
 						 }
 						else
 							if(
@@ -1098,16 +1108,26 @@ public boolean isSupport() {
 							  
 							{  
 								if(unary == 0 || unary == 2 || unary == 4 || unary == 3)
-									left_support = true;
+									left_support ++ ;
 								if(unary == 0 || unary == 1 || unary == 4 || unary == 3)
-									right_support = true;
+									right_support ++;
 							}
 				}
 			}
-			result = left_support && right_support;
+			result = (left_support > 0 ) && ( right_support > 0 );
 
 			if(unary == 0)
 				result |= weaksupport;
+			else
+				if(unary == 1)
+				{
+					result |= (right_support > 1);
+				}
+				else 
+					if(unary == 2)
+						result |= left_support > 1;
+						else
+							result |= (right_support > 1)||(left_support > 1);
 	}
 	return result;
 }

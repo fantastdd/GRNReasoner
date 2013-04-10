@@ -237,7 +237,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 	 }
 	 
 	 // TODO fix it later 
-	 public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)//, int region)
+	/* public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)
 	 {
 		 boolean result = false;
 		 // when to bounding boxes just touch each other, then there wont be an edge touch
@@ -245,22 +245,29 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		 if (conf.unary < 3 )
 		 {
 		    if(tconf.unary < 3)
-		    		result = (conf.limit_horizontal/conf.limit_vertical == tconf.limit_horizontal/tconf.limit_vertical);
+		    {	
+		    	//print ======
+		    	
+		    	if(conf.getMbr().getId() == 9 && conf.unary == 2 && tconf.getMbr().getId() == 6 && tconf.unary == 2)
+		    		System.out.println((double)conf.limit_horizontal/(double)conf.limit_vertical +  "   " + (double)tconf.limit_horizontal/(double)tconf.limit_vertical);
+		    	//print end ====
+		    	result = ((double)conf.limit_horizontal/(double)conf.limit_vertical) == ((double)tconf.limit_horizontal/(double)tconf.limit_vertical);
+		    }
 		    else 
 		    	if (tconf.unary == 3)
 		    {
-		    	int d = conf.limit_vertical / conf.limit_horizontal;
-		    	int td1 =  ( tconf.height - tconf.limit_vertical) / tconf.limit_horizontal;
-		    	int td2 = tconf.height /tconf.limit_horizontal;
+		    	double d = (double)conf.limit_vertical / (double)conf.limit_horizontal;
+		    	double td1 =  (double)( tconf.height - tconf.limit_vertical) / (double)tconf.limit_horizontal;
+		    	double td2 = (double) tconf.height /(double) tconf.limit_horizontal;
 		    	if(d <= td2 && d >= td1)
 		    		  result = true;
 		    	//return false;
 		    } else
 			
 		    {
-		    	int d = conf.limit_vertical / conf.limit_horizontal;
-		    	int td1 =  tconf.limit_vertical / tconf.width;
-		    	int td2 = tconf.limit_vertical/( tconf.width - tconf.limit_horizontal);
+		    	double d = (double)conf.limit_vertical / (double)conf.limit_horizontal;
+		    	double td1 =  (double)tconf.limit_vertical / (double)tconf.width;
+		    	double td2 = (double)tconf.limit_vertical/(double)( tconf.width - tconf.limit_horizontal);
 		    	if(d <= td2 && d >= td1)
 		    		  result = true;
 		    	//return false;
@@ -270,14 +277,76 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 			{
 					 if(tconf.unary < 3)
 					{
-						/* 	
-							int d = tconf.limit_vertical / tconf.limit_horizontal;
-					    	int td1 =  ( conf.height - conf.limit_vertical) / conf.limit_horizontal;
-					    	int td2 = conf.height /conf.limit_horizontal;
-					    	if(d <= td2 && d >= td1)
-					    		  result = true;*/
+						
 						 if(conf.unary == 3){
 						  	
+							     double d = (double)tconf.limit_vertical / (double)tconf.limit_horizontal;
+						    	double td1 =  (double)( conf.height - conf.limit_vertical) / (double)conf.limit_horizontal;
+						    	double td2 = (double) conf.height /(double) conf.limit_horizontal;
+					    	if(d <= td2 && d >= td1)
+					    		  result = true;
+					    	}
+						 else 
+						 {
+
+						    	double d = (double)tconf.limit_vertical / (double)tconf.limit_horizontal;
+						    	double td1 =  (double)conf.limit_vertical / (double)conf.width;
+						    	double td2 = (double)conf.limit_vertical/(double)( conf.width - conf.limit_horizontal);
+						    	if(d <= td2 && d >= td1)
+						    		  result = true;
+						 }
+		            }
+					 else
+		            {
+                         //TODO fixed later	
+						 return true;
+		            	
+		            }
+		            	
+		
+		            	
+			}
+		return result; 
+	 }*/
+	 
+	 public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)//, int region)
+	 {
+		 boolean result = false;
+		 // when to bounding boxes just touch each other, then there wont be an edge touch
+
+		 if (conf.unary < 3 )
+		 {
+		    if(tconf.unary < 3)
+		    	
+		    {	//result = ((double)conf.limit_horizontal/(double)conf.limit_vertical) == ((double)tconf.limit_horizontal/(double)tconf.limit_vertical);
+		    	result = (conf.limit_horizontal/conf.limit_vertical) == (tconf.limit_horizontal/tconf.limit_vertical);
+		    }
+		    else 
+		    	if (tconf.unary == 3)
+		    {
+		    	int d = conf.limit_vertical / conf.limit_horizontal;
+		    	int td1 =  ( tconf.height - tconf.limit_vertical) / tconf.limit_horizontal;
+		    	int td2 = tconf.height /tconf.limit_horizontal;
+		    	if(d <= td2 && d >= td1)
+		    		  result = true;
+		    
+		    } else
+
+		    {
+		    	int d = conf.limit_vertical / conf.limit_horizontal;
+		    	int td1 =  tconf.limit_vertical / tconf.width;
+		    	int td2 = tconf.limit_vertical/( tconf.width - tconf.limit_horizontal);
+		    	if(d <= td2 && d >= td1)
+		    		  result = true;
+		    	
+		    }
+		 }
+		 else
+			{
+					 if(tconf.unary < 3)
+					{
+						 if(conf.unary == 3){
+
 							int d = tconf.limit_vertical / tconf.limit_horizontal;
 					    	int td1 =  ( conf.height - conf.limit_vertical) / conf.limit_horizontal;
 					    	int td2 = conf.height /conf.limit_horizontal;
@@ -297,19 +366,11 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		            {
                          //TODO fixed later	
 						 return true;
-		            	
+
 		            }
-		            	
-		           /* 	if (tconf.unary == 3)
-				    {
-				    	int d = conf.limit_vertical / conf.limit_horizontal;
-				    	int td1 =  tconf.limit_vertical / tconf.width;
-				    	int td2 = tconf.limit_vertical/( tconf.width - tconf.limit_horizontal);
-				    	if(d <= td2 && d >= td1)
-				    		  result = true;
-				    	//return false;
-				    }*/
-		            	
+
+
+
 			}
 		return result; 
 	 }
