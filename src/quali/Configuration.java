@@ -1096,9 +1096,11 @@ public boolean isSupport() {
 								)
 								
 							  
-							{
-								left_support = true;
-								right_support = true;
+							{  
+								if(unary == 0 || unary == 2 || unary == 4 || unary == 3)
+									left_support = true;
+								if(unary == 0 || unary == 1 || unary == 4 || unary == 3)
+									right_support = true;
 							}
 				}
 			}

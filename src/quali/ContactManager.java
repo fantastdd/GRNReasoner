@@ -69,6 +69,10 @@ public class ContactManager {
 										contactMaps.add(_contactMap);
 									}
 							}
+							if(contactMaps.isEmpty())
+							{
+								break;
+							}
 							
 							/*  if(conf.getMbr().getId() == 12 && node.lookup(5).unary == 0&& conf.unary == 2 )
 							  {	 
@@ -728,7 +732,7 @@ public class ContactManager {
 	 */
 	private static int testVertexR_A13(final Configuration conf, final Configuration tconf, int region) {
 		
-		int result = 0;
+		int result = -1;
 
 		MyPolygon min = new MyPolygon();
 		MyPolygon max = new MyPolygon();
@@ -785,7 +789,12 @@ public class ContactManager {
 
 
 		if (QuantiShapeCalculator.isIntersected(tmax, _region, true)) {
-
+			
+			/*//print
+			if(tconf.unary == 3 && conf.unary == 0 && tconf.getMbr().getId() == 11 && conf.getMbr().getId() == 0)
+		    System.out.println(testSolidOverlapping(conf.fullRec , tmin) + "  " + region);
+				//print end 
+*/
 			if (!testSolidOverlapping(conf.fullRec , tmin)) {
 
 				result = minmaxEvaluation(min, max, tmin, tmax);
@@ -793,8 +802,11 @@ public class ContactManager {
 			} else
 				result = -1;
 
-		} else {
-			result = 0;
+		}
+		
+		else {
+		   if(!testSolidOverlapping(conf.fullRec , tmin))
+			   result = 0;
 		}
 		return result;
 
@@ -813,7 +825,8 @@ public class ContactManager {
 	 */
 	private static int testVertexR_A24(final Configuration conf,
 			final Configuration tconf, int region) {
-		int result = 0;
+		
+		int result = -1;
 
 		MyPolygon min = new MyPolygon();
 		MyPolygon max = new MyPolygon();
@@ -867,15 +880,15 @@ public class ContactManager {
 		_region = max;
 
 		if (QuantiShapeCalculator.isIntersected(tmax, _region, true)) {
-			// System.out.println("  In test VertexRA_24 and pass the tmax _region test"
-			// + conf.toShortString() + "   " + tconf.toShortString() + "    ");
 			if (!testSolidOverlapping(conf.fullRec, tmin))
 				result = minmaxEvaluation(min, max, tmin, tmax);
 			else
 				result = -1;
 
-		} else {
-			result = 0;
+		} 
+		else {
+			if(!testSolidOverlapping(conf.fullRec , tmin))
+				result = 0;
 		}
 		return result;
 
@@ -1123,14 +1136,15 @@ public class ContactManager {
 	}
 
 	private static boolean testSolidOverlapping(MyPolygon m, MyPolygon n) {
-		return QuantiShapeCalculator.isIntersectedWCA(m, n).size() > 1;
-
+		//return QuantiShapeCalculator.isIntersectedWCA(m, n).size() > 1;
+        return  QuantiShapeCalculator.isIntersected(m, n, false);
 	}
 	private static boolean isOverlappingR_A(Configuration rconf, Configuration aconf)
 	{
 		MyPolygon aminl = aconf.diagonal_left;
 		MyPolygon aminr = aconf.diagonal_right;
 		MyPolygon rmin = rconf.fullRec;
+		
 		if(aconf.unary == 1 || aconf.unary == 3)
 			return  QuantiShapeCalculator.isIntersected(aminr, rmin, false);
 		else
@@ -1145,14 +1159,14 @@ public class ContactManager {
 		/* no needs to distinguish between edge 12,23,34,14 */
 		/*	if(conf.getMbr().getId() == 10 && tconf.getMbr().getId() == 8)
 				System.out.println(isOverlappingR_A(conf,tconf));*/
-			  if(isOverlappingR_A(conf,tconf))
+		/*	  if(isOverlappingR_A(conf,tconf))
 			  {
 				  	Contact _contact = new Contact();			
 				  	
 					_contact.setType(-2);
 					contacts.add(_contact);
 					return contacts;
-			  }
+			  }*/
 			boolean tr1 = testRegionR_A(conf, tconf, 1);// test the right half of the top edge.
 			boolean tr2 = testRegionR_A(conf, tconf, 2);
 			boolean tr3 = testRegionR_A(conf, tconf, 3);
@@ -1161,15 +1175,36 @@ public class ContactManager {
 			boolean tr23 = testRegionR_A(conf, tconf, 23);
 			boolean tr14 = testRegionR_A(conf, tconf, 14);
 
-			boolean vertex_1 = ( testVertexR_A13(conf, tconf, 1) == 2)
-					                                  && (testVertexR_A13(conf, tconf, 14) == 2); // right-top corner
-																
-			boolean vertex_2 = (testVertexR_A24(conf, tconf, 2) == 2)
-					&& (testVertexR_A24(conf, tconf, 23) == 2);
-			boolean vertex_3 = (testVertexR_A13(conf, tconf, 3) == 2)
-					&& (testVertexR_A13(conf, tconf, 23) == 2);
-			boolean vertex_4 = (testVertexR_A24(conf, tconf, 4) == 2)
-					&& (testVertexR_A24(conf, tconf, 14) == 2);
+			int ra13_1 = testVertexR_A13(conf, tconf, 1);
+			int ra13_14 = testVertexR_A13(conf, tconf, 14);
+			int ra13_3 = testVertexR_A13(conf, tconf, 3);
+			int ra13_23 = testVertexR_A13(conf, tconf, 23);
+			
+			int ra24_2 = testVertexR_A24(conf, tconf, 2);
+			int ra24_23 = testVertexR_A24(conf, tconf, 23);
+			int ra24_4 = testVertexR_A24(conf, tconf, 4);
+			int ra24_14 = testVertexR_A24(conf, tconf, 14);
+			
+			boolean vertex_1 = (ra13_1 == 2) && (ra13_14 == 2); // right-top corner
+			
+			boolean vertex_3 = (ra13_3 == 2)&& ( ra13_23 == 2);
+			
+			boolean vertex_2 = (ra24_2 == 2) && ( ra24_23 == 2);
+			
+			boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
+			
+			
+			
+			if(!tr1 && !tr2 && !tr3 &&!tr4 && !tr23 && !tr14 && ( ra13_1 == -1 || ra13_14 == -1) && (ra13_3 == -1 || ra13_23 == -1) && (ra24_2 == -1 
+					|| ra24_23 == -1) && (ra24_4 == -1 || ra24_14 == -1))
+			{
+				Contact _contact = new Contact();			
+				_contact.setType(-2);
+				contacts.add(_contact);
+				return contacts;
+			}
+			
+
 
 			if (vertex_1) {
 
@@ -1286,13 +1321,13 @@ public class ContactManager {
 	    //print
 			/*	if(conf.unary == 1 && conf.getMbr().getId() == 6 && tconf.getMbr().getId() == 5 && tconf.unary == 0)
 					System.out.println(isOverlappingR_A(tconf,conf));*/
-			  if(isOverlappingR_A(tconf,conf))
+			/*  if(isOverlappingR_A(tconf,conf))
 			  {
 				  	Contact _contact = new Contact();			
 					_contact.setType(-2);
 					contacts.add(_contact);
 					return contacts;
-			  }
+			  }*/
 				/* no needs to distinguish between edge 12,23,34,14 */
 				boolean tr12 = testRegionR_A(tconf, conf, 12);
 				boolean tr34 = testRegionR_A(tconf, conf, 34);
@@ -1300,17 +1335,40 @@ public class ContactManager {
 				boolean tr23 = testRegularRegion23(tconf, conf);
 				boolean tr14 = testRegularRegion14(tconf, conf);
 				
-				boolean vertex_1 = (testVertexR_A13(tconf, conf, 1) == 2)
-						&& (testVertexR_A13(tconf, conf, 14) == 2); // right-top corner
+				int ra13_1 = testVertexR_A13(tconf, conf, 1);
+				int ra13_14 = testVertexR_A13(tconf, conf, 14);
+				int ra13_3 = testVertexR_A13(tconf, conf, 3);
+				int ra13_23 = testVertexR_A13(tconf, conf, 23);
 				
-				boolean vertex_3 = (testVertexR_A13(tconf, conf, 3) == 2)
-						&& (testVertexR_A13(tconf, conf, 23) == 2);
+				int ra24_2 = testVertexR_A24(tconf, conf, 2);
+				int ra24_23 = testVertexR_A24(tconf, conf, 23);
+				int ra24_4 = testVertexR_A24(tconf, conf, 4);
+				int ra24_14 = testVertexR_A24(tconf, conf, 14);
 				
-				boolean vertex_2 = (testVertexR_A24(tconf, conf, 2) == 2)
-				       && (testVertexR_A24(tconf, conf, 23) == 2);
+				boolean vertex_1 = (ra13_1 == 2) && (ra13_14 == 2); // right-top corner
 				
-				boolean vertex_4 = (testVertexR_A24(tconf, conf, 4) == 2)
-						&& (testVertexR_A24(tconf, conf, 14) == 2);
+				boolean vertex_3 = (ra13_3 == 2)&& ( ra13_23 == 2);
+				
+				boolean vertex_2 = (ra24_2 == 2) && ( ra24_23 == 2);
+				
+				boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
+				
+				//print=============
+	/*			if(conf.unary == 3 && tconf.unary == 0 && conf.getMbr().getId() == 11 && tconf.getMbr().getId() == 0)
+					System.out.println(tr12 + "  " + tr34 + "  " + tr23 + "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
+							+ ra13_23 + "  " + ra24_2 + "  " + ra24_23 + "  " + ra24_4 + "  " + ra24_14);*/
+					
+			   //print end
+					
+				if(!tr12 && !tr34 && !tr23 &&!tr14 &&( ra13_1 == -1 || ra13_14 == -1) && (ra13_3 == -1 || ra13_23 == -1) && (ra24_2 == -1 
+						|| ra24_23 == -1) && (ra24_4 == -1 || ra24_14 == -1))
+				{
+					//System.out.println(" return empty");
+					Contact _contact = new Contact();			
+					_contact.setType(-2);
+					contacts.add(_contact);
+					return contacts;
+				}
 
 				if (vertex_1) {
 

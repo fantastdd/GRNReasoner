@@ -256,7 +256,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		    		  result = true;
 		    	//return false;
 		    } else
-			if (tconf.unary == 4)
+			
 		    {
 		    	int d = conf.limit_vertical / conf.limit_horizontal;
 		    	int td1 =  tconf.limit_vertical / tconf.width;
@@ -270,11 +270,28 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 			{
 					 if(tconf.unary < 3)
 					{
-						  	int d = tconf.limit_vertical / tconf.limit_horizontal;
+						/* 	
+							int d = tconf.limit_vertical / tconf.limit_horizontal;
+					    	int td1 =  ( conf.height - conf.limit_vertical) / conf.limit_horizontal;
+					    	int td2 = conf.height /conf.limit_horizontal;
+					    	if(d <= td2 && d >= td1)
+					    		  result = true;*/
+						 if(conf.unary == 3){
+						  	
+							int d = tconf.limit_vertical / tconf.limit_horizontal;
 					    	int td1 =  ( conf.height - conf.limit_vertical) / conf.limit_horizontal;
 					    	int td2 = conf.height /conf.limit_horizontal;
 					    	if(d <= td2 && d >= td1)
 					    		  result = true;
+					    	}
+						 else 
+						 {
+							 	int d = tconf.limit_vertical / tconf.limit_horizontal;
+						    	int td1 =  conf.limit_vertical / conf.width;
+						    	int td2 = conf.limit_vertical/( conf.width - conf.limit_horizontal);
+						    	if(d <= td2 && d >= td1)
+						    		  result = true;
+						 }
 		            }
 					 else
 		            {
