@@ -58,7 +58,7 @@ public int limit_horizontal;
 public int limit_vertical;
 public MBR mbr;
 public LinkedList<Neighbor> neighbors = new LinkedList<Neighbor>();
-public LinkedList<MBR> overlapping_mbrs = new  LinkedList<MBR>();
+
 public int[] permit_regions;
 
 public LinkedList<Point> points1 = new LinkedList<Point>();
@@ -711,11 +711,7 @@ public Configuration clone()
 	  conf.getNeighbors().add(neighbor);
   }
   
-  for(MBR _mbr:overlapping_mbrs)
-  {
-	  conf.getOverlapping_mbrs().add(_mbr);
-  }
-  
+
   for(Integer key: blocked_regions.keySet())
   {
 	  LinkedList<MBR> mbrs = blocked_regions.get(key);
@@ -812,9 +808,6 @@ public LinkedList<Neighbor> getNeighbors() {
 }
 
 
-public LinkedList<MBR> getOverlapping_mbrs() {
-	return overlapping_mbrs;
-}
 
 public int[] getPermit_regions() {
 	return permit_regions;
@@ -1182,9 +1175,7 @@ public void setHeight(int height) {
 public void setMbr(MBR mbr) {
 	this.mbr = mbr;
 }
-public void setOverlapping_mbrs(LinkedList<MBR> overlapping_mbrs) {
-	this.overlapping_mbrs = overlapping_mbrs;
-}
+
 public void setPermit_regions(int... permit_regions) {
 	this.permit_regions = permit_regions;
 }

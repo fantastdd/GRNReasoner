@@ -16,14 +16,11 @@ public class MBRRegisterVO {
 		MBRRegisterVO.mbrs = mbrs;
 	}
 
-	private static int count = 0;
-
 	public static void registerRectangle(Rectangle rec, boolean edge) {
 		MBR mbr = new MBR(rec);
 		if (edge)
 			MBRRegisterVO.edge.add(mbr);
 		if (!mbrs.contains(mbr)) {
-			mbr.setId(count++);
 			mbrs.add(mbr);
 		}
 	}
@@ -33,7 +30,6 @@ public class MBRRegisterVO {
 		if (edge)
 			MBRRegisterVO.edge.add(mbr);
 		if (!mbrs.contains(mbr)) {
-			mbr.setId(count++);
 			mbrs.add(mbr);
 		}
 	}

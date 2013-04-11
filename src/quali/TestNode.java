@@ -2,16 +2,21 @@ package quali;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import quanti.QuantiShapeCalculator;
 import ab.WorldinVision;
 
+import common.util.MBRYComparator;
 import common.util.NeighborComparatorByMBRID;
 
 public class TestNode {
 
 private HashMap<Integer,Configuration> confs ;
+public LinkedList<Configuration> conflist;
+private int count_id = -1;
+private int count_assigned = -1;
 //the pointer points to the next configuration (pop())
 public int current_id= -1;
 
@@ -26,26 +31,31 @@ public boolean instaniatedUntilIndex(int i)
 
 
 
-
-
-
 public TestNode()
 {
-   confs = new HashMap<Integer,Configuration>();	
+   confs = new HashMap<Integer,Configuration>();
+   conflist = new LinkedList<Configuration>();
 }
 public TestNode(List<MBR> mbrs, List<MBR> edges)
 {
 	confs = new HashMap<Integer,Configuration>();
+	
+	conflist = new LinkedList<Configuration>();
+	
 	for (MBR mbr : mbrs)
 	{
-		confs.put(mbr.getId(),  new Configuration(mbr));
+		Configuration conf = new Configuration(mbr);
 		if(edges.contains(mbr))
-			confs.get(mbr.getId()).setEdge(true);
+			conf.setEdge(true);
+		
+		confs.put(mbr.getId(),  conf);
+		conflist.add(conf);
+		
 	}
 	
-	// initialize();
-	 initializeVO();
-
+	  // initialize();
+	  //initializeVO();
+       initializeHW();
 }
 public Configuration lookup(int id)
 {
@@ -66,29 +76,69 @@ public boolean isCompleted()
 {
      return current_id >= confs.size() - 1;	
 }
-
-
-//Initialise using Variable Ordering
-public void initializeVO()
+private Configuration lookup(Neighbor neighbor)
 {
-   	for (int i = 0; i < confs.size(); i++)
+        for (Configuration conf : conflist)
+        {
+        	if(conf.getMbr().equals(neighbor))
+        		{
+        		return conf;
+        		}
+        }	
+        return null;
+}
+private LinkedList<Configuration> generateId(LinkedList<Configuration> expand_conf)
+{
+  if(expand_conf.isEmpty())
+  {
+	  return expand_conf;
+  }
+	LinkedList<Configuration> newConfs = new LinkedList<Configuration>();
+	newConfs.addAll(expand_conf);
+	expand_conf.clear();
+    for(Configuration conf : newConfs){
+   		if(!conf.isEdge())
+   		{	
+   		   if(conf.getMbr().getId() == -1)
+   		   {   
+   			   conf.getMbr().setId(++count_id);
+   			   ++count_assigned;
+   		       for (Neighbor neighbor: conf.getNeighbors())
+   		       {
+   		    	   expand_conf.add(lookup(neighbor));
+   		    	  /* MBR mbr = neighbor.getMbr();
+   		    	   if(mbr.getId() == -1)
+   		    	   {  
+   		    		   mbr.setId(++count_id);
+   		    		   ++count_assigned;
+   		    	   }*/
+   		       }
+   		   }
+   		}
+   	}
+    generateId(expand_conf);
+   return expand_conf;
+}
+//Initialise using Variable Ordering
+public void initializeHW()
+{
+ 	for (int i = 0; i < conflist.size(); i++)
 	{
-		Configuration conf = lookup(i);
+		Configuration conf = conflist.get(i);
 		MBR mbr = conf.getMbr();
-		for (int j = 0; j < confs.size() ; j++)
+		mbr.setId(-1);
+		for (int j = 0; j < conflist.size() ; j++)
 		{
 		 if (i != j) {
-					Configuration _conf = lookup(j);
+					Configuration _conf = conflist.get(j);
 					MBR mbr1 = _conf.getMbr();
 					//System.out.println(" test  " + mbr +  "   "+ mbr1   );
 					if(QuantiShapeCalculator.isIntersected(mbr, mbr1, false))
 					{
-						
-						conf.getOverlapping_mbrs().add(mbr1);
-						conf.getContact_map().put(mbr1.getId(),new Contact() );
-						
+												
 						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
-			             conf.getNeighbors().add(neighbor);
+			            
+						conf.getNeighbors().add(neighbor);
 						
 			           // System.out.println(" trigger the containing case" +  mbr +  "  " + mbr1);
 					}
@@ -102,11 +152,60 @@ public void initializeVO()
 		 }
 		}
 		
-		// sort the neighbors according the gap in between in ascending order.
-	   //Collections.sort(conf.getNeighbors(), new NeighborComparator());
 	    
-		// sort the neighbors according the mbr id in between in ascending order.
-		Collections.sort(conf.getNeighbors(), new NeighborComparatorByMBRID());
+	    
+	    //========================== Early Determination: Those who do not have neighbors from region 3 will be considered to be regular ======================
+	    //TODO change when gap applied
+	    {
+	          if(conf.getNeighbors().isEmpty() )
+	        	  conf.setEdge(true);
+	          else
+	          {
+	        	  int count = 0;
+	        	  for (Neighbor neighbor : conf.getNeighbors())
+	        	  {
+	        		  if(neighbor.getNeighborType() == 3 ||( neighbor.getNeighborType() == 0 && (conf.y + conf.height) < neighbor.getMbr().getHeight() + neighbor.getMbr().getY()) )
+	        			  count++;
+	        	  }
+	        	  if(count == 0)
+	        		  conf.setEdge(true);
+	          }
+	    }
+	    	     
+	}
+	
+ 	//======================= Variable Ordering ===================================================
+
+ 	Collections.sort(conflist, new MBRYComparator());
+ 	for (Configuration conf : conflist)
+ 	{
+ 		if(conf.isEdge())
+ 		{	
+ 			conf.getMbr().setId(++count_id);
+ 		}
+ 	}
+ 	for (Configuration conf : conflist)
+ 	{
+ 		if(!conf.isEdge())
+ 		{
+ 		  double r1 = (double)conf.width/(double)conf.height;
+ 		 double r2 = (double)conf.height/(double)conf.width;
+ 		  if(r1 > 4 || r2 > 4)	
+ 			conf.getMbr().setId(++count_id);
+ 		}
+ 	}
+
+ 		for (Configuration conf : conflist)
+ 		{
+ 			LinkedList<Configuration> confs = new LinkedList<Configuration>();
+ 			confs.add(conf);
+ 			generateId(confs);
+ 		}
+ 	
+//========================== Ordering End ==============================================
+ 	for(Configuration conf : conflist)
+ 	{
+ 		Collections.sort(conf.getNeighbors(), new NeighborComparatorByMBRID());
 		
 	    for (Neighbor neighbor : conf.getNeighbors())
 	    {
@@ -126,14 +225,79 @@ public void initializeVO()
 	    if(conf.lastValidNeighborId == -2 && !conf.getNeighbors().isEmpty())
 	    	//conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
 	    		conf.lastValidNeighborId = conf.getNeighbors().getLast().getMbr().getId();
-	      
+	    
+	    //=====================DEBUG output the neighbor 
+	    {
+	    	System.out.println(conf.getMbr() +"  " + conf.getMbr().getBounds() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId + "     edge:  " + conf.isEdge() + "  unary " + conf.unary
+	    			+ "h/w: " + ((double)conf.height/(double)conf.width) + "w/h" + ((double)conf.width/(double)conf.height));
+	    	for (Neighbor neighbor: conf.getNeighbors())
+	    	{
+	    		
+	    		System.out.println("    " + neighbor.getMbr() + "    " + neighbor.getGap() + "   index:  " + conf.getNeighbors().indexOf(neighbor.getMbr()) + " neighbor type:  " + neighbor.getNeighborType());
+	    		
+	    	}
+	    	
+	    }
+	    //===========================
+ 	}
+ 	  	
+ 	//Initialise the array of stability id
+		stability_id = new int[conflist.size()];
+		for (int i = 0; i < conflist.size() ; i ++)
+		{
+			Configuration conf = conflist.get(i);
+			if(conf.isEdge())
+				stability_id[i] = 1;
+			else
+				stability_id[i] = 0;
+			
+			confs.put(conf.getMbr().getId(), conf);
+		}
+		
+		
 
+	
+	
+}
+//Initialise using Variable Ordering
+public void initializeVO()
+{
+   	for (int i = 0; i < conflist.size(); i++)
+	{
+		Configuration conf = conflist.get(i);
+		MBR mbr = conf.getMbr();
+		mbr.setId(-1);
+		for (int j = 0; j < conflist.size() ; j++)
+		{
+		 if (i != j) {
+					Configuration _conf = conflist.get(j);
+					MBR mbr1 = _conf.getMbr();
+					//System.out.println(" test  " + mbr +  "   "+ mbr1   );
+					if(QuantiShapeCalculator.isIntersected(mbr, mbr1, false))
+					{
+												
+						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
+			            
+						conf.getNeighbors().add(neighbor);
+						
+			           // System.out.println(" trigger the containing case" +  mbr +  "  " + mbr1);
+					}
+					else
+					{
+						Neighbor _neighbor  = createNeighbor(mbr,mbr1);
+						//System.out.println(mbr + "  construct  " + mbr1 + "   " + _neighbor.getGap() + "   " + _neighbor.getNeighborType());
+						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() == 0))
+							conf.getNeighbors().add(_neighbor);
+					}
+		 }
+		}
+		
 	    
 	    
 	    //========================== Early Determination: Those who do not have neighbors from region 3 will be considered to be regular ======================
 	    //TODO change when gap applied
 	    {
-	          if(conf.lastValidNeighborId == -2 )
+	          if(conf.getNeighbors().isEmpty() )
 	        	  conf.setEdge(true);
 	          else
 	          {
@@ -147,11 +311,71 @@ public void initializeVO()
 	        		  conf.setEdge(true);
 	          }
 	    }
-	    
+	    	     
+	}
+	
+   	//======================= Variable Ordering ===================================================
+  
+   	Collections.sort(conflist, new MBRYComparator());
+   	for (Configuration conf : conflist)
+   	{
+   		if(conf.isEdge())
+   		{	
+   			conf.getMbr().setId(++count_id);
+   		    ++count_assigned;
+   		}
+   	}
+  
+   		for (Configuration conf : conflist)
+   		{
+   			LinkedList<Configuration> confs = new LinkedList<Configuration>();
+   			confs.add(conf);
+   			generateId(confs);
+   		}
+   	
+/*   	for(Configuration conf:conflist)
+   	{
+   		if(!conf.isEdge())
+   		{	
+   		   if(conf.getMbr().getId() == -1)
+   		   {   
+   			   conf.getMbr().setId(++count_id);
+   		       for (Neighbor neighbor: conf.getNeighbors())
+   		       {
+   		    	   MBR mbr = neighbor.getMbr();
+   		    	   if(mbr.getId() == -1)
+   		    		   mbr.setId(++count_id);
+   		       }
+   		   }
+   		}
+   	}*/
+   	for(Configuration conf : conflist)
+   	{
+   		Collections.sort(conf.getNeighbors(), new NeighborComparatorByMBRID());
+		
+	    for (Neighbor neighbor : conf.getNeighbors())
+	    {
+	    	if(neighbor.getGap() > WorldinVision.gap) 
+	    	{	
+	    		conf.lastValidNeighborId =  conf.getNeighbors().indexOf(neighbor) - 1; 
+	    	    break;
+	    	}
+	    	else
+	    	{
+	    		//initialize the contact map
+	    		conf.getContact_map().put(neighbor.getMbr().getId(), new Contact());
+	    		//System.out.println(conf.getMbr() + "   " + neighbor.getMbr());
+	    	}
+	    }
+	    // the mbr touches all others.
+	    if(conf.lastValidNeighborId == -2 && !conf.getNeighbors().isEmpty())
+	    	//conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
+	    		conf.lastValidNeighborId = conf.getNeighbors().getLast().getMbr().getId();
 	    
 	    //=====================DEBUG output the neighbor 
 	    {
-	    	System.out.println(conf.getMbr() +"  " + conf.getMbr().getBounds() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId + "     edge:  " + conf.isEdge() + "  unary " + conf.unary);
+	    	System.out.println(conf.getMbr() +"  " + conf.getMbr().getBounds() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId + "     edge:  " + conf.isEdge() + "  unary " + conf.unary
+	    			+ "h/w: " + ((double)conf.height/(double)conf.width) + "w/h" + ((double)conf.width/(double)conf.height));
 	    	for (Neighbor neighbor: conf.getNeighbors())
 	    	{
 	    		
@@ -161,22 +385,22 @@ public void initializeVO()
 	    	
 	    }
 	    //===========================
-	    
-	    //System.out.println("  conf " + conf.getMbr() + "   " +  " last valid id:  " + conf.lastValidNeighborId);
-	     
-	}
-	
-	//Initialize Stability id array
-		stability_id = new int[confs.size()];
-		for (int i = 0; i < confs.size() ; i ++)
+   	}
+   	  	
+   	//Initialise the array of stability id
+		stability_id = new int[conflist.size()];
+		for (int i = 0; i < conflist.size() ; i ++)
 		{
-			if(confs.get(i).isEdge())
+			Configuration conf = conflist.get(i);
+			if(conf.isEdge())
 				stability_id[i] = 1;
 			else
 				stability_id[i] = 0;
+			
+			confs.put(conf.getMbr().getId(), conf);
 		}
 		
-
+		
 
 	
 	
@@ -207,7 +431,7 @@ public void initialize()
 					if(QuantiShapeCalculator.isIntersected(mbr, mbr1, false))
 					{
 						
-						conf.getOverlapping_mbrs().add(mbr1);
+						
 						conf.getContact_map().put(mbr1.getId(),new Contact() );
 						
 						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
@@ -274,7 +498,8 @@ public void initialize()
 	    
 	    //=====================DEBUG output the neighbor 
 	    {
-	    	System.out.println(conf.getMbr() +"  " + conf.getMbr().getBounds() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId + "     edge:  " + conf.isEdge() + "  unary " + conf.unary);
+	    	System.out.println(conf.getMbr() +"  " + conf.getMbr().getBounds() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId + "     edge:  " + conf.isEdge() + "  unary " + conf.unary
+	    			+ "h/w: " + ((double)conf.height/(double)conf.width) + "w/h" + ((double)conf.width/(double)conf.height));
 	    	for (Neighbor neighbor: conf.getNeighbors())
 	    	{
 	    		

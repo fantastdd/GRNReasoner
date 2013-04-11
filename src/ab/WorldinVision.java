@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import main.ScenarioPanel;
+import quali.Configuration;
 import quali.MBR;
 import quali.MBRReasoner;
 import quali.MBRRegister;
@@ -13,6 +14,7 @@ import quali.TestNode;
 public class WorldinVision {
   public LinkedList<MBR> mbrs = new LinkedList<MBR>();
   public static int gap = 0;
+  public TestNode node;
   public void buildWorld(List<Rectangle> objs)
   {
 	   // hardcode the objects in this sList<MBR> mbrsr (Rectangle rec : objs)
@@ -33,14 +35,17 @@ public class WorldinVision {
   public void showWorldinVision()
   {
 	  ScenarioPanel sp = new ScenarioPanel();
-	  sp.run(MBRRegister.getMbrs());
-	  
+	  //sp.run(MBRRegister.getMbrs());
+	  LinkedList<MBR> mbrs = new LinkedList<MBR>();
+	  for (Configuration conf : node.conflist)
+		  mbrs.add(conf.getMbr());
+	  sp.run(mbrs);
 	  
   }
 
   public void reason()
   {
-	  TestNode node = MBRRegister.constructTestNode();
+	  node = MBRRegister.constructTestNode();
   	  MBRReasoner MBRR = new MBRReasoner();
   	  MBRR.search(node);
 
