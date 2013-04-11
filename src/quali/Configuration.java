@@ -125,7 +125,7 @@ public boolean isNowSupport(final Configuration tconf )
 			if(contact.getType() == 1)
 			{
 				if(tangential_area == 3 || ( (unary == 1 || unary == 3)  && tangential_area == 23)
-						|| ( tangential_area == 12 &&  ( (unary == 4)) ))
+						|| ( tangential_area == 12 &&  ( (unary == 4) || unary == 3) ))
 					{
 					  weaksupport = true;
 					  left_support ++;
@@ -133,7 +133,7 @@ public boolean isNowSupport(final Configuration tconf )
 				else
 					if(tangential_area == 4 || (  (unary == 2 || unary == 4)&&tangential_area == 34)
 					
-					|| (tangential_area == 14 &&  ( (unary == 3)) ) )
+					|| (tangential_area == 14 &&  ( (unary == 3) || unary == 4) ) )
 					 {
 					    weaksupport = true;
 						right_support ++;
@@ -352,7 +352,7 @@ public void configureRegions()
 	
 	approx_u3t2r.addPoint(x + width ,  y);
 	approx_u3t2r.addPoint(x , y + limit_vertical);
-	approx_u3t2r.addPoint(x + width , y);
+	approx_u3t2r.addPoint(x , y + height);
 	approx_u3t2r.addPoint(x + width ,  y + height);
 	
 	
@@ -1080,7 +1080,7 @@ public boolean isSupport() {
 				if(contact.getType() == 1)
 				{
 					if(tangential_area == 3 || ( (unary == 1 || unary == 3)  && tangential_area == 23)
-							|| ( tangential_area == 12 &&  ( (unary == 4)) ))
+							|| ( tangential_area == 12 &&  ( (unary == 4) || unary == 3) ))
 						{
 						  weaksupport = true;
 						  left_support ++;
@@ -1088,7 +1088,7 @@ public boolean isSupport() {
 					else
 						if(tangential_area == 4 || (  (unary == 2 || unary == 4)&&tangential_area == 34)
 						
-						|| (tangential_area == 14 &&  ( (unary == 3)) ) )
+						|| (tangential_area == 14 &&  ( (unary == 3) || unary == 4) ) )
 						 {
 						    weaksupport = true;
 							right_support ++;

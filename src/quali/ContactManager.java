@@ -315,7 +315,8 @@ public class ContactManager {
 								}*/
 						 contact.setTangential_area(4);
 						 contact.setType(1);
-					} else 
+					} 
+					else 
 						if (_contact.getTangential_area() == 14)
 						{
 							/*	 commented on April 4
@@ -887,6 +888,12 @@ public class ContactManager {
 
 		} 
 		else {
+			//print ========
+			/*if(tconf.unary == 3 && conf.unary == 0 && tconf.getMbr().getId() == 18 && conf.getMbr().getId() == 11)
+				{
+				System.out.println(conf.fullRec + "  " + tmin + "  " + testSolidOverlapping(conf.fullRec , tmin));
+				}*/
+			//print end ======
 			if(!testSolidOverlapping(conf.fullRec , tmin))
 				result = 0;
 		}
@@ -1193,7 +1200,10 @@ public class ContactManager {
 			
 			boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 			
-			
+			//print ========
+		/*	if(conf.getMbr().getId() == 10 && tconf.getMbr().getId() == 9 && tconf.unary == 3)
+				System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "  " + tr23 + "  " + tr14 );*/
+			//print end ====
 			
 			if(!tr1 && !tr2 && !tr3 &&!tr4 && !tr23 && !tr14 && ( ra13_1 == -1 || ra13_14 == -1) && (ra13_3 == -1 || ra13_23 == -1) && (ra24_2 == -1 
 					|| ra24_23 == -1) && (ra24_4 == -1 || ra24_14 == -1))
@@ -1276,7 +1286,8 @@ public class ContactManager {
 				_contact.setType(1);
 				_contact.setTangential_area(2);
 				contacts.add(_contact);
-			} else if (tr23) // must touch
+			} 
+			else if (tr23) // must touch
 			{
 				Contact _contact = new Contact();
 				_contact.setType(1);
@@ -1354,7 +1365,7 @@ public class ContactManager {
 				boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 				
 				//print=============
-	/*			if(conf.unary == 3 && tconf.unary == 0 && conf.getMbr().getId() == 11 && tconf.getMbr().getId() == 0)
+		/*		if(conf.unary == 3 && tconf.unary == 0 && conf.getMbr().getId() == 18&& tconf.getMbr().getId() == 11)
 					System.out.println(tr12 + "  " + tr34 + "  " + tr23 + "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
 							+ ra13_23 + "  " + ra24_2 + "  " + ra24_23 + "  " + ra24_4 + "  " + ra24_14);*/
 					
@@ -1474,6 +1485,8 @@ public class ContactManager {
 		int tr3 = testFreeRegion13(conf, tconf, 3);
 		int tr4 = testFreeRegion24(conf, tconf, 4);	
 		
+	
+		
 		//TODO effect efficiency
 		if(tr1 == -1 && tr2 == -1 && tr3 == -1 && tr4 == -1)
 		{
@@ -1486,6 +1499,11 @@ public class ContactManager {
 		}
 		
 		boolean potentialEdgeTouch = 	QuantiShapeCalculator.potentialEdgeTouch(conf, tconf);
+		//print
+		/*if(conf.unary == 1 && tconf.unary == 1 && conf.getMbr().getId() == 13 && tconf.getMbr().getId() == 12)
+			System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);*/
+		//print end
+		
 		//System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);
 		//boolean non_touching = false;
 		if (tr1 == 2) {
@@ -1494,7 +1512,7 @@ public class ContactManager {
 			if(potentialEdgeTouch)
 				_contact.setTangential_area(14);
 			else
-				_contact.setTangential_area(2);
+				_contact.setTangential_area(1);
 			contacts.add(_contact);
 
 			//non_touching = true;
@@ -1505,7 +1523,7 @@ public class ContactManager {
 			if(potentialEdgeTouch)
 				_contact.setTangential_area(12);
 			else
-				_contact.setTangential_area(1);
+				_contact.setTangential_area(2);
 			contacts.add(_contact);
 			//non_touching = true;
 		}

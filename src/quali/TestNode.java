@@ -53,9 +53,9 @@ public TestNode(List<MBR> mbrs, List<MBR> edges)
 		
 	}
 	
-	  // initialize();
+	   initialize();
 	  //initializeVO();
-       initializeHW();
+      //initializeHW();
 }
 public Configuration lookup(int id)
 {
@@ -186,7 +186,7 @@ public void initializeHW()
  	}
  	for (Configuration conf : conflist)
  	{
- 		if(!conf.isEdge())
+ 		if(conf.getMbr().getId() == -1)
  		{
  		  double r1 = (double)conf.width/(double)conf.height;
  		 double r2 = (double)conf.height/(double)conf.width;
@@ -194,6 +194,25 @@ public void initializeHW()
  			conf.getMbr().setId(++count_id);
  		}
  	}
+ 	for (Configuration conf : conflist)
+ 	{
+ 		if(conf.getMbr().getId() == -1)
+ 		{
+ 		  int area = conf.getHeight() * conf.getWidth();
+ 		  if(area > 8000)	
+ 			conf.getMbr().setId(++count_id);
+ 		}
+ 	}
+/*	for (Configuration conf : conflist)
+ 	{
+ 		if(conf.getMbr().getId() == -1)
+ 		{
+ 		  double r1 = (double)conf.width/(double)conf.height;
+ 		 double r2 = (double)conf.height/(double)conf.width;
+ 		  if( Math.abs(r1- 1) < 0.5  || Math.abs(r2 - 1) < 0.5)	
+ 			conf.getMbr().setId(++count_id);
+ 		}
+ 	}*/
 
  		for (Configuration conf : conflist)
  		{
@@ -499,7 +518,8 @@ public void initialize()
 	    //=====================DEBUG output the neighbor 
 	    {
 	    	System.out.println(conf.getMbr() +"  " + conf.getMbr().getBounds() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId + "     edge:  " + conf.isEdge() + "  unary " + conf.unary
-	    			+ "h/w: " + ((double)conf.height/(double)conf.width) + "w/h" + ((double)conf.width/(double)conf.height));
+	    			+ " h/w: " + ((double)conf.height/(double)conf.width) + " w/h" + ((double)conf.width/(double)conf.height)
+	    			+ "  area " + conf.width * conf.height);
 	    	for (Neighbor neighbor: conf.getNeighbors())
 	    	{
 	    		
