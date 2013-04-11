@@ -43,8 +43,8 @@ public TestNode(List<MBR> mbrs, List<MBR> edges)
 			confs.get(mbr.getId()).setEdge(true);
 	}
 	
-	 initialize();
-	
+	// initialize();
+	 initializeVO();
 
 }
 public Configuration lookup(int id)
@@ -66,6 +66,122 @@ public boolean isCompleted()
 {
      return current_id >= confs.size() - 1;	
 }
+
+
+//Initialise using Variable Ordering
+public void initializeVO()
+{
+   	for (int i = 0; i < confs.size(); i++)
+	{
+		Configuration conf = lookup(i);
+		MBR mbr = conf.getMbr();
+		for (int j = 0; j < confs.size() ; j++)
+		{
+		 if (i != j) {
+					Configuration _conf = lookup(j);
+					MBR mbr1 = _conf.getMbr();
+					//System.out.println(" test  " + mbr +  "   "+ mbr1   );
+					if(QuantiShapeCalculator.isIntersected(mbr, mbr1, false))
+					{
+						
+						conf.getOverlapping_mbrs().add(mbr1);
+						conf.getContact_map().put(mbr1.getId(),new Contact() );
+						
+						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
+			             conf.getNeighbors().add(neighbor);
+						
+			           // System.out.println(" trigger the containing case" +  mbr +  "  " + mbr1);
+					}
+					else
+					{
+						Neighbor _neighbor  = createNeighbor(mbr,mbr1);
+						//System.out.println(mbr + "  construct  " + mbr1 + "   " + _neighbor.getGap() + "   " + _neighbor.getNeighborType());
+						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() == 0))
+							conf.getNeighbors().add(_neighbor);
+					}
+		 }
+		}
+		
+		// sort the neighbors according the gap in between in ascending order.
+	   //Collections.sort(conf.getNeighbors(), new NeighborComparator());
+	    
+		// sort the neighbors according the mbr id in between in ascending order.
+		Collections.sort(conf.getNeighbors(), new NeighborComparatorByMBRID());
+		
+	    for (Neighbor neighbor : conf.getNeighbors())
+	    {
+	    	if(neighbor.getGap() > WorldinVision.gap) 
+	    	{	
+	    		conf.lastValidNeighborId =  conf.getNeighbors().indexOf(neighbor) - 1; 
+	    	    break;
+	    	}
+	    	else
+	    	{
+	    		//initialize the contact map
+	    		conf.getContact_map().put(neighbor.getMbr().getId(), new Contact());
+	    		//System.out.println(conf.getMbr() + "   " + neighbor.getMbr());
+	    	}
+	    }
+	    // the mbr touches all others.
+	    if(conf.lastValidNeighborId == -2 && !conf.getNeighbors().isEmpty())
+	    	//conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
+	    		conf.lastValidNeighborId = conf.getNeighbors().getLast().getMbr().getId();
+	      
+
+	    
+	    
+	    //========================== Early Determination: Those who do not have neighbors from region 3 will be considered to be regular ======================
+	    //TODO change when gap applied
+	    {
+	          if(conf.lastValidNeighborId == -2 )
+	        	  conf.setEdge(true);
+	          else
+	          {
+	        	  int count = 0;
+	        	  for (Neighbor neighbor : conf.getNeighbors())
+	        	  {
+	        		  if(neighbor.getNeighborType() == 3 ||( neighbor.getNeighborType() == 0 && (conf.y + conf.height) < neighbor.getMbr().getHeight() + neighbor.getMbr().getY()) )
+	        			  count++;
+	        	  }
+	        	  if(count == 0)
+	        		  conf.setEdge(true);
+	          }
+	    }
+	    
+	    
+	    //=====================DEBUG output the neighbor 
+	    {
+	    	System.out.println(conf.getMbr() +"  " + conf.getMbr().getBounds() + "  lastValid Neighbor id :  " + conf.lastValidNeighborId + "     edge:  " + conf.isEdge() + "  unary " + conf.unary);
+	    	for (Neighbor neighbor: conf.getNeighbors())
+	    	{
+	    		
+	    		System.out.println("    " + neighbor.getMbr() + "    " + neighbor.getGap() + "   index:  " + conf.getNeighbors().indexOf(neighbor.getMbr()) + " neighbor type:  " + neighbor.getNeighborType());
+	    		
+	    	}
+	    	
+	    }
+	    //===========================
+	    
+	    //System.out.println("  conf " + conf.getMbr() + "   " +  " last valid id:  " + conf.lastValidNeighborId);
+	     
+	}
+	
+	//Initialize Stability id array
+		stability_id = new int[confs.size()];
+		for (int i = 0; i < confs.size() ; i ++)
+		{
+			if(confs.get(i).isEdge())
+				stability_id[i] = 1;
+			else
+				stability_id[i] = 0;
+		}
+		
+
+
+	
+	
+}
+
 
 //test the overlapping blocks
 public void initialize()

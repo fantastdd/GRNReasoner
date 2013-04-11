@@ -6,8 +6,8 @@ import java.util.List;
 
 import main.ScenarioPanel;
 import quali.MBR;
-import quali.MBRReasonerAdvance;
-import quali.MBRRegisterAdvance;
+import quali.MBRReasoner;
+import quali.MBRRegister;
 import quali.TestNode;
 
 public class WorldinVision {
@@ -24,7 +24,7 @@ public class WorldinVision {
    // the first mbr is the edge
       //MBRRegisterAdvance.batchRegister(mbrs, mbrs.get(0));
 	  
-	  MBRRegisterAdvance.batchRegister(mbrs);
+	  MBRRegister.batchRegister(mbrs);
   	  
 
      
@@ -33,15 +33,15 @@ public class WorldinVision {
   public void showWorldinVision()
   {
 	  ScenarioPanel sp = new ScenarioPanel();
-	  sp.run(MBRRegisterAdvance.getMbrs());
+	  sp.run(MBRRegister.getMbrs());
 	  
 	  
   }
 
   public void reason()
   {
-	  TestNode node = MBRRegisterAdvance.constructTestNode();
-  	  MBRReasonerAdvance MBRR = new MBRReasonerAdvance();
+	  TestNode node = MBRRegister.constructTestNode();
+  	  MBRReasoner MBRR = new MBRReasoner();
   	  MBRR.search(node);
 
   }
