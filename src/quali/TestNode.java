@@ -53,8 +53,8 @@ public TestNode(List<MBR> mbrs, List<MBR> edges)
 		
 	}
 	
-	   initialize();
-	  //initializeVO();
+	     initialize();
+	   //initializeVO();
       //initializeHW();
 }
 public Configuration lookup(int id)
