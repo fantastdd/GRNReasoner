@@ -237,7 +237,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 	 }
 	 
 	 // TODO fix it later 
-	/* public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)
+	 public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)
 	 {
 		 boolean result = false;
 		 // when to bounding boxes just touch each other, then there wont be an edge touch
@@ -248,10 +248,11 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		    {	
 		    	//print ======
 		    	
-		    	if(conf.getMbr().getId() == 9 && conf.unary == 2 && tconf.getMbr().getId() == 6 && tconf.unary == 2)
-		    		System.out.println((double)conf.limit_horizontal/(double)conf.limit_vertical +  "   " + (double)tconf.limit_horizontal/(double)tconf.limit_vertical);
+		    /*	if(conf.getMbr().getId() == 9 && conf.unary == 2 && tconf.getMbr().getId() == 6 && tconf.unary == 2)
+		    		System.out.println((double)conf.limit_horizontal/(double)conf.limit_vertical +  "   " + (double)tconf.limit_horizontal/(double)tconf.limit_vertical);*/
 		    	//print end ====
 		    	result = ((double)conf.limit_horizontal/(double)conf.limit_vertical) == ((double)tconf.limit_horizontal/(double)tconf.limit_vertical);
+		    	//result = (conf.limit_horizontal/conf.limit_vertical) == (tconf.limit_horizontal/tconf.limit_vertical);
 		    }
 		    else 
 		    	if (tconf.unary == 3)
@@ -307,9 +308,9 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		            	
 			}
 		return result; 
-	 }*/
+	 }
 	 
-	 public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)//, int region)
+	/* public static boolean potentialEdgeTouch(Configuration conf, Configuration tconf)//, int region)
 	 {
 		 boolean result = false;
 		 // when to bounding boxes just touch each other, then there wont be an edge touch
@@ -373,7 +374,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 
 			}
 		return result; 
-	 }
+	 }*/
 	 
 	 public static LinkedList<Point> isIntersectedWithReasoning(Polygon p1, Polygon p2, double gap)
 	 {

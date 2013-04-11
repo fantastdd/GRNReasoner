@@ -185,13 +185,17 @@ public class MBRReasonerAdvance {
     {
 		// System.out.println(" node current id : " + node.current_id);
   		//System.out.println(" node is incompleted, :  " + node);
-    	if (node.lookup(4).unary == 0 && node.lookup(5).unary == 0 && node.lookup(6).unary == 2 && node.lookup(7).unary == 1 && node.lookup(8).unary == 2
-				&& node.lookup(9).unary == 1 && node.lookup(10).unary == 4 && node.lookup(11).unary == 3)
-			System.out.println(" node incompleted, check stability \n" + node);
+/*		if (node.lookup(6).unary == 2 && node.lookup(7).unary == 0 && node.lookup(8).unary == 3 && node.lookup(9).unary == 2 && node.lookup(10).unary == 0
+				&& node.lookup(11).unary == 3 && node.lookup(12).unary == 1 
+				&& node.lookup(13).unary == 2	&& node.lookup(14).unary == 2 && node.lookup(15).unary == 1 && node.lookup(16).unary == 3
+				&& node.lookup(17).unary == 3 && node.lookup(18).unary == 2 && node.lookup(19).unary == 1 && node.lookup(20).unary == 3)
+			System.out.println(" node incompleted, check stability \n" + node + "  " + this.global_counter) ;*/
     	if(node.isCompleted())
     	{
-    		/*if (node.lookup(4).unary == 0 && node.lookup(5).unary == 0 && node.lookup(6).unary == 2 && node.lookup(7).unary == 1 && node.lookup(8).unary == 2
-    				&& node.lookup(9).unary == 1 && node.lookup(10).unary == 4 && node.lookup(11).unary == 3)
+  /*  		if (node.lookup(6).unary == 2 && node.lookup(7).unary == 0 && node.lookup(8).unary == 3 && node.lookup(9).unary == 2 && node.lookup(10).unary == 0
+    				&& node.lookup(11).unary == 3 && node.lookup(12).unary == 1 
+    				&& node.lookup(13).unary == 2	&& node.lookup(14).unary == 2 && node.lookup(15).unary == 1 && node.lookup(16).unary == 3
+    				&& node.lookup(17).unary == 3 && node.lookup(18).unary == 2 && node.lookup(19).unary == 1 && node.lookup(20).unary == 3)
     			System.out.println(" node completed, check stability \n" + node);*/
 //    		/System.out.println(" node completed, check stability \n" + node);
     		

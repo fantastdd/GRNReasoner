@@ -124,20 +124,23 @@ public boolean isNowSupport(final Configuration tconf )
 			//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 			if(contact.getType() == 1)
 			{
-				if(tangential_area == 3 ||( tangential_area == 12 &&  ( (unary == 4)) ))
+				if(tangential_area == 3 || ( (unary == 1 || unary == 3)  && tangential_area == 23)
+						|| ( tangential_area == 12 &&  ( (unary == 4)) ))
 					{
 					  weaksupport = true;
 					  left_support ++;
 					}
 				else
-					if(tangential_area == 4 || (tangential_area == 14 &&  ( (unary == 3)) ) )
+					if(tangential_area == 4 || (  (unary == 2 || unary == 4)&&tangential_area == 34)
+					
+					|| (tangential_area == 14 &&  ( (unary == 3)) ) )
 					 {
 					    weaksupport = true;
 						right_support ++;
 					 }
 					else
 						if(
-								
+							
 							(unary == 0 &&tangential_area == 34)  
 							  || ( (unary == 2|| unary == 4) && tangential_area == 23)
 							  || ( (unary == 1|| unary == 3) && tangential_area == 34)
@@ -161,7 +164,7 @@ public boolean isNowSupport(final Configuration tconf )
 		else
 			if(unary == 1)
 			{
-				result |= (right_support > 1);
+				result |=  right_support > 1;
 			}
 			else 
 				if(unary == 2)
@@ -1083,13 +1086,16 @@ public boolean isSupport() {
 				//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 				if(contact.getType() == 1)
 				{
-					if(tangential_area == 3 ||( tangential_area == 12 &&  ( (unary == 4)) ))
+					if(tangential_area == 3 || ( (unary == 1 || unary == 3)  && tangential_area == 23)
+							|| ( tangential_area == 12 &&  ( (unary == 4)) ))
 						{
 						  weaksupport = true;
 						  left_support ++;
 						}
 					else
-						if(tangential_area == 4 || (tangential_area == 14 &&  ( (unary == 3)) ) )
+						if(tangential_area == 4 || (  (unary == 2 || unary == 4)&&tangential_area == 34)
+						
+						|| (tangential_area == 14 &&  ( (unary == 3)) ) )
 						 {
 						    weaksupport = true;
 							right_support ++;
