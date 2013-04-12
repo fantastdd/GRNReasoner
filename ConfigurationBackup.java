@@ -8,7 +8,7 @@ import ab.WorldinVision;
 
 import common.MyPolygon;
 
-public class Configuration {
+public class ConfigurationBackup{
 	
 public int angular;
 public HashMap<Integer,LinkedList<MBR>> blocked_regions = new HashMap<Integer,LinkedList<MBR>>();
@@ -105,7 +105,7 @@ public int left_support = 0;
 public int right_support = 0;
 boolean weaksupport = false;
 //change now
-public boolean isNowSupport(final Configuration tconf )
+public boolean isNowSupport(final ConfigurationBackup tconf )
 {
 	
 	boolean result = false;
@@ -124,66 +124,51 @@ public boolean isNowSupport(final Configuration tconf )
 			//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 			if(contact.getType() == 1)
 			{
-				if(unary != 0)
-				{
-					 if (tangential_area == 23 || tangential_area == 3)
-					 {
-					        left_support++;
-					        weaksupport = true;
-					        if (contact.strongEdgeSupport)
-								left_support ++ ;
-					 }
-					 else
-						 if(tangential_area == 4 || tangential_area == 34)
-						 {
-							 right_support++;
-							 weaksupport = true;
-							 if(contact.strongEdgeSupport)
-								 right_support++;
-						 } 
-						 else
-							 if(tangential_area == 12 )
-							 {
-								 if(unary > 2)
-								 {
-									 weaksupport = true;
-									 left_support++;
-								 }
-							 } 
-							 else
-								 if (tangential_area == 14)
-								 {
-									 if(unary > 2)
-									 {
-										 weaksupport = true;
-										 right_support++;
-									 }
-								 }
-						 
-				}
-				else
-				{
-					if (tangential_area == 34)
+				if(tangential_area == 3 || ( (unary == 1 || unary == 3)  && tangential_area == 23)
+						|| ( tangential_area == 12 &&  ( (unary == 4) || unary == 3) ))
 					{
-						left_support ++ ;
-						right_support++;
-					} 
+					  weaksupport = true;
+					  left_support ++;
+					}
+				else
+					if(tangential_area == 4 || (  (unary == 2 || unary == 4)&&tangential_area == 34)
+					
+					|| (tangential_area == 14 &&  ( (unary == 3) || unary == 4) ) )
+					 {
+					    weaksupport = true;
+						right_support ++;
+					 }
 					else
-						if(tangential_area == 3 || tangential_area == 323)
-						{
-							left_support ++ ;
-							if(tangential_area == 3)
-							weaksupport = true;
-						}
-						else if (tangential_area == 4 || tangential_area == 414)
-						{
-							right_support ++ ;
-							if(tangential_area == 4)
-							weaksupport = true;
-						}
-							
-					       
-				}
+							if(
+									
+								(unary == 0 &&tangential_area == 34))
+							{
+								left_support ++ ;
+								right_support ++;
+
+							}
+							else if 
+							(  ( (unary == 2|| unary == 4) && tangential_area == 23)
+								  || ( (unary == 1|| unary == 3) && tangential_area == 34)
+								//|| ( (unary != 0) && (contact.getTangential_area() == 23 || contact.getTangential_area() == 34 ))
+							    // || ( (unary != 0) && (contact.getTangential_area() == 34 ))
+								
+								)
+							{  
+								if(unary == 2 || unary == 4 )
+								{	
+									left_support ++ ;
+									if (contact.strongEdgeSupport)
+										left_support ++ ;
+								}
+								if(unary == 1 || unary == 3)
+								{
+								     right_support ++;
+								 	if (contact.strongEdgeSupport)
+								 		right_support++;
+								}
+				
+							}
 			}
 		
 		result = ((left_support > 0 ) && ( right_support > 0));
@@ -205,7 +190,7 @@ public boolean isNowSupport(final Configuration tconf )
   }
 	return result;
 }
-public Configuration(MBR mbr)
+public ConfigurationBackup(MBR mbr)
 {
 	
 	   permit_regions = new int[4];
@@ -666,7 +651,7 @@ public boolean addRestrictedPoints(Point point, int region,boolean contacted)
 
 
 // transform the conf to the tconf by eliminating the gap
-public Configuration translate(Configuration tconf, int threshold)
+public ConfigurationBackup translate(ConfigurationBackup tconf, int threshold)
 {
 	//find out the neighbor region
 	MBR tmbr = tconf.getMbr();
@@ -684,7 +669,7 @@ public Configuration translate(Configuration tconf, int threshold)
 	_mbr.height = mbr.height;
 	_mbr.width = mbr.width;
 	_mbr.setId(mbr.getId());
-	Configuration conf;
+	ConfigurationBackup conf;
    	
 	switch (type)
     {
@@ -711,17 +696,17 @@ public Configuration translate(Configuration tconf, int threshold)
     		}
     
     }
-	conf  = new Configuration(_mbr);
+	conf  = new ConfigurationBackup(_mbr);
 	conf.unary = this.unary;
 	
 	return conf;
   }
 
 @Override
-public Configuration clone()
+public ConfigurationBackup clone()
 {
 	
-  Configuration conf = new Configuration(mbr);
+  ConfigurationBackup conf = new ConfigurationBackup(mbr);
   
   
   conf.setAngular(angular);
@@ -1109,66 +1094,51 @@ public boolean isSupport() {
 				//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 				if(contact.getType() == 1)
 				{
-					if(unary != 0)
-					{
-					 if (tangential_area == 23 || tangential_area == 3)
-					 {
-					        left_support++;
-					        weaksupport = true;
-					        if (contact.strongEdgeSupport)
-								left_support ++ ;
-					 }
-					 else
-						 if(tangential_area == 4 || tangential_area == 34)
-						 {
-							 right_support++;
-							 weaksupport = true;
-							 if(contact.strongEdgeSupport)
-								 right_support++;
-						 } 
-						 else
-							 if(tangential_area == 12 )
-							 {
-								 if(unary > 2)
-								 {
-									 weaksupport = true;
-									 left_support++;
-								 }
-							 } 
-							 else
-								 if (tangential_area == 14)
-								 {
-									 if(unary > 2)
-									 {
-										 weaksupport = true;
-										 right_support++;
-									 }
-								 }
-							 
-					}
+					if(tangential_area == 3 || ( (unary == 1 || unary == 3)  && tangential_area == 23)
+							|| ( tangential_area == 12 &&  ( (unary == 4) || unary == 3) ))
+						{
+						  weaksupport = true;
+						  left_support ++;
+						}
 					else
-					{
-						if (tangential_area == 34)
-						{
-							left_support ++ ;
-							right_support++;
-						} 
-						if(tangential_area == 3 || tangential_area == 323)
-						{
-							left_support ++ ;
-							if(tangential_area == 3)
-							weaksupport = true;
-						}
-						else if (tangential_area == 4 || tangential_area == 414)
-						{
-							right_support ++ ;
-							if(tangential_area == 4)
-							weaksupport = true;
-						}
-						       
-					}
-					
-										
+						if(tangential_area == 4 || (  (unary == 2 || unary == 4)&&tangential_area == 34)
+						
+						|| (tangential_area == 14 &&  ( (unary == 3) || unary == 4) ) )
+						 {
+						    weaksupport = true;
+							right_support ++;
+						 }
+						else
+							if(
+									
+								(unary == 0 &&tangential_area == 34))
+							{
+								left_support ++ ;
+								right_support ++;
+
+							}
+							else if 
+							(  ( (unary == 2|| unary == 4) && tangential_area == 23)
+								  || ( (unary == 1|| unary == 3) && tangential_area == 34)
+								//|| ( (unary != 0) && (contact.getTangential_area() == 23 || contact.getTangential_area() == 34 ))
+							    // || ( (unary != 0) && (contact.getTangential_area() == 34 ))
+								
+								)
+							{  
+								if(unary == 2 || unary == 4 )
+								{	
+									left_support ++ ;
+									if (contact.strongEdgeSupport)
+										left_support ++ ;
+								}
+								if(unary == 1 || unary == 3)
+								{
+								     right_support ++;
+								 	if (contact.strongEdgeSupport)
+								 		right_support++;
+								}
+				
+							}
 				}
 			}
 			result = (left_support > 0 ) && ( right_support > 0 );
