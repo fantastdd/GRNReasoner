@@ -129,8 +129,8 @@ public class MBRReasoner {
 									System.out.println(" get possible contacts ");*/
 									LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node,WorldinVision.gap);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
 									
-								/*	if (node.lookup(4).unary == 0 && node.lookup(5).unary == 0 && node.lookup(6).unary == 2 && node.lookup(7).unary == 1 && node.lookup(8).unary == 2
-											&& node.lookup(9).unary == 1 && node.lookup(10).unary == 3 )
+								/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 0 && node.lookup(2).unary == 0 && node.lookup(3).unary == 0 && node.lookup(4).unary == 0
+											&& node.lookup(5).unary == 0&& node.lookup(12).unary == 1 && cconf.unary == 1 )
 								 	 System.out.println(" lscontacts size " + cconf.toShortString()+"  "+ lscontacts.size());*/
 									
 						          //TODO  there are no valid contacts, even no valid non-touching rels, then the lscontacts will return empty map
@@ -161,8 +161,8 @@ public class MBRReasoner {
 												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 													//TestNode _node = formLocalStability(cconf,contactmap,node);
 													TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
-													/*if (node.lookup(4).unary == 0 && node.lookup(5).unary == 0 && node.lookup(6).unary == 2 && node.lookup(7).unary == 1 && node.lookup(8).unary == 2
-															&& node.lookup(9).unary == 1 && node.lookup(10).unary == 3 && node.lookup(12).unary == -1 )
+												/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 0 && node.lookup(2).unary == 0 && node.lookup(3).unary == 0 && node.lookup(4).unary == 0
+															&& node.lookup(5).unary == 0&& node.lookup(12).unary == 1 && cconf.unary == 1 )
 															System.out.println(" to form stability     " + _node);*/
 												 	if(_node != null)  
 													 	refinements.add(_node);
@@ -183,13 +183,14 @@ public class MBRReasoner {
     //------ test ----
     public boolean checkSolution(TestNode node)
     {
-		// System.out.println(" node current id : " + node.current_id);
-  		//System.out.println(" node is incompleted, :  " + node);
+
+  		
 /*		if (node.lookup(6).unary == 2 && node.lookup(7).unary == 0 && node.lookup(8).unary == 3 && node.lookup(9).unary == 2 && node.lookup(10).unary == 0
 				&& node.lookup(11).unary == 3 && node.lookup(12).unary == 1 
 				&& node.lookup(13).unary == 2	&& node.lookup(14).unary == 2 && node.lookup(15).unary == 1 && node.lookup(16).unary == 3
 				&& node.lookup(17).unary == 3 && node.lookup(18).unary == 2 && node.lookup(19).unary == 1 && node.lookup(20).unary == 3)
 			System.out.println(" node incompleted, check stability \n" + node + "  " + this.global_counter) ;*/
+    	//System.out.println(" node incompleted, check stability \n" + node ) ;
     	if(node.isCompleted())
     	{
   /*  		if (node.lookup(6).unary == 2 && node.lookup(7).unary == 0 && node.lookup(8).unary == 3 && node.lookup(9).unary == 2 && node.lookup(10).unary == 0
@@ -197,7 +198,7 @@ public class MBRReasoner {
     				&& node.lookup(13).unary == 2	&& node.lookup(14).unary == 2 && node.lookup(15).unary == 1 && node.lookup(16).unary == 3
     				&& node.lookup(17).unary == 3 && node.lookup(18).unary == 2 && node.lookup(19).unary == 1 && node.lookup(20).unary == 3)
     			System.out.println(" node completed, check stability \n" + node);*/
-//    		/System.out.println(" node completed, check stability \n" + node);
+    //    System.out.println(" node completed, check stability \n" + node);
     		
     		 for (Integer id : node.getConfs().keySet())
     		 {
@@ -258,6 +259,9 @@ public class MBRReasoner {
     	{
     	
     		//formLocal_counter++;
+    	/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 0 && node.lookup(2).unary == 0 && node.lookup(3).unary == 0 && node.lookup(4).unary == 0
+					&& node.lookup(5).unary == 0&& node.lookup(12).unary == 1 && newUpdatedConf.unary == 1 )
+    						System.out.println( newUpdatedConf.toShortString()+"  ");*/
     		return null;
     	}
     	else 

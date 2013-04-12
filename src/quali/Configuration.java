@@ -139,21 +139,43 @@ public boolean isNowSupport(final Configuration tconf )
 						right_support ++;
 					 }
 					else
-						if(
-							
-							(unary == 0 &&tangential_area == 34)  
-							  || ( (unary == 2|| unary == 4) && tangential_area == 23)
-							  || ( (unary == 1|| unary == 3) && tangential_area == 34)
-							//|| ( (unary != 0) && (contact.getTangential_area() == 23 || contact.getTangential_area() == 34 ))
-						    // || ( (unary != 0) && (contact.getTangential_area() == 34 ))
-							
-							)
-							
-						  
-						{
-							left_support ++;
-							right_support++;
-						}
+							if(
+									
+								(unary == 0 &&tangential_area == 34))
+							{
+								left_support ++ ;
+								right_support ++;
+
+							}
+							else if 
+							(  ( (unary == 2|| unary == 4) && tangential_area == 23)
+								  || ( (unary == 1|| unary == 3) && tangential_area == 34)
+								//|| ( (unary != 0) && (contact.getTangential_area() == 23 || contact.getTangential_area() == 34 ))
+							    // || ( (unary != 0) && (contact.getTangential_area() == 34 ))
+								
+								)
+							{  
+								if(unary == 2 || unary == 4 )
+								{	
+									left_support ++ ;
+									if (contact.strongEdgeSupport)
+										left_support ++ ;
+								}
+								if(unary == 1 || unary == 3)
+								{
+								     right_support ++;
+								 	if (contact.strongEdgeSupport)
+								 		right_support++;
+								}
+				
+							/*	if(unary == 0 || unary == 2 || unary == 4 || unary == 3)
+										left_support ++ ;
+								if(unary == 0 || unary == 1 || unary == 4 || unary == 3)
+									{
+									     right_support ++;
+									     //check whether the projection of the center of the supportee falls in between the supporters horizontal bounding box edge
+									}*/
+							}
 			}
 		
 		result = ((left_support > 0 ) && ( right_support > 0));
@@ -1072,9 +1094,9 @@ public boolean isSupport() {
 	else{
 			//boolean left_support = false;
 			//boolean right_support = false;
-			for(Integer mbr: this.contact_map.keySet())
+			for(Integer mbr:  contact_map.keySet())
 			{
-				Contact contact = this.contact_map.get(mbr);
+				Contact contact = contact_map.get(mbr);
 				int tangential_area = contact.getTangential_area();
 				//Debug.echo(this, this.contact_map.size(),contact,contact.getType());
 				if(contact.getType() == 1)
@@ -1096,20 +1118,40 @@ public boolean isSupport() {
 						else
 							if(
 									
-								(unary == 0 &&tangential_area == 34)  
-								  || ( (unary == 2|| unary == 4) && tangential_area == 23)
+								(unary == 0 &&tangential_area == 34))
+							{
+								left_support ++ ;
+								right_support ++;
+
+							}
+							else if 
+							(  ( (unary == 2|| unary == 4) && tangential_area == 23)
 								  || ( (unary == 1|| unary == 3) && tangential_area == 34)
 								//|| ( (unary != 0) && (contact.getTangential_area() == 23 || contact.getTangential_area() == 34 ))
 							    // || ( (unary != 0) && (contact.getTangential_area() == 34 ))
 								
 								)
-								
-							  
 							{  
-								if(unary == 0 || unary == 2 || unary == 4 || unary == 3)
+								if(unary == 2 || unary == 4 )
+								{	
 									left_support ++ ;
+									if (contact.strongEdgeSupport)
+										left_support ++ ;
+								}
+								if(unary == 1 || unary == 3)
+								{
+								     right_support ++;
+								 	if (contact.strongEdgeSupport)
+								 		right_support++;
+								}
+				
+							/*	if(unary == 0 || unary == 2 || unary == 4 || unary == 3)
+										left_support ++ ;
 								if(unary == 0 || unary == 1 || unary == 4 || unary == 3)
-									right_support ++;
+									{
+									     right_support ++;
+									     //check whether the projection of the center of the supportee falls in between the supporters horizontal bounding box edge
+									}*/
 							}
 				}
 			}

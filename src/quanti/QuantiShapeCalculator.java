@@ -251,10 +251,10 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		    /*	if(conf.getMbr().getId() == 9 && conf.unary == 2 && tconf.getMbr().getId() == 6 && tconf.unary == 2)
 		    		System.out.println((double)conf.limit_horizontal/(double)conf.limit_vertical +  "   " + (double)tconf.limit_horizontal/(double)tconf.limit_vertical);*/
 		    	//print end ====
-		    	  double d2 = (double)(conf.width - conf.limit_horizontal) / (double)(conf.height - conf.limit_vertical); 
+		    	  double d2 = (double) conf.width  / (double)(conf.height - conf.limit_vertical); 
 				   double d1 = (double)(conf.width - conf.limit_horizontal) / (double)(conf.height);
 		    	
-				   double td2 = (double)(tconf.width - tconf.limit_horizontal) / (double)(tconf.height - tconf.limit_vertical); 
+				   double td2 = (double)(tconf.width ) / (double)(tconf.height - tconf.limit_vertical); 
 				    double td1 = (double)(tconf.width - tconf.limit_horizontal) / (double)(tconf.height);
 				    if( ( d1 <= td2 && d1 >= td1 ) || (d2 >= td1 && d2 <= td2))
 			    		  result = true;
@@ -263,25 +263,25 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		    else 
 		    	if (tconf.unary == 3)
 		    {
-		       double d2 = (double)(conf.width - conf.limit_horizontal) / (double)(conf.height - conf.limit_vertical); 
+		       double d2 = (double)(conf.width) / (double)(conf.height - conf.limit_vertical); 
 			   double d1 = (double)(conf.width - conf.limit_horizontal) / (double)(conf.height);
 					    
 		    	double td1 =  (double)( tconf.height - tconf.limit_vertical) / (double)tconf.limit_horizontal;
-		    	double td2 = (double) tconf.height /(double) tconf.limit_horizontal;
+		    	//double td2 = (double) tconf.height /(double) tconf.limit_horizontal;// td2 is infinitely large
 		    	
-		    	if( ( d1 <= td2 && d1 >= td1 ) || (d2 >= td1 && d2 <= td2))
+		    	if( d2 >= td1 )
 		    		  result = true;
 		    	//return false;
 		    } else
 			
 		    {
-		    	 double d2 = (double)(conf.width - conf.limit_horizontal) / (double)(conf.height - conf.limit_vertical); 
+		    	 double d2 = (double)(conf.width ) / (double)(conf.height - conf.limit_vertical); 
 				 double d1 = (double)(conf.width - conf.limit_horizontal) / (double)(conf.height);
 		    	
-				 double td1 =  (double)tconf.limit_vertical / (double)tconf.width;
-		    	 double td2 = (double)tconf.limit_vertical/(double)( tconf.width - tconf.limit_horizontal);
-		    	if( ( d1 <= td2 && d1 >= td1 ) || (d2 >= td1 && d2 <= td2))
-		    		  result = true;
+				 double td1 =  (double)(tconf.width - tconf.limit_vertical) / (double)tconf.limit_vertical;
+		    	// double td2 = (double)tconf.limit_vertical/(double)( tconf.width - tconf.limit_horizontal);
+		    	 	if( d2 >= td1 )
+			    		  result = true;
 		    	//return false;
 		    }
 		 }
@@ -293,25 +293,26 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 						 if(conf.unary == 3){
 						  	
 							    // double d1 = (double)tconf.limit_vertical / (double)tconf.limit_horizontal;
-							    double d2 = (double)(tconf.width - tconf.limit_horizontal) / (double)(tconf.height - tconf.limit_vertical); 
+							    double d2 = (double)(tconf.width ) / (double)(tconf.height - tconf.limit_vertical); 
 							    double d1 = (double)(tconf.width - tconf.limit_horizontal) / (double)(tconf.height);
 							    
 						    	double td1 =  (double)( conf.height - conf.limit_vertical) / (double)conf.limit_horizontal;
-						    	double td2 = (double) conf.height /(double) conf.limit_horizontal;
-						    	/*if(conf.unary == 3 && tconf.unary == 1 && conf.getMbr().getId() == 19 && tconf.getMbr().getId() == 18)
-						    		System.out.println(tconf.limit_vertical + "  " + tconf.limit_horizontal + "  " + d + "  " + td1 + "  " + td2);*/
-					    	if( ( d1 <= td2 && d1 >= td1 ) || (d2 >= td1 && d2 <= td2))
+						    	//double td2 = (double) conf.height /(double) conf.limit_horizontal;
+						   /* 	if(conf.unary == 3 && tconf.unary == 1 && conf.getMbr().getId() == 17&& tconf.getMbr().getId() == 16)
+						    		System.out.println(tconf.limit_vertical + "  " + tconf.limit_horizontal + "  " + d1 + "  " + d2  + "  " +td1  + " " + td2);*/
+						     	if( d2 >= td1 )
 					    		  result = true;
 					    	}
 						 else 
 						 {
 
 						
-							    double d2 = (double)(tconf.width - tconf.limit_horizontal) / (double)(tconf.height - tconf.limit_vertical); 
+							    double d2 = (double)(tconf.width ) / (double)(tconf.height - tconf.limit_vertical); 
 							    double d1 = (double)(tconf.width - tconf.limit_horizontal) / (double)(tconf.height);
-						    	double td1 =  (double)conf.limit_vertical / (double)conf.width;
-						    	double td2 = (double)conf.limit_vertical/(double)( conf.width - conf.limit_horizontal);
-						    	if( ( d1 <= td2 && d1 >= td1 ) || (d2 >= td1 && d2 <= td2))
+							    
+							    double td1 =  (double)(conf.width - conf.limit_vertical) / (double)conf.limit_vertical;
+						    //	double td2 = (double)conf.limit_vertical/(double)( conf.width - conf.limit_horizontal);
+								if( d2 >= td1 )
 						    		  result = true;
 						 }
 		            }
@@ -321,22 +322,25 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 						// return true;
 						 if(conf.unary == 3)
 						 {
-							 double u3d1 =  (double)( conf.height - conf.limit_vertical) / (double)conf.limit_horizontal;
-							 double u3d2 = (double) conf.height /(double) conf.limit_horizontal;
+							/* double u3d1 =  (double)( conf.height - conf.limit_vertical) / (double)conf.limit_horizontal;
+							 double u3d2 = (double) conf.height /(double) conf.limit_horizontal;*/
 						     if(tconf.unary == 3)
 						     {
-						    	 double td1 =  (double)( tconf.height - tconf.limit_vertical) / (double)tconf.limit_horizontal;
+						    /*	 double td1 =  (double)( tconf.height - tconf.limit_vertical) / (double)tconf.limit_horizontal;
 							     double td2 = (double) tconf.height /(double) tconf.limit_horizontal;
 							     
 							     if( ( u3d1 <= td2 && u3d1 >= td1 ) || (u3d2 >= td1 && u3d2 <= td2))
-						    		  result = true;
+						    		  result = true;*/
+						    	 result = true;
 						    	 
-						     }else 
+						     }
+						     else 
 						     {
-						    	 double td1 =  (double)tconf.limit_vertical / (double)tconf.width;
+						    /*	 double td1 =  (double)tconf.limit_vertical / (double)tconf.width;
 						    	 double td2 = (double)tconf.limit_vertical/(double)( tconf.width - tconf.limit_horizontal);
 						    	 if( ( u3d1 <= td2 && u3d1 >= td1 ) || (u3d2 >= td1 && u3d2 <= td2))
-						    		  result = true;
+						    		  result = true;*/
+						    	 result = false;
 						     }
 						   
 						 
@@ -346,17 +350,18 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 					    	 double u4d2 = (double)conf.limit_vertical/(double)( conf.width - conf.limit_horizontal);
 					    	 if(tconf.unary == 3)
 						     {
-						    	 double td1 =  (double)( tconf.height - tconf.limit_vertical) / (double)tconf.limit_horizontal;
+						    	/* double td1 =  (double)( tconf.height - tconf.limit_vertical) / (double)tconf.limit_horizontal;
 							     double td2 = (double) tconf.height /(double) tconf.limit_horizontal;
 							     
 							     if( ( u4d1 <= td2 && u4d1 >= td1 ) || (u4d2 >= td1 && u4d2 <= td2))
-						    		  result = true;
+						    		  result = true;*/
+					    		 result = false;
 						    	 
 						     }else 
 						     {
-						    	 double td1 =  (double)tconf.limit_vertical / (double)tconf.width;
+						    	/* double td1 =  (double)tconf.limit_vertical / (double)tconf.width;
 						    	 double td2 = (double)tconf.limit_vertical/(double)( tconf.width - tconf.limit_horizontal);
-						    	 if( ( u4d1 <= td2 && u4d1 >= td1 ) || (u4d2 >= td1 && u4d2 <= td2))
+						    	 if( ( u4d1 <= td2 && u4d1 >= td1 ) || (u4d2 >= td1 && u4d2 <= td2))*/
 						    		  result = true;
 						     }
 						 }

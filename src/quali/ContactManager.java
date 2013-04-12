@@ -183,12 +183,23 @@ public class ContactManager {
 		// System.out.println(tconf.toShortString() + "  " + conf.toShortString() + "   " + _contact);
 		Contact contact = new Contact();
 		if (conf.unary != 0 && tconf.unary != 0) {
-
+			/*if(conf.unary == 1 && tconf.unary == 1 && conf.getMbr().getId() == 15 && tconf.getMbr().getId() == 16)
+				System.out.println(conf.toShortString() + "  " + tconf.toShortString() + _contact);*/
 			// April 6 : turn all the angular touch to edge touch
 			if (_contact.getTangential_area() == 12) {
+				
+				double x = conf.getMbr().getCenterX();
+				if ( x > tconf.getMbr().getX() && x < tconf.getMbr().getX() + tconf.getWidth())
+					_contact.strongEdgeSupport = true;
+				
 				contact.setTangential_area(34);
 				contact.setType(1);
 			} else if (_contact.getTangential_area() == 14) {
+				
+				double x = conf.getMbr().getCenterX();
+				if ( x > tconf.getMbr().getX() && x < tconf.getMbr().getX() + tconf.getWidth())
+					_contact.strongEdgeSupport = true;
+				
 				contact.setTangential_area(23);
 				contact.setType(1);
 			} else if (_contact.getTangential_area() == 23) {
@@ -1493,14 +1504,14 @@ public class ContactManager {
 			Contact _contact = new Contact();
 			_contact.setType(-2);
 			contacts.add(_contact);
-		/*	if(conf.getMbr().getId() == 12 && conf.unary == 3 && tconf.getMbr().getId() == 9 && tconf.unary == 2)
+		/*	if(conf.getMbr().getId() == 16 && conf.unary == 1 && tconf.getMbr().getId() == 10 && tconf.unary == 0)
 			System.out.println(" enter this block  " + conf.toShortString() + "    " + tconf.toShortString() );*/
 		    return contacts;
 		}
 		
 		boolean potentialEdgeTouch = 	QuantiShapeCalculator.potentialEdgeTouch(conf, tconf);
 		//print
-		/*if(conf.unary == 1 && tconf.unary == 1 && conf.getMbr().getId() == 13 && tconf.getMbr().getId() == 12)
+	/*if(conf.unary == 3 && tconf.unary == 1 && conf.getMbr().getId() == 17 && tconf.getMbr().getId() == 16)
 			System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);*/
 		//print end
 		
@@ -1534,7 +1545,13 @@ public class ContactManager {
 			_contact.setType(1);
 			
 			if(potentialEdgeTouch)
+			{	
 				_contact.setTangential_area(23);
+				   //check whether the projection of the center of the supportee falls in between the supporters horizontal bounding box edge
+				double x = conf.getMbr().getCenterX();
+				if ( x > tconf.getMbr().getX() && x < tconf.getMbr().getX() + tconf.getWidth())
+					_contact.strongEdgeSupport = true;
+			}
 			else
 				_contact.setTangential_area(3);
 			
@@ -1545,7 +1562,12 @@ public class ContactManager {
 			Contact _contact = new Contact();
 			_contact.setType(1);
 			if(potentialEdgeTouch)
+			{	
 				_contact.setTangential_area(34);
+				double x = conf.getMbr().getCenterX();
+				if ( x > tconf.getMbr().getX() && x < tconf.getMbr().getX() + tconf.getWidth())
+					_contact.strongEdgeSupport = true;
+			}
 			else
 				_contact.setTangential_area(4);
 			contacts.add(_contact);
