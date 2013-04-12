@@ -798,15 +798,19 @@ public class ContactManager {
 			
 
 		MyPolygon _region = max;
+		//print
+		/*if(tconf.unary == 2 && conf.unary == 0 && tconf.getMbr().getId() == 8 && conf.getMbr().getId() == 2)
+				System.out.println(QuantiShapeCalculator.isIntersected(tmax, _region, true) + "  " + region + "  " + tmax + "  " + _region);*/
+		//print end 
 
-
-		if (QuantiShapeCalculator.isIntersected(tmax, _region, true)) {
+		if (QuantiShapeCalculator.isIntersected(tmax, _region, true)) 
+		{
 			
-			/*//print
-			if(tconf.unary == 3 && conf.unary == 0 && tconf.getMbr().getId() == 11 && conf.getMbr().getId() == 0)
-		    System.out.println(testSolidOverlapping(conf.fullRec , tmin) + "  " + region);
-				//print end 
-*/
+			//print
+			/*if(tconf.unary == 2 && conf.unary == 0 && tconf.getMbr().getId() == 8 && conf.getMbr().getId() == 2)
+					System.out.println(testSolidOverlapping(conf.fullRec , tmin) + "  " + region);*/
+			//print end 
+
 			if (!testSolidOverlapping(conf.fullRec , tmin)) {
 
 				result = minmaxEvaluation(min, max, tmin, tmax);
@@ -1376,7 +1380,7 @@ public class ContactManager {
 				boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 				
 				//print=============
-		/*		if(conf.unary == 3 && tconf.unary == 0 && conf.getMbr().getId() == 18&& tconf.getMbr().getId() == 11)
+			/*	if(conf.unary == 2 && tconf.unary == 0 && conf.getMbr().getId() == 8&& tconf.getMbr().getId() == 2)
 					System.out.println(tr12 + "  " + tr34 + "  " + tr23 + "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
 							+ ra13_23 + "  " + ra24_2 + "  " + ra24_23 + "  " + ra24_4 + "  " + ra24_14);*/
 					

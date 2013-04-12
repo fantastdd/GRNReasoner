@@ -1,15 +1,9 @@
 package quanti.test;
-import io.ScenarioIO;
+import java.awt.Point;
 
-import java.awt.Rectangle;
-import java.io.IOException;
-import java.util.LinkedList;
+import main.ScenarioPanelPoly;
 
-import quali.Configuration;
-import quali.Contact;
-import quali.ContactManager;
-import quali.MBR;
-import ab.WorldinVision;
+import common.MyPolygon;
 
 
 public class Test {
@@ -90,6 +84,15 @@ public class Test {
         ScenarioPanelPoly scenario = new ScenarioPanelPoly();
         scenario.run(p1,p2);
         System.out.println(QuantiShapeCalculator.isIntersected(p1, p2, true ));*/
+	  
+
+	  
+	     MyPolygon pl1 = new MyPolygon(new Point( 578,451),new Point( 567,473),new Point( 615,496),new Point ( 626,474));
+		
+		
+		MyPolygon pl2 = new MyPolygon(new Point( 599,490),new Point( 599,490));
+		 ScenarioPanelPoly scenario = new ScenarioPanelPoly();
+	        scenario.run(pl1,pl2);
 		
 /*		ScenarioIO sio = new ScenarioIO("l6c");
 
