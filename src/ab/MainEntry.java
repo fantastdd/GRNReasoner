@@ -23,11 +23,11 @@ public class MainEntry {
 	   wiv.buildWorld(worldInVision);
 	   wiv.showWorldinVision();*/
 			long time = System.currentTimeMillis();
-			ScenarioIO sio = new ScenarioIO("l11c");
+			ScenarioIO sio = new ScenarioIO("l19c1");
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
-				scenarios = sio.load("l11c");
+				scenarios = sio.load("l19c1");
 				LinkedList<MBR> s1 = scenarios.get(0);
 				LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 				for (MBR mbr : s1)

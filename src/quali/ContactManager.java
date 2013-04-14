@@ -1108,9 +1108,16 @@ public class ContactManager {
 		if (result != -1) {
 			
 			//System.out.println(tmax + "  " + _region);
-			
+			//print
+		/*	if(conf.getMbr().getId() == 9 && tconf.getMbr() .getId() == 8 && conf.unary == 4 && tconf.unary == 1 && region == 3)
+				System.out.println(QuantiShapeCalculator.isIntersected(tmax, _region, true)  + "  tmax " + tmax + "    _region  " + _region  );*/
+			//print end
 			if (QuantiShapeCalculator.isIntersected(tmax, _region, true))
 			{
+				//print
+				/*	if(conf.getMbr().getId() == 9 && tconf.getMbr() .getId() == 8 && conf.unary == 4 && tconf.unary == 1 && region == 3)
+						System.out.println(minmaxEvaluation(min, max, tmin, tmax)  + "  tmax " + tmax + "    _region  " + _region  );*/
+					//print end
 				result = minmaxEvaluation(min, max, tmin, tmax);
 			
 			} else 
@@ -1216,7 +1223,7 @@ public class ContactManager {
 			boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 			
 			//print ========
-		/*	if(conf.getMbr().getId() == 10 && tconf.getMbr().getId() == 9 && tconf.unary == 3)
+		/*	if(conf.getMbr().getId() == 5 && tconf.getMbr().getId() == 4 && tconf.unary == 1)
 				System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "  " + tr23 + "  " + tr14 );*/
 			//print end ====
 			
@@ -1380,7 +1387,7 @@ public class ContactManager {
 				boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 				
 				//print=============
-			/*	if(conf.unary == 2 && tconf.unary == 0 && conf.getMbr().getId() == 8&& tconf.getMbr().getId() == 2)
+			/*	if(conf.unary == 1 && tconf.unary == 0 && conf.getMbr().getId() == 4&& tconf.getMbr().getId() == 5)
 					System.out.println(tr12 + "  " + tr34 + "  " + tr23 + "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
 							+ ra13_23 + "  " + ra24_2 + "  " + ra24_23 + "  " + ra24_4 + "  " + ra24_14);*/
 					
@@ -1515,8 +1522,8 @@ public class ContactManager {
 		
 		boolean potentialEdgeTouch = 	QuantiShapeCalculator.potentialEdgeTouch(conf, tconf);
 		//print
-	/*if(conf.unary == 3 && tconf.unary == 1 && conf.getMbr().getId() == 17 && tconf.getMbr().getId() == 16)
-			System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);*/
+//	if(conf.unary == 4 && tconf.unary == 1 && conf.getMbr().getId() == 9 && tconf.getMbr().getId() == 8)
+//			System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);
 		//print end
 		
 		//System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);
