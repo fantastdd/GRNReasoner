@@ -10,7 +10,7 @@ import quali.MBR;
 
 public class MainEntry {
 
-	public static void main(String argsp[])
+	public static void main(String args[])
 	{
 /*	  new ActionRobot();
 	   BufferedImage screenshot = ActionRobot.doScreenShot();
@@ -23,11 +23,11 @@ public class MainEntry {
 	   wiv.buildWorld(worldInVision);
 	   wiv.showWorldinVision();*/
 			long time = System.currentTimeMillis();
-			ScenarioIO sio = new ScenarioIO("l19c1");
+			ScenarioIO sio = new ScenarioIO("l13c1");
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
-				scenarios = sio.load("l19c1");
+				scenarios = sio.load("l13c1");
 				LinkedList<MBR> s1 = scenarios.get(0);
 				LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 				for (MBR mbr : s1)
