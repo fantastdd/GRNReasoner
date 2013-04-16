@@ -28,7 +28,7 @@ public class StabilityConfigurationOutput {
 		
 		
 		if(conf.isEdge())
-			report += " is an edge or supported by edge or misconfigured";
+			report += " is an edge or supported by an edge or misconfigured";
 		else{
 				boolean left_support = false;
 				boolean right_support = false;
@@ -75,7 +75,22 @@ public class StabilityConfigurationOutput {
   
   
   
-	
+  public static String getStabilityShortReport(TestNode node)
+  {
+	String result = "\n============= Stability Short Report ===============" + "\n";
+	HashMap<Integer , Configuration > confs = node.getConfs();
+	int count = 0;
+	for (Integer key : confs.keySet())
+	{
+		if(count++ % 3 == 0)
+			result+="\n";
+		result +=  confs.get(key) .toShortString() + "  ";
+	}
+	result +="\n ================= End of Short Report ============== \n";  
+	return result;
+  }	
+  
+  
 	
 	
 }

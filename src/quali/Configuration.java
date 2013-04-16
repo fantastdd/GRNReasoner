@@ -1253,16 +1253,16 @@ public String toShortString()
 	  result += "( regular )";
   else
 	  if( unary == 1)
-	     result += "( lean to right )";
+	     result += "( SR)";
 	  else
 		  if(unary == 2)
-			  result += "( lean to left )";
+			  result += "( SL )";
 		  else if(unary == -2)
 			  result += "( completed )";
 		  else if(unary == 3)
-			  result += " ( fat lean to right )";
+			  result += " (FR )";
 		  else if (unary == 4)
-			  result += " ( fat lean to left )" ;
+			  result += " ( FL )" ;
 		  else
 			  result += "( not initialized )";
 

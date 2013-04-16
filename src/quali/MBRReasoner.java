@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import quali.util.StabilityConfigurationOutput;
 import ab.WorldinVision;
 
 
@@ -34,7 +35,8 @@ public class MBRReasoner {
 		    //output the solutions	
 			 System.out.println("solution is found:   \n" + node);
 			 System.out.println(" the number of iterations : " + global_counter + "  filtered nodes:   " + formLocal_counter);
-			 //System.out.println(StabilityConfigurationOutput.getStabilityReport(node));
+			// System.out.println(StabilityConfigurationOutput.getStabilityReport(node));
+			 System.out.println(StabilityConfigurationOutput.getStabilityShortReport(node));
 			return true;
 		}
 		else
