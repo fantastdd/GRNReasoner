@@ -175,12 +175,18 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 			 LinkedList<Point> points = isIntersectedWCA(p1,p2);
 			 if(!points.isEmpty())
 			 {
-				 result = false;
-				 for(Point p:points)
+				 if(points.size() > 2)
 				 {
-				      if(! (testCornerPoint(p1,p.x,p.y) || testCornerPoint(p2,p.x,p.y)) /* predicular */ )
-				    	  result = true;
-				   }
+					 result = true;
+				 }
+				 else{
+								 result = false;
+								 for(Point p:points)
+								 {
+								      if(! (testCornerPoint(p1,p.x,p.y) || testCornerPoint(p2,p.x,p.y)) /* predicular */ )
+								    	  result = true;
+								   }
+				 }
 			 }
 			 else
 				 result = false;

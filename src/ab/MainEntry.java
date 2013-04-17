@@ -37,7 +37,7 @@ public class MainEntry {
 				WorldinVision wiv = new WorldinVision();
 				wiv.buildWorld(worldInVision);
 				wiv.reason();
-				 wiv.showWorldinVision();
+				 wiv.showWorldinVision(); 
 			} catch (IOException e) {
 
 				e.printStackTrace();

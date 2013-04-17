@@ -190,7 +190,7 @@ public class ContactManager {
 				
 				double x = conf.getMbr().getCenterX();
 				if ( x > tconf.getMbr().getX() && x < tconf.getMbr().getX() + tconf.getWidth())
-					_contact.strongEdgeSupport = true;
+					 contact.strongEdgeSupport = true;
 				
 				contact.setTangential_area(34);
 				contact.setType(1);
@@ -198,7 +198,7 @@ public class ContactManager {
 				
 				double x = conf.getMbr().getCenterX();
 				if ( x > tconf.getMbr().getX() && x < tconf.getMbr().getX() + tconf.getWidth())
-					_contact.strongEdgeSupport = true;
+					 contact.strongEdgeSupport = true;
 				
 				contact.setTangential_area(23);
 				contact.setType(1);
