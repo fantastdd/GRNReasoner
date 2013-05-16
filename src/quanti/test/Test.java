@@ -98,9 +98,21 @@ public class Test {
 			MyPolygon pl2 = new MyPolygon(new Point( 623,575),new Point( 713,468));*/
 	//extreme case 2 end ===================================
 			
-	  MyPolygon pl1 = new MyPolygon(new Point( 711,472),new Point( 711,476),new Point( 756,476));
+/*	  MyPolygon pl1 = new MyPolygon(new Point( 711,472),new Point( 711,476),new Point( 756,476));
 		MyPolygon pl2 = new MyPolygon(new Point( 623,575),new Point( 717,468));
 		System.out.println(QuantiShapeCalculator.isIntersected(pl1, pl2, true));
+		 ScenarioPanelPoly scenario = new ScenarioPanelPoly();
+	        scenario.run(pl1,pl2);*/
+
+	  
+    MyPolygon pl1 = new MyPolygon(new Point ( 675,473),new Point ( 697,477),new Point ( 719,352) , new Point ( 697,348));
+		MyPolygon pl2 = new MyPolygon(new Point  ( 611,489),new Point( 623,515) , new Point( 683,489), new Point( 671,463));
+		
+	  
+	 /* MyPolygon pl1 = new MyPolygon(new Point 	  ( 611,515), new Point ( 683,463));
+		MyPolygon pl2 = new MyPolygon(new Point ( 675,473) , new Point( 675,477) , new Point( 697,477));*/
+
+		System.out.println(QuantiShapeCalculator.isIntersected(pl1, pl2, false));
 		 ScenarioPanelPoly scenario = new ScenarioPanelPoly();
 	        scenario.run(pl1,pl2);
 		

@@ -54,12 +54,14 @@ public String toString()
   String result = "";
   if(type == 1)
    result += " Region: " + tangential_area + " ,touching" ;
-  if(type == -1)
+  else if(type == -1)
 	   result += " Region: " + tangential_area + " un-initialized ";
-  if(type == 0)
+  else if(type == 0)
 	   result += " Region: " + tangential_area + " non-touching";
-  if(type == 2)
+  else if(type == 2)
 	   result += " " + " Either touching or non-touching ";
+  else if(type == -2)
+	  result += " invalid ";
   return result;
 }
 public int getType() {

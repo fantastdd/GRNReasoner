@@ -15,6 +15,7 @@ public class WorldinVision {
   public LinkedList<MBR> mbrs = new LinkedList<MBR>();
   public static int gap = 0;
   public TestNode node;
+  public TestNode sol = null;
   public void buildWorld(List<Rectangle> objs)
   {
 	   // hardcode the objects in this sList<MBR> mbrsr (Rectangle rec : objs)
@@ -35,11 +36,14 @@ public class WorldinVision {
   public void showWorldinVision()
   {
 	  ScenarioPanel sp = new ScenarioPanel();
-	  //sp.run(MBRRegister.getMbrs());
+	//  sp.run(MBRRegister.getMbrs());
 	  LinkedList<MBR> mbrs = new LinkedList<MBR>();
 	  for (Configuration conf : node.conflist)
 		  mbrs.add(conf.getMbr());
-	  sp.run(mbrs);
+	 if(sol != null)
+	  sp.run(mbrs , sol);
+	 else
+		 sp.run(mbrs);
 	  
   }
 
@@ -48,6 +52,7 @@ public class WorldinVision {
 	  node = MBRRegister.constructTestNode();
   	  MBRReasoner MBRR = new MBRReasoner();
   	  MBRR.search(node);
+  	  sol = MBRR.sol;
 
   }
   

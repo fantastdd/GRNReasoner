@@ -251,7 +251,7 @@ public void configureRegions()
     
 	triangle3.addPoint( x, y +  height -  limit_vertical);
 	triangle3.addPoint( x, y +  height);
-	triangle3.addPoint( x +  limit_vertical, y +  height);
+	triangle3.addPoint( x +  limit_horizontal, y +  height);
     
     
 	triangle2.addPoint( x, y);
@@ -260,7 +260,7 @@ public void configureRegions()
     
 	triangle1.addPoint( x +  width -  limit_horizontal, y);
 	triangle1.addPoint( x +  width, y);
-	triangle1.addPoint( x +  width, y +  limit_horizontal);
+	triangle1.addPoint( x +  width, y +  limit_vertical);
 	
 	triangle44.addPoint( x, y +  height);
 	triangle44.addPoint( x +  width, y +  height);

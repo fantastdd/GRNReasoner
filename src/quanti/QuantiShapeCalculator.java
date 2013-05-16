@@ -262,6 +262,8 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 		    	
 				   double td2 = (double)(tconf.width ) / (double)(tconf.height - tconf.limit_vertical); 
 				    double td1 = (double)(tconf.width - tconf.limit_horizontal) / (double)(tconf.height);
+			/*	    if(conf.unary == 1 && tconf.unary == 2 && conf.getMbr().getId() == 20 && tconf.getMbr().getId() == 19)
+						System.out.println(d1 + "  " + d2 + "  " + td1 + "  " + td2 + "   ");*/
 				    if( ( d1 <= td2 && d1 >= td1 ) || (d2 >= td1 && d2 <= td2))
 			    		  result = true;
 		    	//result = (conf.limit_horizontal/conf.limit_vertical) == (tconf.limit_horizontal/tconf.limit_vertical);

@@ -12,7 +12,7 @@ public class MainEntry {
 
 	public static void main(String args[])
 	{
-/*	  new ActionRobot();
+	 /* new ActionRobot();
 	   BufferedImage screenshot = ActionRobot.doScreenShot();
 	   Vision vision = new Vision(screenshot);
 	   LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
@@ -22,12 +22,13 @@ public class MainEntry {
 	   WorldinVision wiv = new WorldinVision();
 	   wiv.buildWorld(worldInVision);
 	   wiv.showWorldinVision();*/
+	   
 			long time = System.currentTimeMillis();
-			ScenarioIO sio = new ScenarioIO("l181");
+			ScenarioIO sio = new ScenarioIO("l19c1");
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
-				scenarios = sio.load("l181");
+				scenarios = sio.load("l19c1");
 				LinkedList<MBR> s1 = scenarios.get(0);
 				LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 				for (MBR mbr : s1)
@@ -44,5 +45,6 @@ public class MainEntry {
 			}
 			
 		System.out.println(" TIme Consumption:  " + (System.currentTimeMillis() - time ));
+		
 	}
 }

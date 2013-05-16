@@ -12,6 +12,8 @@ import ab.WorldinVision;
 public class MBRReasoner {
 	public int  global_counter = 0;
 	public int formLocal_counter = 0;
+	public int solution_counter = 0;
+	public TestNode sol = null;
 	static
 	{
 		try {
@@ -33,11 +35,16 @@ public class MBRReasoner {
 		if(checkSolution(node))
 		{
 		    //output the solutions	
+			solution_counter ++;
 			 System.out.println("solution is found:   \n" + node);
 			 System.out.println(" the number of iterations : " + global_counter + "  filtered nodes:   " + formLocal_counter);
 			// System.out.println(StabilityConfigurationOutput.getStabilityReport(node));
 			 System.out.println(StabilityConfigurationOutput.getStabilityShortReport(node));
+			 sol = node;
+			 if(solution_counter == 1)
 			return true;
+			 else
+				 return false;
 		}
 		else
 		{
@@ -131,8 +138,9 @@ public class MBRReasoner {
 									System.out.println(" get possible contacts ");*/
 									LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node,WorldinVision.gap);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
 									
-								/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 0 && node.lookup(2).unary == 0 && node.lookup(3).unary == 0 && node.lookup(4).unary == 0
-											&& node.lookup(5).unary == 0&& node.lookup(12).unary == 1 && cconf.unary == 1 )
+/*									if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
+											&& node.lookup(5).unary == 4&& node.lookup(6).unary == 0&& node.lookup(7).unary == 1&& node.lookup(12).unary == 1 && cconf.unary == 1 
+											&&cconf.getMbr().getId() == 23)
 								 	 System.out.println(" lscontacts size " + cconf.toShortString()+"  "+ lscontacts.size());*/
 									
 						          //TODO  there are no valid contacts, even no valid non-touching rels, then the lscontacts will return empty map
@@ -163,9 +171,10 @@ public class MBRReasoner {
 												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 													//TestNode _node = formLocalStability(cconf,contactmap,node);
 													TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
-												/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 0 && node.lookup(2).unary == 0 && node.lookup(3).unary == 0 && node.lookup(4).unary == 0
-															&& node.lookup(5).unary == 0&& node.lookup(12).unary == 1 && cconf.unary == 1 )
-															System.out.println(" to form stability     " + _node);*/
+													/*if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
+																&& node.lookup(5).unary == 4&& node.lookup(6).unary == 0&& node.lookup(7).unary == 1&& node.lookup(12).unary == 1 && cconf.unary == 3 
+																&&cconf.getMbr().getId() == 23)
+    				                                       System.out.println(" to form stability     " + _node);*/
 												 	if(_node != null)  
 													 	refinements.add(_node);
 												 	
@@ -261,9 +270,10 @@ public class MBRReasoner {
     	{
     	
     		//formLocal_counter++;
-    	/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 0 && node.lookup(2).unary == 0 && node.lookup(3).unary == 0 && node.lookup(4).unary == 0
-					&& node.lookup(5).unary == 0&& node.lookup(12).unary == 1 && newUpdatedConf.unary == 1 )
-    						System.out.println( newUpdatedConf.toShortString()+"  ");*/
+    	/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
+					&& node.lookup(5).unary == 4&& node.lookup(6).unary == 0&& node.lookup(7).unary == 1&& node.lookup(12).unary == 1 && newUpdatedConf.unary == 1 
+					&&newUpdatedConf.getMbr().getId() == 23)
+    						System.out.println(_newUpdatedConf);*/
     		return null;
     	}
     	else 
@@ -299,9 +309,10 @@ public class MBRReasoner {
     					    {
     					    	//System.out.println(_newUpdatedConf.toShortString() + "  " + _conf.toShortString() + "   " + node + "   " + support);
     					    	//formLocal_counter++;
-    					    	/*if (node.lookup(4).unary == 0 && node.lookup(5).unary == 0 && node.lookup(6).unary == 2 && node.lookup(7).unary == 1 && node.lookup(8).unary == 2
-    									&& node.lookup(9).unary == 1 && node.lookup(10).unary == 4  )
-    				    		System.out.println("   early end " + _newUpdatedConf.toShortString() + "   " + _conf.toShortString() + "   "  +  _newUpdatedConf.getContact_map().get(_conf.getMbr().getId())+ "   " + node);*/
+    					   /* 	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
+    									&& node.lookup(5).unary == 4&& node.lookup(6).unary == 0&& node.lookup(7).unary == 1&& node.lookup(12).unary == 1 && newUpdatedConf.unary == 1 
+    									&&newUpdatedConf.getMbr().getId() == 23)
+    				    						System.out.println(_newUpdatedConf);*/
     					    	return null;
     					    }
     					}
@@ -310,6 +321,7 @@ public class MBRReasoner {
     	}
     	
     	_node = node.clone();
+    	// _node.stability_id = stability_id; not used
     	for (Configuration conf : effectedConfs)
     	{
     	  _node.getConfs().put(conf.getMbr().getId(), conf);

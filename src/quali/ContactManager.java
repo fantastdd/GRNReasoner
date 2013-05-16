@@ -41,8 +41,8 @@ public class ContactManager {
 							//System.out.println(" Get Contact1:  " + conf.toShortString() + "   " + neighbor_conf.toShortString());
 							
 							LinkedList<Contact> contacts = getContact(conf, neighbor_conf, threshold);
-							//  if(conf.getMbr().getId() == 10 && node.lookup(8).unary == 4 && conf.unary == 0)
-//							/ System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contacts.size() );
+						/*	if(conf.getMbr().getId() == 23 && conf.unary == 1)
+                                           System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contacts.size() );*/
 						
 							for (Contact contact : contacts) 
 							{
@@ -93,8 +93,8 @@ public class ContactManager {
 								//System.out.println(" Get Contact2:  " + conf.toShortString() + "   " + neighbor_conf.toShortString());
 								for (Contact contact : contacts) 
 								{
-								/*	if(conf.getMbr().getId() == 6 && node.lookup(5).unary == 0 && conf.unary == 1)
-			                                System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact.getType());*/
+									if(conf.getMbr().getId() == 23  && conf.unary == 1)
+			                                System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact);
 								   if(contact.getType() == -2)
 								   {
 									   continue;
@@ -951,12 +951,13 @@ public class ContactManager {
 
 		
 		if (tconf.unary == 1) {
-			tmin = tconf.getDiagonal_right();
+			tmin = tconf.diagonal_right;
 			tmax = (region == 2)?tconf.core_right4:tconf.core_right2;
 				
 		} else if (tconf.unary == 2) 
 		{
-			tmax = tconf.diagonal_left;
+			//tmax = tconf.diagonal_left;
+			tmax = tconf.getRegion(6 - region);
 			tmin = tconf.core_left;
 		}   else
 	    	 if
@@ -1057,7 +1058,8 @@ public class ContactManager {
 		{
 			tmin = tconf.core_right;
 			// because max is a region, we can still use the diagonal here
-			tmax = tconf.diagonal_right;
+			//tmax = tconf.diagonal_right;
+			tmax = tconf.getRegion(4 - region);
 		} else 
 		     if
 		     (tconf.unary == 2)
@@ -1109,14 +1111,14 @@ public class ContactManager {
 			
 			//System.out.println(tmax + "  " + _region);
 			//print
-		/*	if(conf.getMbr().getId() == 9 && tconf.getMbr() .getId() == 8 && conf.unary == 4 && tconf.unary == 1 && region == 3)
+		/*	if(conf.getMbr().getId() == 13 && tconf.getMbr() .getId() == 7 && conf.unary == 1 && tconf.unary == 1 && region == 3)
 				System.out.println(QuantiShapeCalculator.isIntersected(tmax, _region, true)  + "  tmax " + tmax + "    _region  " + _region  );*/
 			//print end
 			if (QuantiShapeCalculator.isIntersected(tmax, _region, true))
 			{
 				//print
-				/*	if(conf.getMbr().getId() == 9 && tconf.getMbr() .getId() == 8 && conf.unary == 4 && tconf.unary == 1 && region == 3)
-						System.out.println(minmaxEvaluation(min, max, tmin, tmax)  + "  tmax " + tmax + "    _region  " + _region  );*/
+				/*	if(conf.getMbr().getId() == 13 && tconf.getMbr() .getId() == 7 && conf.unary == 1 && tconf.unary == 1 && region == 3)
+						System.out.println(minmaxEvaluation(min, max, tmin, tmax)  + "  tmin " + tmin + "   min  " + min +  "    _region  " + _region  );*/
 					//print end
 				result = minmaxEvaluation(min, max, tmin, tmax);
 			
@@ -1507,7 +1509,10 @@ public class ContactManager {
 		int tr3 = testFreeRegion13(conf, tconf, 3);
 		int tr4 = testFreeRegion24(conf, tconf, 4);	
 		
-	
+		//print
+		/*if(conf.unary == 1 && tconf.unary == 1 && conf.getMbr().getId() == 23 && tconf.getMbr().getId() == 12)
+				System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " );*/
+			//print end
 		
 		//TODO effect efficiency
 		if(tr1 == -1 && tr2 == -1 && tr3 == -1 && tr4 == -1)
@@ -1522,11 +1527,11 @@ public class ContactManager {
 		
 		boolean potentialEdgeTouch = 	QuantiShapeCalculator.potentialEdgeTouch(conf, tconf);
 		//print
-//	if(conf.unary == 4 && tconf.unary == 1 && conf.getMbr().getId() == 9 && tconf.getMbr().getId() == 8)
-//			System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);
+	/*if(conf.unary == 1 && tconf.unary == 2 && conf.getMbr().getId() == 20 && tconf.getMbr().getId() == 19)
+			System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);*/
 		//print end
 		
-		//System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);
+	
 		//boolean non_touching = false;
 		if (tr1 == 2) {
 			Contact _contact = new Contact();
