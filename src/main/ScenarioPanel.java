@@ -83,6 +83,7 @@ public class ScenarioPanel extends JFrame {
     				g.fillRect(mbr.x,mbr.y,mbr.width,mbr.height);
     				g.setColor(Color.black);
     	    		g.drawRect(mbr.x,mbr.y,mbr.width,mbr.height);
+    	    		g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
     			} 
     			else if (unary == 1 || unary == 2)
     			{
@@ -133,6 +134,7 @@ public class ScenarioPanel extends JFrame {
      					 g.fillPolygon(p);
      					 g.setColor(Color.black);
      	    	    	 g.drawRect(mbr.x,mbr.y,mbr.width,mbr.height);
+     	    	    	g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
     				  
     				
     				}
@@ -187,6 +189,7 @@ public class ScenarioPanel extends JFrame {
 					 g.fillPolygon(p);
 					 g.setColor(Color.black);
 	    	    	 g.drawRect(mbr.x,mbr.y,mbr.width,mbr.height);
+	    	    	 g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
     				
     			} 
     				  
