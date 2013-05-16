@@ -1,2 +1,0 @@
-Initialize all contacts whose counterparts are already initialized
-Get all possible contacts configuration with overlapping MBRs. 
