@@ -93,8 +93,8 @@ public class ContactManager {
 								//System.out.println(" Get Contact2:  " + conf.toShortString() + "   " + neighbor_conf.toShortString());
 								for (Contact contact : contacts) 
 								{
-									if(conf.getMbr().getId() == 23  && conf.unary == 1)
-			                                System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact);
+									/*if(conf.getMbr().getId() == 23  && conf.unary == 1)
+			                                System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact);*/
 								   if(contact.getType() == -2)
 								   {
 									   continue;

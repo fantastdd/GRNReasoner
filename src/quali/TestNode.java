@@ -452,9 +452,8 @@ public void initialize()
 						
 						
 						conf.getContact_map().put(mbr1.getId(),new Contact() );
-						
-						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);
-			             conf.getNeighbors().add(neighbor);
+						Neighbor neighbor = new Neighbor(mbr1,(byte)0,0);			            
+						conf.getNeighbors().add(neighbor);
 						
 			           // System.out.println(" trigger the containing case" +  mbr +  "  " + mbr1);
 					}
@@ -462,7 +461,9 @@ public void initialize()
 					{
 						Neighbor _neighbor  = createNeighbor(mbr,mbr1);
 						//System.out.println(mbr + "  construct  " + mbr1 + "   " + _neighbor.getGap() + "   " + _neighbor.getNeighborType());
-						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() == 0))
+						
+						//if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() == 0))
+						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() < WorldinVision.gap))	
 							conf.getNeighbors().add(_neighbor);
 					}
 		 }

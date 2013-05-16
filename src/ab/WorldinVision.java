@@ -13,7 +13,7 @@ import quali.TestNode;
 
 public class WorldinVision {
   public LinkedList<MBR> mbrs = new LinkedList<MBR>();
-  public static int gap = 0;
+  public static int gap = 8;
   public TestNode node;
   public TestNode sol = null;
   public void buildWorld(List<Rectangle> objs)
@@ -38,8 +38,11 @@ public class WorldinVision {
 	  ScenarioPanel sp = new ScenarioPanel();
 	//  sp.run(MBRRegister.getMbrs());
 	  LinkedList<MBR> mbrs = new LinkedList<MBR>();
+	 if(node  != null)
 	  for (Configuration conf : node.conflist)
 		  mbrs.add(conf.getMbr());
+	 else
+		 mbrs = MBRRegister.getMbrs();
 	 if(sol != null)
 	  sp.run(mbrs , sol);
 	 else

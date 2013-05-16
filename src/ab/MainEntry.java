@@ -1,18 +1,18 @@
 package ab;
 
-import io.ScenarioIO;
-
 import java.awt.Rectangle;
-import java.io.IOException;
+import java.awt.image.BufferedImage;
 import java.util.LinkedList;
 
-import quali.MBR;
+import ab.demo.other.ActionRobot;
+import ab.vision.Vision;
 
 public class MainEntry {
 
 	public static void main(String args[])
 	{
-	 /* new ActionRobot();
+	   new ActionRobot();
+	   
 	   BufferedImage screenshot = ActionRobot.doScreenShot();
 	   Vision vision = new Vision(screenshot);
 	   LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
@@ -21,10 +21,11 @@ public class MainEntry {
 	   worldInVision.addAll(vision.findIce());
 	   WorldinVision wiv = new WorldinVision();
 	   wiv.buildWorld(worldInVision);
-	   wiv.showWorldinVision();*/
-	   
+	   wiv.reason();
+	   wiv.showWorldinVision();
+	   /*
 			long time = System.currentTimeMillis();
-			ScenarioIO sio = new ScenarioIO("l11c");
+			ScenarioIO sio = new ScenarioIO("l11c");ghjm,
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
@@ -44,7 +45,7 @@ public class MainEntry {
 				e.printStackTrace();
 			}
 			
-		System.out.println(" TIme Consumption:  " + (System.currentTimeMillis() - time ));
+		System.out.println(" TIme Consumption:  " + (System.currentTimeMillis() - time ));*/
 		
 	}
 }
