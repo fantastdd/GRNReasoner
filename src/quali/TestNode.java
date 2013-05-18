@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import quali.util.Logger;
 import quanti.QuantiShapeCalculator;
 import ab.WorldinVision;
 
@@ -51,10 +52,13 @@ public TestNode(List<MBR> mbrs, List<MBR> edges)
 		confs.put(mbr.getId(),  conf);
 		conflist.add(conf);
 		
+		
+		
 	}
-	
+		// register the mbr for later analysis regarding the number of stable states it hits during the backtracking
+		Logger.createProfiles(mbrs.size());
 	     initialize();
-	   //initializeVO();
+	  //initializeVO();
       //initializeHW();
 }
 public Configuration lookup(int id)

@@ -10,36 +10,52 @@ import javax.swing.JFrame;
 import quali.Configuration;
 import quali.MBR;
 import quali.TestNode;
+import quali.util.Logger;
 
 
 public class ScenarioPanel extends JFrame {
 	LinkedList<MBR> mbrs = new LinkedList<MBR>();
+	TestNode sol = null;
 	TestNode node = null;
 	public ScenarioPanel()
 	{
-		
+		this.setTitle(" Simulator for Angular Rectangle Representation");
 	}
 	public void run(LinkedList<MBR> mbrs)
 	{
 		this.mbrs = mbrs;
-		
+		System.out.println(mbrs.size());
 		buildInitialCanvas();
 		
 	}
-	public void run(LinkedList<MBR> mbrs , TestNode node)
+	
+	
+	
+	
+	public void run(LinkedList<MBR> mbrs , TestNode node , boolean sol)
 	{
 	     	this.mbrs = mbrs;
-	     	this.node = node;
-	     	buildInitialCanvas();
+	     	System.out.println(mbrs.size());
+	     if(sol)
+	     {	
+	    	 this.sol = node;
+	         setTitle("First Sol");
+	     }
+	     else
+	     {	 
+	    	 this.node = node;
+	         setTitle("Approx Sol");
+	     }
+	     buildInitialCanvas();
 		    
 		
 	}
 	
 	private void buildInitialCanvas()
 	{
-		this.setSize(1500,1000);
+		this.setSize(1200,800);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setTitle(" Simulator for Angular Rectangle Representation");
+	
 		this.setVisible(true);
 	    super.paint(getGraphics());
 	}
@@ -54,7 +70,7 @@ public class ScenarioPanel extends JFrame {
 				g.setColor(Color.black);
 			else if(count%4 == 3)
 				g.setColor(Color.cyan);*/
-    	   if(node == null){
+    	   if(sol == null && node == null){
 			g.drawRect(mbr.x,mbr.y,mbr.width,mbr.height);
 			
 		/*	g.drawLine(conf.getDiagonal_left().xpoints[0], conf.getDiagonal_left().ypoints[0], conf.getDiagonal_left().xpoints[1], conf.getDiagonal_left().ypoints[1]);
@@ -66,10 +82,20 @@ public class ScenarioPanel extends JFrame {
     	   }
     	   else
     	   {
-    		  
+    		   int unary;
+    		   Configuration conf;
+    		   if(sol != null)
+    		   {
+    			   conf = sol.lookup(mbr);
+    			   unary = conf.unary;
+    		   }
+    		   else 
+    		   {
+    			   unary = Logger.getMostLikelyUnary(mbr.getId());
+    			   conf = node.lookup(mbr);
+    			   System.out.println(conf.toShortString() + "   " + unary);
+    		   }
     			
-    			Configuration conf = node.lookup(mbr);
-    			int unary = conf.unary;
     			int x = mbr.x;
     			int y = mbr.y;
     			int width = mbr.width;
@@ -155,9 +181,9 @@ public class ScenarioPanel extends JFrame {
    							(int)Math.sqrt((hwidth - new_limit_horizontal)*(hwidth -  new_limit_horizontal) + 
    									hheight * hheight - hwidth * hwidth );
    				  
-   				  } 
-   				  else
-   				  {
+   				 	} 
+   				 	else
+   				 	{
    					   					 
     					 new_limit_vertical = conf.limit_vertical/2;
     					 //System.out.println(width + "  " + conf.limit_horizontal);
@@ -167,16 +193,16 @@ public class ScenarioPanel extends JFrame {
     									+ hwidth * hwidth - hheight * hheight );
     					// System.out.println(new_limit_vertical);
     			
-   				  }
+   				 	}
     				
-   				 if(unary == 3)
-				  {
+   				 	if(unary == 3)
+   				 	{
 	   					 p.addPoint(x, y + new_limit_vertical);
 						 p.addPoint(x + new_limit_horizontal, y + height);
 						 p.addPoint(x + width , y + height - new_limit_vertical);
 						 p.addPoint(x + width - new_limit_horizontal, y);
 				
-				  }
+   				 	}
 				  else
 					  if(unary == 4)
 					  {

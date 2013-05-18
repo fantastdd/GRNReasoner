@@ -5,15 +5,17 @@ import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.LinkedList;
 
+import quali.util.Logger;
 import quali.util.StabilityConfigurationOutput;
 import ab.WorldinVision;
 
 
-public class MBRReasoner {
+public class MBRReasoner implements Runnable{
 	public int  global_counter = 0;
 	public int formLocal_counter = 0;
 	public int solution_counter = 0;
 	public TestNode sol = null;
+	public TestNode initialNode = null;
 	static
 	{
 		try {
@@ -26,16 +28,28 @@ public class MBRReasoner {
 	}
 
 
+	public void run() {
+		
+		search(initialNode);
+	}
+
     
     
     
+	public MBRReasoner(TestNode node) {
+		initialNode = node;
+	}
+
+
+
+
 	//search ----
 	public boolean search(TestNode node)
 	{
 		if(checkSolution(node))
 		{
 		    //output the solutions	
-			solution_counter ++;
+			 solution_counter ++;
 			 System.out.println("solution is found:   \n" + node);
 			 System.out.println(" the number of iterations : " + global_counter + "  filtered nodes:   " + formLocal_counter);
 			// System.out.println(StabilityConfigurationOutput.getStabilityReport(node));
@@ -134,8 +148,9 @@ public class MBRReasoner {
 								{
 									
 									//----- one unique configuration will have various contactmap..
-								/*	if(cconf.getMbr().getId() == 12 && cconf.unary == 2 && node.lookup(5).unary == 0&& node.lookup(11).unary == 0)
+									/*	if(cconf.getMbr().getId() == 12 && cconf.unary == 2 && node.lookup(5).unary == 0&& node.lookup(11).unary == 0)
 									System.out.println(" get possible contacts ");*/
+									
 									LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node,WorldinVision.gap);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
 									
 /*									if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
@@ -143,8 +158,8 @@ public class MBRReasoner {
 											&&cconf.getMbr().getId() == 23)
 								 	 System.out.println(" lscontacts size " + cconf.toShortString()+"  "+ lscontacts.size());*/
 									
-						          //TODO  there are no valid contacts, even no valid non-touching rels, then the lscontacts will return empty map
-	                             // then the node will be continued with an invalid conf. 
+						          //TODO  if there are no valid contacts, even no valid non-touching rels, then the lscontacts will return empty map
+	                             // otherwise the node will be continued with an invalid conf. 
 									if (lscontacts == null ) // will happen when this block is isolated or its neighbors are not initialized yet 
 									{    
 										TestNode _node = node.clone();
@@ -265,12 +280,17 @@ public class MBRReasoner {
     
        int newUpdatedConfLastTestId = 0;
        int newUpdatedConfId = _newUpdatedConf.getMbr().getId();
-    	//Test the newUpdatedConf first
-    	if( !_newUpdatedConf.isSupport() && _newUpdatedConf.lastValidNeighborId <= node.current_id)
+       boolean _newUpdatedConfSupport = _newUpdatedConf.isSupport();
+    	//Test the newUpdatedConf first , if the conf cannot be stable, then return null
+       if(_newUpdatedConfSupport)
+       {
+    	   Logger.recordUnary(newUpdatedConf.getMbr(), newUpdatedConf.unary);
+       }
+    	if( !_newUpdatedConfSupport && _newUpdatedConf.lastValidNeighborId <= node.current_id)
     	{
     	
     		//formLocal_counter++;
-    	/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
+    		/*	if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
 					&& node.lookup(5).unary == 4&& node.lookup(6).unary == 0&& node.lookup(7).unary == 1&& node.lookup(12).unary == 1 && newUpdatedConf.unary == 1 
 					&&newUpdatedConf.getMbr().getId() == 23)
     						System.out.println(_newUpdatedConf);*/
@@ -302,6 +322,7 @@ public class MBRReasoner {
     					if(support)
     					{
     						stability_id[mbr_id] = 1;
+    						Logger.recordUnary(_conf.getMbr(), _conf.unary);
     					}
     					else
     					{
@@ -331,6 +352,10 @@ public class MBRReasoner {
     	//System.out.println(" updates in formLocalStability  " + _node);
     	return _node;
     }
+
+
+
+
 
 
 
