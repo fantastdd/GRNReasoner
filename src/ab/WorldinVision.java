@@ -13,7 +13,7 @@ import quali.TestNode;
 
 public class WorldinVision {
   public LinkedList<MBR> mbrs = new LinkedList<MBR>();
-  public static int gap = 8;
+  public static int gap = 10;
   public TestNode node;
   public TestNode sol = null;
   public void buildWorld(List<Rectangle> objs)
@@ -22,7 +22,11 @@ public class WorldinVision {
       for (Rectangle rec : objs)
       { 
       	MBR mbr = new MBR(rec);     
-      	mbrs.add(mbr);
+      	
+      	// filter the smaller recs
+      	int area = mbr.height * mbr.width;
+      	if(area > 30)
+      		mbrs.add(mbr);
       }
    // the first mbr is the edge
       //MBRRegisterAdvance.batchRegister(mbrs, mbrs.get(0));

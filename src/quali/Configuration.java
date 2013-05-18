@@ -670,9 +670,10 @@ public Configuration translate(Configuration tconf, int threshold)
 {
 	//find out the neighbor region
 	MBR tmbr = tconf.getMbr();
+	//System.out.println(tmbr.getId() + "  " + this.getMbr().getId());
 	Neighbor neighbor = neighbors.get(neighbors.indexOf(tmbr));
 	byte type = neighbor.getNeighborType();
-	// only transform the configuration which are not overlapping/contained/containg
+	// only transform the configuration which are not overlapping/contained/containing
 	int gap = (int)neighbor.getGap();
 	if ( gap > threshold || type == 0)
 		return this;
@@ -1300,5 +1301,28 @@ public String toString()
   return result;
 	  
   
+}
+public Configuration enlarge(Configuration tconf , int i) {
+	
+	int type = -1;
+	for (Neighbor neighbor : neighbors)
+	{
+		if(neighbor.getMbr().getId() == tconf.getMbr().getId())
+			    type = neighbor.getNeighborType();
+	}
+	// only enlarge the bounding boxes when intersecting. 
+	if(type == 0)
+	{
+		MBR _mbr = new MBR();
+		_mbr.x = mbr.x - i;
+		_mbr.y = mbr.y - i;
+		_mbr.height = mbr.height + 2*i;
+		_mbr.width = mbr.width + 2 * i;
+		_mbr.setId(mbr.getId());
+		this.mbr = _mbr;
+	}
+	
+	
+	return this;
 }
 }

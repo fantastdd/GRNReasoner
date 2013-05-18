@@ -14,8 +14,7 @@ public class ContactManager {
 	public static LinkedList<HashMap<Integer, Contact>> getPossibleContacts(final Configuration conf, final TestNode node , int threshold) {
 		LinkedList<HashMap<Integer, Contact>> contactMaps = null;
 
-		// since we instantiate the conf by the order of the id. so we only need
-		// to test all the conf with the ids smaller than the conf's.
+		// since we instantiate the conf by the order of the id. so we only need to test all the confs of smaller.
 		LinkedList<Neighbor> neighbors = conf.getNeighbors();
 
 			for (Neighbor neighbor : neighbors) 
@@ -153,8 +152,12 @@ public class ContactManager {
 		else
 		{
 			//clone the configuration and test
-			Configuration _conf = conf.translate(tconf, threshold);
-			//System.out.println("  after translate " + _conf.getMbr() + "  " + _conf.getMbr().getBounds() + "   " + " tconf " + tconf.getMbr() + "   " + tconf.getMbr().getBounds());
+			Configuration _conf; 
+		    _conf = conf.translate(tconf, threshold);
+			/*if(_conf.unary != 0)
+			   _conf = _conf.enlarge(tconf,10);*/
+			
+		    //System.out.println("  after translate " + _conf.getMbr() + "  " + _conf.getMbr().getBounds() + "   " + " tconf " + tconf.getMbr() + "   " + tconf.getMbr().getBounds());
 			//System.out.println(getContact(_conf,tconf));
 			return getContact(_conf,tconf);
 		}

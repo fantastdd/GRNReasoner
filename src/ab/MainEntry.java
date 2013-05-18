@@ -21,11 +21,12 @@ public class MainEntry {
 	   worldInVision.addAll(vision.findIce());
 	   WorldinVision wiv = new WorldinVision();
 	   wiv.buildWorld(worldInVision);
+	   wiv.showWorldinVision();
 	   wiv.reason();
 	   wiv.showWorldinVision();
 	   /*
 			long time = System.currentTimeMillis();
-			ScenarioIO sio = new ScenarioIO("l11c");ghjm,
+			ScenarioIO sio = new ScenarioIO("l11c");
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
