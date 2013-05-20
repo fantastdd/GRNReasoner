@@ -7,10 +7,10 @@ import java.util.LinkedList;
 import quanti.QuantiShapeCalculator;
 
 import common.MyPolygon;
-import common.util.Debug;
 
 public class ContactManager {
 	
+	public static int neighbor_type;
 	public static LinkedList<HashMap<Integer, Contact>> getPossibleContacts(final Configuration conf, final TestNode node , int threshold) {
 		LinkedList<HashMap<Integer, Contact>> contactMaps = null;
 
@@ -185,6 +185,7 @@ public class ContactManager {
 		// System.out.println(conf.getMbr() + "   " + tconf.getMbr());
 		// System.out.println(tconf.toShortString() + "  " + conf.toShortString() + "   " + _contact);
 		Contact contact = new Contact();
+		
 		if (conf.unary != 0 && tconf.unary != 0) {
 			/*if(conf.unary == 1 && tconf.unary == 1 && conf.getMbr().getId() == 15 && tconf.getMbr().getId() == 16)
 				System.out.println(conf.toShortString() + "  " + tconf.toShortString() + _contact);*/
@@ -294,6 +295,8 @@ public class ContactManager {
 			//Fat Fixed April 4
 			if (conf.unary != 0 && tconf.unary == 0) 
 			{
+				/*if(conf.unary == 1 && conf.getMbr().uid == 5 )
+						System.out.println(" Get Pair Contact: " + conf + "  tconf  " + tconf);*/
 				//TODO may be area = 12
 				if (_contact.getTangential_area() == 1|| _contact.getTangential_area() == 2 ) 
 				{
@@ -301,16 +304,20 @@ public class ContactManager {
 					if (conf.unary == 1 || conf.unary == 3)
 					{
 						//TODO could be 4
+					
 						contact.setTangential_area(3);
 						contact.setType(1);
 					}
-			    	else if (conf.unary == 2 || conf.unary == 4) {
+			    	else 
+			    	if 
+			    	(conf.unary == 2 || conf.unary == 4) {
 					//TODO 
+			    	
 					contact.setTangential_area(4);
 					contact.setType(1);
 				}
 
-			} 
+				} 
 				else
 					if (_contact.getTangential_area() == 23)
 					{
@@ -612,8 +619,16 @@ public class ContactManager {
 	{
 		
 		LinkedList<Contact> contacts = new LinkedList<Contact>();
-
-		 if (conf.unary == 0 && tconf.unary == 0)
+		neighbor_type = -1;
+	   for (Neighbor neighbor : conf.neighbors)
+	   {
+		   if(neighbor.getMbr().uid == tconf.getMbr().uid)
+		   {  
+			   neighbor_type = neighbor.getNeighborType();
+		       break;
+		   }
+	   }
+	   if (conf.unary == 0 && tconf.unary == 0)
 			 	return getContactRR(contacts, conf, tconf);
 		else 
 			if (conf.unary != 0 && tconf.unary == 0) 
@@ -622,9 +637,19 @@ public class ContactManager {
 			if (conf.unary == 0 && tconf.unary != 0) 
 				return getContactRA(contacts,conf,tconf);
 		 else
-			 if (conf.unary != 0 && tconf.unary != 0) 
-				return getContactAA(contacts, conf, tconf);
-        return contacts;
+			if (conf.unary != 0 && tconf.unary != 0) 
+			{ 
+				if(neighbor_type == 0)
+					return getContactAA(contacts, conf, tconf);
+				else
+				{
+					Contact _contact = new Contact();
+					_contact.setType(0);
+					contacts.add(_contact);
+					return contacts;
+				}
+			}
+	   return contacts;
 	}
 
 	/*
@@ -769,34 +794,34 @@ public class ContactManager {
 			{
 			 tmax = tconf.getCore_left();
 			 tmin = tconf.getDiagonal_left();
-		}
-		else
-			if (tconf.unary == 3)
-			{
-				if (region == 1 || region == 14 )
-				{	
-					tmax = tconf.approx_u3t3;
-				    tmin = tconf.approx_u3t3r;
-				}
-				else
-				{	
-					tmax = tconf.approx_u3t1;
-				    tmin = tconf.approx_u3t1r;
-				}
 			}
-			else if (tconf.unary == 4)
-			{
-				if (region == 1 || region == 14 )
-				{	
-					tmax = tconf.approx_u4t3;
-					tmin = tconf.approx_u4t3r;
+			else
+				if (tconf.unary == 3)
+				{
+					if (region == 1 || region == 14 )
+					{	
+						tmax = tconf.approx_u3t3;
+						tmin = tconf.approx_u3t3r;
+					}
+					else
+					{	
+						tmax = tconf.approx_u3t1;
+						tmin = tconf.approx_u3t1r;
+					}
 				}
-				else
-				{	
-					tmax = tconf.approx_u4t1;
-					tmin = tconf.approx_u4t1r;
+				else if (tconf.unary == 4)
+				{
+					if (region == 1 || region == 14 )
+					{	
+						tmax = tconf.approx_u4t3;
+						tmin = tconf.approx_u4t3r;
+					}
+					else
+					{	
+						tmax = tconf.approx_u4t1;
+						tmin = tconf.approx_u4t1r;
+					}
 				}
-		}
 	
 			
 
@@ -1243,7 +1268,7 @@ public class ContactManager {
 			
 
 
-			if (vertex_1) {
+			if (vertex_1 && neighbor_type == 0) {
 
 				Contact _contact = new Contact();
 				_contact.setType(1);
@@ -1258,7 +1283,7 @@ public class ContactManager {
 				 * contacts.add(_contact); }
 				 */
 
-			} else if (vertex_2) {
+			} else if (vertex_2 && neighbor_type == 0) {
 				Contact _contact = new Contact();
 				_contact.setType(1);
 				_contact.setTangential_area(223);
@@ -1272,7 +1297,7 @@ public class ContactManager {
 				 * contacts.add(_contact); }
 				 */
 
-			} else if (vertex_3) {
+			} else if (vertex_3 && neighbor_type == 0) {
 
 				Contact _contact = new Contact();
 				_contact.setType(1);
@@ -1286,7 +1311,7 @@ public class ContactManager {
 				 * _contact.setType(1); _contact.setTangential_area(233);
 				 * contacts.add(_contact); }
 				 */
-			} else if (vertex_4) {
+			} else if (vertex_4 && neighbor_type == 0) {
 
 				Contact _contact = new Contact();
 				_contact.setType(1);
@@ -1408,7 +1433,7 @@ public class ContactManager {
 					return contacts;
 				}
 
-				if (vertex_1) {
+				if (vertex_1 && neighbor_type == 0) {
 
 					Contact _contact = new Contact();
 					// TODO real case check using restricted points
@@ -1417,7 +1442,7 @@ public class ContactManager {
 					_contact.setTangential_area(3);
 					contacts.add(_contact);
 
-				} else if (vertex_2) {
+				} else if (vertex_2 && neighbor_type == 0) {
 
 					Contact _contact = new Contact();
 					_contact.setType(1);
@@ -1426,7 +1451,7 @@ public class ContactManager {
 
 					contacts.add(_contact);
 
-				} else if (vertex_3) {
+				} else if (vertex_3 && neighbor_type == 0) {
 
 					Contact _contact = new Contact();
 					_contact.setType(1);
@@ -1435,7 +1460,7 @@ public class ContactManager {
 
 					contacts.add(_contact);
 
-				} else if (vertex_4) {
+				} else if (vertex_4 && neighbor_type == 0) {
 
 					Contact _contact = new Contact();
 					_contact.setType(1);

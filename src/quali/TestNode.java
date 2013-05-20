@@ -17,7 +17,7 @@ public class TestNode {
 private HashMap<Integer,Configuration> confs ;
 public LinkedList<Configuration> conflist;
 private int count_id = -1;
-private int count_assigned = -1;
+
 //the pointer points to the next configuration (pop())
 public int current_id= -1;
 
@@ -37,26 +37,29 @@ public TestNode()
    confs = new HashMap<Integer,Configuration>();
    conflist = new LinkedList<Configuration>();
 }
-public TestNode(List<MBR> mbrs, List<MBR> edges)
+
+public TestNode(MBR[] mbrs, List<MBR> edges)
 {
 	confs = new HashMap<Integer,Configuration>();
 	
 	conflist = new LinkedList<Configuration>();
 	
+	int counter = 0;
 	for (MBR mbr : mbrs)
 	{
+		
 		Configuration conf = new Configuration(mbr);
-		if(edges.contains(mbr))
+		if(edges!= null && edges.contains(mbr))
 			conf.setEdge(true);
 		
+		mbr.setId(counter++);
 		confs.put(mbr.getId(),  conf);
 		conflist.add(conf);
 		
 		
 		
 	}
-		// register the mbr for later analysis regarding the number of stable states it hits during the backtracking
-		Logger.createProfiles(mbrs.size());
+	
 	     initialize();
 	  //initializeVO();
       //initializeHW();
@@ -106,7 +109,7 @@ private LinkedList<Configuration> generateId(LinkedList<Configuration> expand_co
    		   if(conf.getMbr().getId() == -1)
    		   {   
    			   conf.getMbr().setId(++count_id);
-   			   ++count_assigned;
+   			  
    		       for (Neighbor neighbor: conf.getNeighbors())
    		       {
    		    	   expand_conf.add(lookup(neighbor));
@@ -282,7 +285,7 @@ public void initializeHW()
 	
 	
 }
-//Initialise using Variable Ordering
+//Initialise using Variable Ordering. From lowest blocks to higher
 public void initializeVO()
 {
    	for (int i = 0; i < conflist.size(); i++)
@@ -309,7 +312,7 @@ public void initializeVO()
 					{
 						Neighbor _neighbor  = createNeighbor(mbr,mbr1);
 						//System.out.println(mbr + "  construct  " + mbr1 + "   " + _neighbor.getGap() + "   " + _neighbor.getNeighborType());
-						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() == 0))
+						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() <= WorldinVision.gap))
 							conf.getNeighbors().add(_neighbor);
 					}
 		 }
@@ -345,7 +348,7 @@ public void initializeVO()
    		if(conf.isEdge())
    		{	
    			conf.getMbr().setId(++count_id);
-   		    ++count_assigned;
+   		  
    		}
    	}
   
@@ -467,7 +470,7 @@ public void initialize()
 						//System.out.println(mbr + "  construct  " + mbr1 + "   " + _neighbor.getGap() + "   " + _neighbor.getNeighborType());
 						
 						//if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() == 0))
-						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() < WorldinVision.gap))	
+						if(	_neighbor != null &&( _neighbor.getNeighborType() == 0 || _neighbor.getGap() <= WorldinVision.gap))	
 							conf.getNeighbors().add(_neighbor);
 					}
 		 }
@@ -515,7 +518,11 @@ public void initialize()
 	        			  count++;
 	        	  }
 	        	  if(count == 0)
+	        	  {  
 	        		  conf.setEdge(true);
+	        	      Logger.recordAsEdge(mbr);
+	        	  }
+	        	  
 	          }
 	    }
 	    

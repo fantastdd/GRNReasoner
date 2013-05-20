@@ -153,9 +153,7 @@ public class MBRReasoner implements Runnable{
 									
 									LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node,WorldinVision.gap);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
 									
-/*									if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
-											&& node.lookup(5).unary == 4&& node.lookup(6).unary == 0&& node.lookup(7).unary == 1&& node.lookup(12).unary == 1 && cconf.unary == 1 
-											&&cconf.getMbr().getId() == 23)
+									/* if(cconf.getMbr().uid == 8 && cconf.unary == 1 )
 								 	 System.out.println(" lscontacts size " + cconf.toShortString()+"  "+ lscontacts.size());*/
 									
 						          //TODO  if there are no valid contacts, even no valid non-touching rels, then the lscontacts will return empty map
@@ -173,18 +171,18 @@ public class MBRReasoner implements Runnable{
 
 												for (HashMap<Integer,Contact> contactmap: lscontacts)
 												{
-													/*
-													if(cconf.getMbr().getId() == 12)
+													
+													/*if(cconf.getMbr().uid == 8 && cconf.unary == 1)
 													{
 														System.out.println(cconf.toShortString());
 														for (Integer key: contactmap.keySet())
-													{
-														 System.out.println(key + "   " + contactmap.get(key));
-													}
-													}
-*/													
+														{
+															System.out.println(key + "   " + contactmap.get(key) + "  " + node.lookup(key).toShortString());
+														}
+													}*/
+													
 												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
-													//TestNode _node = formLocalStability(cconf,contactmap,node);
+													
 													TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
 													/*if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
 																&& node.lookup(5).unary == 4&& node.lookup(6).unary == 0&& node.lookup(7).unary == 1&& node.lookup(12).unary == 1 && cconf.unary == 3 
@@ -322,6 +320,12 @@ public class MBRReasoner implements Runnable{
     					if(support)
     					{
     						stability_id[mbr_id] = 1;
+    						
+    						//PRINT =========================================
+    						/*if(_conf.unary == 1 && _conf.getMbr().uid == 5)
+    							System.out.println(_conf + "  " );*/
+    						//PRINT END =====================================
+    						
     						Logger.recordUnary(_conf.getMbr(), _conf.unary);
     					}
     					else

@@ -112,8 +112,10 @@ public boolean isNowSupport(final Configuration tconf )
    
   if(!tconf.getMbr().equals(mbr))
   { 
-		
+	
 	Contact contact =  ContactManager.getPairContact(tconf, this, WorldinVision.gap);
+	/*if(mbr.uid == 5 && unary == 1 && tconf.getMbr().uid == 10)
+		System.out.println(" Is now support:  " + contact + "  " + tconf);*/
 	contact_map.put(tconf.getMbr().getId(), contact);
 	if(isEdge())
 		result = true;
@@ -685,6 +687,7 @@ public Configuration translate(Configuration tconf, int threshold)
 	_mbr.height = mbr.height;
 	_mbr.width = mbr.width;
 	_mbr.setId(mbr.getId());
+	_mbr.uid = mbr.uid;
 	Configuration conf;
    	
 	switch (type)
@@ -939,7 +942,7 @@ public MyPolygon getRegionLine(int region)
        }
 	   else
 	   {
-		   result.addPoint(x, y + height);
+		    result.addPoint(x, y + height);
 		    result.addPoint(x +  limit_horizontal, y + height);
 	   }
    }
@@ -1296,7 +1299,7 @@ public String toString()
   
   for (Integer mbr: contact_map.keySet())
   {
-	  result+= " contacted with [ MBR " + mbr + " at " +  contact_map.get(mbr) + " ] "; 
+	  result+= " contacted with [ MBR id: " + mbr + " at " +  contact_map.get(mbr) + " ] "; 
 	  }
   return result;
 	  

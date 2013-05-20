@@ -6,7 +6,10 @@ import java.awt.Rectangle;
 public class MBR extends Rectangle
 {
 
+//The id used in backtracking. Depend on Variable Ordering
 private int id;
+// The id that wont be changed. Used to uniquely represent a MBR
+public int uid;
 
 public int getId() {
 	return id;
@@ -31,7 +34,9 @@ public MBR(Rectangle rec) {
 
 
 public MBR()
-{}
+{
+	
+}
 
 
 
@@ -68,7 +73,7 @@ public boolean equals(Object obj)
 }
 public String toString()
 {
-   String result = " MBR " + this.id;
+   String result = " MBR uid " + uid + "  id  " + id;
    return result;
 
 }

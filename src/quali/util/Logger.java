@@ -1,13 +1,17 @@
 package quali.util;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import quali.MBR;
 
 public class Logger {
  public static HashMap<Integer , int[]> mbrs = new HashMap<Integer , int[]>();
- public static int timeLimit = 20; // timeLimit in mins
+ public static int timeLimit = 5; // timeLimit in seconds
+ public static int attempts = 30; // number of attempts
+ public static int threshold = 10;// number of stable status a block hits during the backtracking.
  public static boolean inUse = true;
+ public static int uncheckedBlocks = 0;
  public static void createProfiles(int size)
  {
 	
@@ -17,11 +21,15 @@ public class Logger {
 		 mbrs.put(i, unarys);
 	 }
  }
- public static void recordUnary(MBR mbr, int unary)
+ public synchronized static void recordUnary(MBR mbr, int unary)
  {
-	 assert(mbrs.containsKey(mbr.getId()));
+	 assert(mbrs.containsKey(mbr.uid));
 	
-     ++ mbrs.get(mbr.getId())[unary];
+     ++ mbrs.get(mbr.uid)[unary];
+ }
+ public static void recordAsEdge(MBR mbr)
+ {
+	 mbrs.get(mbr.uid)[0] = 100000;
  }
  public static int getMostLikelyUnary(int key)
  {
@@ -29,7 +37,7 @@ public class Logger {
 	 int[] unarys = mbrs.get(key);
      int max = 0;
      int j = 0;
-     System.out.println(" MBR " + key);
+     System.out.println(" MBR uid " + key);
 	 for (int i = 0 ; i < 5 ; i++)
      {
 		 System.out.print("  " + unarys[i]);
@@ -41,5 +49,67 @@ public class Logger {
      }
 	 System.out.println();
      return j;
+ }
+ 
+ public static int[] generateOrder()
+ {   
+	
+	 uncheckedBlocks = 0;
+	 for (Integer key: mbrs.keySet())
+	 {
+		 int total = 0;
+		 int[] unarys = mbrs.get(key);
+		 for(int val : unarys)
+			 total += val;
+		 if(total < threshold)
+			 uncheckedBlocks ++;
+	 }
+	 
+	 System.out.println( " number of un-checked blocks:  " + uncheckedBlocks);
+	 int[] priority = new int[uncheckedBlocks];
+	 int[] completed = new int[mbrs.size() - uncheckedBlocks];
+	 int[] all = new int[mbrs.size()];
+	 
+	 uncheckedBlocks = 0;
+	 int _counter = 0;
+	 for (Integer key: mbrs.keySet())
+	 {
+		 int total = 0;
+		 int[] unarys = mbrs.get(key);
+		 for(int val : unarys)
+			 total += val;
+		 if(total < threshold)
+		 {
+			 priority[uncheckedBlocks++] = key;
+		 }
+		 else 
+		 {
+			 completed[_counter++] = key;
+		 }
+	 }
+
+	 //Random sort priority array 
+	 Random random = new Random();
+	 for(int i = priority.length - 1; i > 1 ; i--) {
+	        int randIndex = random.nextInt(i);
+	        int temp = priority[i];
+	        priority[i] = priority[randIndex];
+	        priority[randIndex] = temp;
+	}
+	 System.arraycopy(priority, 0, all, 0, priority.length);
+	 
+	 System.arraycopy(completed, 0, all, priority.length, completed.length);
+	 
+	 // PRINT ===========================================
+	 for (Integer key: all)
+	 {
+		 int total = 0;
+		 int[] unarys = mbrs.get(key);
+		 for(int val : unarys)
+			 total += val;
+		 System.out.println( " MBR " + key + " total  " + total );
+	 }
+	 // PRINT END ======================================
+	 return all;
  }
 }

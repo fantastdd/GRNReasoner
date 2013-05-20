@@ -2,18 +2,24 @@ package ab;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.LinkedList;
 
+import javax.imageio.ImageIO;
+
+import quali.util.Logger;
 import ab.demo.other.ActionRobot;
 import ab.vision.Vision;
 
 public class MainEntry {
 
-	public static void main(String args[])
+	public static void main(String args[]) throws IOException
 	{
 	   new ActionRobot();
 	   
-	   BufferedImage screenshot = ActionRobot.doScreenShot();
+	   //BufferedImage screenshot = ActionRobot.doScreenShot();
+	   BufferedImage screenshot = ImageIO.read(new File("F://AngryBirds//l5csd.png"));
 	   Vision vision = new Vision(screenshot);
 	   LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 	   worldInVision.addAll(vision.findStones());
@@ -22,15 +28,15 @@ public class MainEntry {
 	   WorldinVision wiv = new WorldinVision();
 	   wiv.buildWorld(worldInVision);
 	   wiv.showWorldinVision();
-	   wiv.reason();
+	   wiv.reason(Logger.attempts);
 	   wiv.showWorldinVision();
-	   /*
-			long time = System.currentTimeMillis();
-			ScenarioIO sio = new ScenarioIO("l11c");
+	   
+			/*long time = System.currentTimeMillis();
+			ScenarioIO sio = new ScenarioIO("l41");
 
 			LinkedList<LinkedList<MBR>> scenarios;
 			try {
-				scenarios = sio.load("l16c");
+				scenarios = sio.load("l41");
 				LinkedList<MBR> s1 = scenarios.get(0);
 				LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 				for (MBR mbr : s1)

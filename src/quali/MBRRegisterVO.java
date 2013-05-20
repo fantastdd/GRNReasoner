@@ -50,7 +50,7 @@ public class MBRRegisterVO {
 
 	public static TestNode constructTestNode() {
 
-		TestNode node = new TestNode(mbrs, edge);
+		TestNode node = new TestNode((MBR[]) mbrs.toArray(), edge);
 
 		return node;
 

@@ -14,17 +14,17 @@ import quali.util.Logger;
 
 
 public class ScenarioPanel extends JFrame {
-	LinkedList<MBR> mbrs = new LinkedList<MBR>();
+	MBR[] mbrs;
 	TestNode sol = null;
 	TestNode node = null;
 	public ScenarioPanel()
 	{
 		this.setTitle(" Simulator for Angular Rectangle Representation");
 	}
-	public void run(LinkedList<MBR> mbrs)
+	public void run(MBR[] mbrs)
 	{
 		this.mbrs = mbrs;
-		System.out.println(mbrs.size());
+		System.out.println( " Total " + mbrs.length + " blocks displayed");
 		buildInitialCanvas();
 		
 	}
@@ -32,10 +32,10 @@ public class ScenarioPanel extends JFrame {
 	
 	
 	
-	public void run(LinkedList<MBR> mbrs , TestNode node , boolean sol)
+	public void run(MBR[] mbrs , TestNode node , boolean sol)
 	{
 	     	this.mbrs = mbrs;
-	     	System.out.println(mbrs.size());
+	     	System.out.println(mbrs.length);
 	     if(sol)
 	     {	
 	    	 this.sol = node;
@@ -78,7 +78,7 @@ public class ScenarioPanel extends JFrame {
 			g.drawLine(conf.getCore_left().xpoints[1], conf.getCore_left().ypoints[1],conf.getCore_left().xpoints[2], conf.getCore_left().ypoints[2]);
 			g.drawLine(conf.getCore_left().xpoints[2], conf.getCore_left().ypoints[2],conf.getCore_left().xpoints[3], conf.getCore_left().ypoints[3]);
 			g.drawLine(conf.getCore_left().xpoints[3], conf.getCore_left().ypoints[3],conf.getCore_left().xpoints[0], conf.getCore_left().ypoints[0]);*/
-			g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
+			g.drawString(mbr.uid +"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
     	   }
     	   else
     	   {
@@ -91,7 +91,7 @@ public class ScenarioPanel extends JFrame {
     		   }
     		   else 
     		   {
-    			   unary = Logger.getMostLikelyUnary(mbr.getId());
+    			   unary = Logger.getMostLikelyUnary(mbr.uid);
     			   conf = node.lookup(mbr);
     			   System.out.println(conf.toShortString() + "   " + unary);
     		   }
@@ -109,7 +109,7 @@ public class ScenarioPanel extends JFrame {
     				g.fillRect(mbr.x,mbr.y,mbr.width,mbr.height);
     				g.setColor(Color.black);
     	    		g.drawRect(mbr.x,mbr.y,mbr.width,mbr.height);
-    	    		g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
+    	    		g.drawString(mbr.uid+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
     			} 
     			else if (unary == 1 || unary == 2)
     			{
@@ -160,7 +160,7 @@ public class ScenarioPanel extends JFrame {
      					 g.fillPolygon(p);
      					 g.setColor(Color.black);
      	    	    	 g.drawRect(mbr.x,mbr.y,mbr.width,mbr.height);
-     	    	    	g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
+     	    	    	 g.drawString(mbr.uid +"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
     				  
     				
     				}
@@ -215,7 +215,7 @@ public class ScenarioPanel extends JFrame {
 					 g.fillPolygon(p);
 					 g.setColor(Color.black);
 	    	    	 g.drawRect(mbr.x,mbr.y,mbr.width,mbr.height);
-	    	    	 g.drawString(mbr.getId()+"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
+	    	    	 g.drawString(mbr.uid +"", (int)mbr.getCenterX(), (int)mbr.getCenterY());
     				
     			} 
     				  
