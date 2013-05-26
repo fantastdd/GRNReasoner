@@ -18,8 +18,8 @@ public class MainEntry {
 	{
 	   new ActionRobot();
 	   
-	   //BufferedImage screenshot = ActionRobot.doScreenShot();
-	   BufferedImage screenshot = ImageIO.read(new File("F://AngryBirds//l5csd.png"));
+	   BufferedImage screenshot = ActionRobot.doScreenShot();
+	   //BufferedImage screenshot = ImageIO.read(new File("F://AngryBirds//l13sd.png"));
 	   Vision vision = new Vision(screenshot);
 	   LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 	   worldInVision.addAll(vision.findStones());

@@ -36,7 +36,7 @@ public class WorldinVision {
       	
       	// filter the smaller recs
       	int area = mbr.height * mbr.width;
-      	if(area > 40)
+      	if(area > 40)//In fully zoom out mode, change to 20, fully zoom in, change to 40
       	{	
       		mbr.uid = mbr_counter++;
       		buf_mbrs[mbr.uid] = mbr;
@@ -59,9 +59,9 @@ public class WorldinVision {
 	  ScenarioPanel sp = new ScenarioPanel();
 	//  sp.run(MBRRegister.getMbrs());
 	 
-/*	 MBR[] mbrs = new MBR[]; 
- * if(node  != null)
-	  for (Configuration conf : node.conflist)
+	  /*	 MBR[] mbrs = new MBR[]; 
+	   * if(node  != null)
+	  	for (Configuration conf : node.conflist)
 		  mbrs.add(conf.getMbr());
 	 else
 		 mbrs = this.mbrs;

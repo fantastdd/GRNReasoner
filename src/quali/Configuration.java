@@ -1299,7 +1299,7 @@ public String toString()
   
   for (Integer mbr: contact_map.keySet())
   {
-	  result+= " contacted with [ MBR id: " + mbr + " at " +  contact_map.get(mbr) + " ] "; 
+	  result+= " contacted with [ MBR id: " + mbr + " at " +  contact_map.get(mbr).toString(unary == 0) + " ] "; 
 	  }
   return result;
 	  

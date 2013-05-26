@@ -7,9 +7,9 @@ import quali.MBR;
 
 public class Logger {
  public static HashMap<Integer , int[]> mbrs = new HashMap<Integer , int[]>();
- public static int timeLimit = 5; // timeLimit in seconds
- public static int attempts = 30; // number of attempts
- public static int threshold = 10;// number of stable status a block hits during the backtracking.
+ public static int timeLimit = 6; // timeLimit in seconds
+ public static int attempts = 5; // number of attempts
+ public static int threshold = 1000;// number of stable status a block hits during the backtracking. 2000
  public static boolean inUse = true;
  public static int uncheckedBlocks = 0;
  public static void createProfiles(int size)
@@ -48,6 +48,10 @@ public class Logger {
     	 } 
      }
 	 System.out.println();
+	 if(max < threshold)
+	 { 
+		j = -1; 
+	 }
      return j;
  }
  

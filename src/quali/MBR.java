@@ -7,7 +7,7 @@ public class MBR extends Rectangle
 {
 
 //The id used in backtracking. Depend on Variable Ordering
-private int id;
+public int id;
 // The id that wont be changed. Used to uniquely represent a MBR
 public int uid;
 
@@ -20,8 +20,13 @@ public void setId(int id) {
 }
 
 
-
-
+public MBR (int x, int y, int width , int height)
+{
+   this.x = x;
+   this.y = y;
+   this.width = width;
+   this.height = height;
+}
 public MBR(Rectangle rec) {
 	
 

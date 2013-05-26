@@ -26,28 +26,29 @@ public class ContactManager {
 				} 
 				else*/
 				{
-					Configuration neighbor_conf = node.lookup(neighbor.getMbr());
-					MBR neighbor_mbr = neighbor_conf.getMbr();
+					MBR neighbor_mbr = neighbor.getMbr();
+					Configuration neighbor_conf = node.lookup(neighbor_mbr);
+					
 					 /* if(conf.getMbr().getId() == 10 && node.lookup(8).unary == 4 && conf.unary == 0)
 						  System.out.println( conf.toShortString() + "    " + neighbor_conf.toShortString() + (neighbor_mbr.getId() <= node.current_id));*/
 					// neighbor must be instantiated
-					if (neighbor_mbr.getId() <= node.current_id) 
+					if ( neighbor_mbr.id <= node.current_id || neighbor_conf.edge ) 
 					{
-						if(contactMaps == null)
-						 contactMaps = new LinkedList<HashMap<Integer, Contact>>();
-						if (contactMaps.isEmpty()) {
+						if( contactMaps == null )
+							contactMaps = new LinkedList<HashMap<Integer, Contact>>();
+						if ( contactMaps.isEmpty() ) {
 							
-							//System.out.println(" Get Contact1:  " + conf.toShortString() + "   " + neighbor_conf.toShortString());
+							/*if((conf.getMbr().uid == 12 && neighbor_conf.getMbr().uid == 16))
+										System.out.println(" Get Possible Contacts conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString());*/
 							
 							LinkedList<Contact> contacts = getContact(conf, neighbor_conf, threshold);
 						/*	if(conf.getMbr().getId() == 23 && conf.unary == 1)
-                                           System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contacts.size() );*/
+                                System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contacts.size() );*/
 						
 							for (Contact contact : contacts) 
 							{
-							 //
-							/*	if(conf.getMbr().getId() == 10 && node.lookup(8).unary == 4 && conf.unary == 0)
-							 System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact );*/
+								/*if((conf.getMbr().uid == 12 && neighbor_conf.getMbr().uid == 16))
+										System.out.println(" conf    " + conf.toShortString() + "    tconf    " + neighbor_conf.toShortString() + "   contact   " + contact );*/
 								  //TODO check whether this contact is valid
 							    if(contact.getType() == -2)
 							    {
@@ -628,6 +629,9 @@ public class ContactManager {
 		       break;
 		   }
 	   }
+	 /* if( (conf.getMbr().uid == 16 && tconf.getMbr().uid == 12) || (conf.getMbr().uid == 12 && tconf.getMbr().uid == 16))
+		   System.out.println(" Find Contacts " + tconf.unary);*/
+	   
 	   if (conf.unary == 0 && tconf.unary == 0)
 			 	return getContactRR(contacts, conf, tconf);
 		else 
@@ -1253,8 +1257,10 @@ public class ContactManager {
 			boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 			
 			//print ========
-		/*	if(conf.getMbr().getId() == 5 && tconf.getMbr().getId() == 4 && tconf.unary == 1)
-				System.out.println(tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "  " + tr23 + "  " + tr14 );*/
+			/*if(conf.getMbr().uid == 16 && tconf.getMbr().uid == 12 && tconf.unary == 1)
+				System.out.println( " ++ " + tr1 + "  " + tr2 + "  " + tr3 + "  " + tr4 + "  " + tr23 + "  " + tr14
+						+ "  " + ra13_1 + " " + ra13_14 + "  " + ra13_3 + "  " + ra13_23 + "  " + ra24_2 + 
+						"  " + ra24_23 + "  " + ra24_4 + "  " + ra24_14);*/
 			//print end ====
 			
 			if(!tr1 && !tr2 && !tr3 &&!tr4 && !tr23 && !tr14 && ( ra13_1 == -1 || ra13_14 == -1) && (ra13_3 == -1 || ra13_23 == -1) && (ra24_2 == -1 
@@ -1417,8 +1423,8 @@ public class ContactManager {
 				boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 				
 				//print=============
-			/*	if(conf.unary == 1 && tconf.unary == 0 && conf.getMbr().getId() == 4&& tconf.getMbr().getId() == 5)
-					System.out.println(tr12 + "  " + tr34 + "  " + tr23 + "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
+				/*if(conf.unary == 1  && conf.getMbr().uid == 12 && tconf.getMbr().uid == 16)
+					System.out.println("--" + tr12 + "  " + tr34 + "  " + tr23 + "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
 							+ ra13_23 + "  " + ra24_2 + "  " + ra24_23 + "  " + ra24_4 + "  " + ra24_14);*/
 					
 			   //print end

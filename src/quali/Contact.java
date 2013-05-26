@@ -52,6 +52,8 @@ public boolean equals(Contact contact)
 public String toString()
 {
   String result = "";
+
+  
   if(type == 1)
    result += " Region: " + tangential_area + " ,touching" ;
   else if(type == -1)
@@ -63,6 +65,57 @@ public String toString()
   else if(type == -2)
 	  result += " invalid ";
   return result;
+}
+public String toString(boolean regular)
+{
+	 String result = "";
+	 String tangential_area = "";
+	 int areaCode = this.tangential_area;
+	 if(regular)
+	  {
+		switch(areaCode)
+		{
+			case 1:{ tangential_area = "S2_r";break;}
+			case 2:{ tangential_area = "S2_l";break;}
+			case 12:{ tangential_area = "S2";break;}
+			case 3:{ tangential_area = "S6_l";break;}
+			case 4:{ tangential_area = "S6_r";break;}
+			case 34:{ tangential_area = "S6";break;}
+			case 23:{ tangential_area = "S4";break;}
+			case 14:{ tangential_area = "S8";break;}
+			case 114:{ tangential_area = "S1";break;}
+			case 223:{ tangential_area = "S3";break;}
+			case 233:{ tangential_area = "S5";break;}
+			case 414:{ tangential_area = "S7";break;}
+		}	
+	  }
+	 else
+	 {
+			switch(areaCode)
+			{
+				case 1:{ tangential_area = "S8";break;}
+				case 2:{ tangential_area = "S2";break;}
+				case 12:{ tangential_area = "S1";break;}
+				case 23:{ tangential_area = "S3";break;}
+				case 3:{ tangential_area = "S4";break;}
+				case 4:{ tangential_area = "S6";break;}
+				case 34:{ tangential_area = "S5";break;}
+				case 14:{ tangential_area = "S7";break;}
+				
+			}	
+	 }
+	  if(type == 1)
+	   result += " Region: " + tangential_area + " ,touching" ;
+	  else if(type == -1)
+		   result += " Region: " + tangential_area + " un-initialized ";
+	  else if(type == 0)
+		   result += " Region: " + tangential_area + " non-touching";
+	  else if(type == 2)
+		   result += " " + " Either touching or non-touching ";
+	  else if(type == -2)
+		  result += " invalid ";
+	  return result;
+
 }
 public int getType() {
 	return type;

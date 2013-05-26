@@ -395,7 +395,6 @@ public void initializeVO()
 	    }
 	    // the mbr touches all others.
 	    if(conf.lastValidNeighborId == -2 && !conf.getNeighbors().isEmpty())
-	    	//conf.lastValidNeighborId = conf.getNeighbors().size() - 1;
 	    		conf.lastValidNeighborId = conf.getNeighbors().getLast().getMbr().getId();
 	    
 	    //=====================DEBUG output the neighbor 
@@ -413,7 +412,7 @@ public void initializeVO()
 	    //===========================
    	}
    	  	
-   	//Initialise the array of stability id
+   	//Initialize the array of stability id
 		stability_id = new int[conflist.size()];
 		for (int i = 0; i < conflist.size() ; i ++)
 		{
@@ -453,7 +452,7 @@ public void initialize()
 		 if (i != j) {
 					Configuration _conf = lookup(j);
 					MBR mbr1 = _conf.getMbr();
-					//System.out.println(" test  " + mbr +  "   "+ mbr1   );
+					
 					if(QuantiShapeCalculator.isIntersected(mbr, mbr1, false))
 					{
 						
@@ -514,7 +513,10 @@ public void initialize()
 	        	  int count = 0;
 	        	  for (Neighbor neighbor : conf.getNeighbors())
 	        	  {
-	        		  if(neighbor.getNeighborType() == 3 ||( neighbor.getNeighborType() == 0 && (conf.y + conf.height) < neighbor.getMbr().getHeight() + neighbor.getMbr().getY()) )
+	        		  if( (neighbor.getNeighborType() == 3 ) 
+	        				  ||/*( neighbor.getNeighborType() == 0 && (conf.y + conf.height) < neighbor.getMbr().getHeight() + neighbor.getMbr().getY())*/ 
+	        				  ( neighbor.getNeighborType() == 0 && (conf.y + conf.height/2) < neighbor.getMbr().y + neighbor.getMbr().height)
+	        				  )
 	        			  count++;
 	        	  }
 	        	  if(count == 0)

@@ -147,17 +147,17 @@ public class MBRReasoner implements Runnable{
 								if(solidValidity(cconf , node))
 								{
 									
-									//----- one unique configuration will have various contactmap..
+									// one unique configuration will have various contactmap..
 									/*	if(cconf.getMbr().getId() == 12 && cconf.unary == 2 && node.lookup(5).unary == 0&& node.lookup(11).unary == 0)
-									System.out.println(" get possible contacts ");*/
+											System.out.println(" get possible contacts ");
+									*/
 									
 									LinkedList<HashMap<Integer,Contact>> lscontacts = ContactManager.getPossibleContacts(cconf,node,WorldinVision.gap);//get the possible contacts with the instantiated MBRs. TODO Note: if a mbr has no neighbors,should not return empty.
 									
 									/* if(cconf.getMbr().uid == 8 && cconf.unary == 1 )
 								 	 System.out.println(" lscontacts size " + cconf.toShortString()+"  "+ lscontacts.size());*/
 									
-						          //TODO  if there are no valid contacts, even no valid non-touching rels, then the lscontacts will return empty map
-	                             // otherwise the node will be continued with an invalid conf. 
+						          // if there are no valid contacts, even no valid non-touching rels, then the lscontacts will return empty map, otherwise the node will be continued with an invalid conf. 
 									if (lscontacts == null ) // will happen when this block is isolated or its neighbors are not initialized yet 
 									{    
 										TestNode _node = node.clone();
@@ -172,7 +172,7 @@ public class MBRReasoner implements Runnable{
 												for (HashMap<Integer,Contact> contactmap: lscontacts)
 												{
 													
-													/*if(cconf.getMbr().uid == 8 && cconf.unary == 1)
+													/*if(cconf.getMbr().uid == 12 && cconf.unary == 1)
 													{
 														System.out.println(cconf.toShortString());
 														for (Integer key: contactmap.keySet())
@@ -252,9 +252,8 @@ public class MBRReasoner implements Runnable{
 
              if(neighbor.getNeighborType() == 0)
              {
-            	
-            	 if(cconf.unary == 0 && conf_neighbor.unary == 0)
-            		 return false;
+            	if(cconf.unary == 0 && conf_neighbor.unary == 0)
+            		return false;
              }
           
              
