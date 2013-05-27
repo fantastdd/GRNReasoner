@@ -8,16 +8,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 
 import quali.Configuration;
-import quali.ShapeCalculator;
 
 import common.Edge;
 import common.MyPolygon;
-import common.util.Debug;
 import common.util.PointXComparator;
 import common.util.PointYComparator;
 
 
-public class QuantiShapeCalculator extends ShapeCalculator {
+public class QuantiShapeCalculator {
 	
 	
 	public static LinkedList<Point> FindLineIntersection(Point start1, Point end1, Point start2, Point end2)
@@ -481,7 +479,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 						    	 
 									}
 							 		points.add(p);
-							 		 Debug.echo(null ,p1," and ", p2, "\n Intersects ( with reasoning )at : ",p);
+							 		System.out.println(p1 + " and " + p2 + "\n Intersects ( with reasoning )at : " + p);
 								}
 							}
 							
@@ -491,7 +489,7 @@ public class QuantiShapeCalculator extends ShapeCalculator {
 						
 				 }
        if(points.size() == 0)
-    	   Debug.echo(null, p1 + " sepearte from " + p2);
+    	  System.out.println( p1 + " sepearte from " + p2);
 		 return points;
 	 }
 	 private static boolean similarPoint(Point p1, Point p2,double gap)

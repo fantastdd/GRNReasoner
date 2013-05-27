@@ -1,10 +1,11 @@
-package main;
+package quanti.test;
 
 import java.awt.Graphics;
 import java.awt.Polygon;
 import javax.swing.JFrame;
 
 
+@SuppressWarnings("serial")
 public class ScenarioPanelPoly extends JFrame {
 	Polygon[]  polygons ;
 	public ScenarioPanelPoly()

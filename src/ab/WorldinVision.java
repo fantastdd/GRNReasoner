@@ -1,7 +1,8 @@
 package ab;
 
+import gui.ScenarioPanel;
+
 import java.awt.Rectangle;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -9,11 +10,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import main.ScenarioPanel;
-import quali.Configuration;
 import quali.MBR;
 import quali.MBRReasoner;
-import quali.MBRRegister;
 import quali.TestNode;
 import quali.util.Logger;
 

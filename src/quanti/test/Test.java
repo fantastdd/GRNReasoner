@@ -3,7 +3,6 @@ import java.awt.Point;
 
 import quanti.QuantiShapeCalculator;
 
-import main.ScenarioPanelPoly;
 
 import common.MyPolygon;
 
