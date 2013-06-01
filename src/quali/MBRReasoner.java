@@ -10,12 +10,19 @@ import quali.util.StabilityConfigurationOutput;
 import ab.WorldinVision;
 
 
+
+/**
+ * Backtracking on the set of objects.
+ * @author Gary
+ *
+ */
 public class MBRReasoner implements Runnable{
 	public int  global_counter = 0;
 	public int formLocal_counter = 0;
 	public int solution_counter = 0;
-	public TestNode sol = null;
-	public TestNode initialNode = null;
+	public Node sol = null;
+	public Node initialNode = null;
+	public Logger logger;
 	static
 	{
 		try {
@@ -28,6 +35,7 @@ public class MBRReasoner implements Runnable{
 	}
 
 
+	@Override
 	public void run() {
 		
 		search(initialNode);
@@ -36,15 +44,16 @@ public class MBRReasoner implements Runnable{
     
     
     
-	public MBRReasoner(TestNode node) {
+	public MBRReasoner(Node node , Logger logger) {
 		initialNode = node;
+		this.logger = logger;
 	}
 
 
 
 
 	//search ----
-	public boolean search(TestNode node)
+	public boolean search(Node node)
 	{
 		if(checkSolution(node))
 		{
@@ -62,14 +71,14 @@ public class MBRReasoner implements Runnable{
 		}
 		else
 		{
-		    LinkedList<TestNode> refinements = refine(node);
+		    LinkedList<Node> refinements = refine(node);
 		   //  System.out.println(node + "    " + refinements.size());
 		    // System.out.println(node.current_id + "   " + refinements.size());
 		    
 		    // if refinements should not be empty when a mbr has no neighbors.
 		    if(!refinements.isEmpty())
 		    {
-		    	for(TestNode refinement: refinements)
+		    	for(Node refinement: refinements)
 		    	{	
 		    	   //System.out.println(" refinement : " +  refinement);
 		    		global_counter++;
@@ -87,9 +96,9 @@ public class MBRReasoner implements Runnable{
 		
 	}
 	//refine should return at least one TestNode if no properties have been violated
-	public LinkedList<TestNode> refine(final TestNode node)
+	public LinkedList<Node> refine(final Node node)
 	{   
-		LinkedList<TestNode> refinements = new LinkedList<TestNode>();
+		LinkedList<Node> refinements = new LinkedList<Node>();
         
         // System.out.println(" go to the refine ");
 	   	if(!node.isCompleted()){
@@ -120,7 +129,7 @@ public class MBRReasoner implements Runnable{
 						        
 							   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 								  //TestNode _node = formLocalStability(cconf,contactmap,node);
-								  TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
+								  Node _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
 							   //System.out.println(_node);
 							   // System.out.println(" after form local stability:  " + _node );
 							   if (_node != null)
@@ -160,7 +169,7 @@ public class MBRReasoner implements Runnable{
 						          // if there are no valid contacts, even no valid non-touching rels, then the lscontacts will return empty map, otherwise the node will be continued with an invalid conf. 
 									if (lscontacts == null ) // will happen when this block is isolated or its neighbors are not initialized yet 
 									{    
-										TestNode _node = node.clone();
+										Node _node = node.clone();
 										//System.out.println("updates early " + cconf.toShortString());
 										_node.update(cconf.clone());
 										//System.out.println(_node);
@@ -183,7 +192,7 @@ public class MBRReasoner implements Runnable{
 													
 												   //---  initialize the cconf's neighbor's configuration that makes cconf local stable.
 													
-													TestNode _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
+													Node _node = formLocalStabilityHeuristic(cconf,contactmap,node);// this node is a clone with the cconf updated
 													/*if (node.lookup(0).unary == 0 && node.lookup(1).unary == 1 && node.lookup(2).unary == 1&& node.lookup(3).unary == 1 && node.lookup(4).unary == 1
 																&& node.lookup(5).unary == 4&& node.lookup(6).unary == 0&& node.lookup(7).unary == 1&& node.lookup(12).unary == 1 && cconf.unary == 3 
 																&&cconf.getMbr().getId() == 23)
@@ -205,7 +214,7 @@ public class MBRReasoner implements Runnable{
 	}
 
     //------ test ----
-    public boolean checkSolution(TestNode node)
+    public boolean checkSolution(Node node)
     {
 
   		
@@ -238,7 +247,7 @@ public class MBRReasoner implements Runnable{
 
     //verify the solid properties among all the $expanded$ confs
     // only test the regular/angular case. do not do the block_region test (rely on precise data)
-    public boolean solidValidity(final Configuration cconf, final TestNode confs)
+    public boolean solidValidity(final Configuration cconf, final Node confs)
     {
     	
     	/* test the regular/angular property*/
@@ -263,9 +272,9 @@ public class MBRReasoner implements Runnable{
     	
     } 
     
-    public TestNode formLocalStabilityHeuristic (final Configuration newUpdatedConf , final HashMap<Integer,Contact> contactmap, final TestNode node)
+    public Node formLocalStabilityHeuristic (final Configuration newUpdatedConf , final HashMap<Integer,Contact> contactmap, final Node node)
     {
-    	TestNode _node = null;
+    	Node _node = null;
     	int[] stability_id = new int[node.getConfs().size()];
     	int[] lastTestId = new int[newUpdatedConf.getNeighbors().size() ];
     	LinkedList<Configuration> effectedConfs = new LinkedList<Configuration>();
@@ -281,7 +290,7 @@ public class MBRReasoner implements Runnable{
     	//Test the newUpdatedConf first , if the conf cannot be stable, then return null
        if(_newUpdatedConfSupport)
        {
-    	   Logger.recordUnary(newUpdatedConf.getMbr(), newUpdatedConf.unary);
+    	   logger.recordUnary(newUpdatedConf.getMbr(), newUpdatedConf.unary);
        }
     	if( !_newUpdatedConfSupport && _newUpdatedConf.lastValidNeighborId <= node.current_id)
     	{
@@ -325,7 +334,7 @@ public class MBRReasoner implements Runnable{
     							System.out.println(_conf + "  " );*/
     						//PRINT END =====================================
     						
-    						Logger.recordUnary(_conf.getMbr(), _conf.unary);
+    						logger.recordUnary(_conf.getMbr(), _conf.unary);
     					}
     					else
     					{
@@ -355,12 +364,5 @@ public class MBRReasoner implements Runnable{
     	//System.out.println(" updates in formLocalStability  " + _node);
     	return _node;
     }
-
-
-
-
-
-
-
 	
 }

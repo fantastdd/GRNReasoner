@@ -10,19 +10,22 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import quali.ApproxSolution;
+import quali.Configuration;
 import quali.MBR;
 import quali.MBRReasoner;
-import quali.TestNode;
+import quali.Node;
 import quali.util.Logger;
+import quali.util.LoggersManager;
 
 public class WorldinVision {
   //public LinkedList<MBR> mbrs = new LinkedList<MBR>();
   public MBR[] mbrs;
   public static int gap = 10;
-  public TestNode node = null;
-  public TestNode sol = null;
+  public Node node = null;
+  public Node sol = null;
   public int mbr_counter = 0;
-  
+  public Logger logger = new Logger();
   public void buildWorld(List<Rectangle> objs)
   {
 	 
@@ -42,12 +45,12 @@ public class WorldinVision {
       }
        mbrs = new MBR[mbr_counter];
        System.arraycopy(buf_mbrs, 0, mbrs, 0, mbr_counter);
-
+        
 	  
       	//MBRRegister.batchRegister(mbrs);
 		// register the mbr for later analysis regarding the number of stable states it hits during the backtracking
-      
-		Logger.createProfiles(mbrs.length);
+        LoggersManager.mbrsSize = mbrs.length;
+	
 
      
 
@@ -55,23 +58,18 @@ public class WorldinVision {
   public void showWorldinVision()
   {
 	  ScenarioPanel sp = new ScenarioPanel();
-	//  sp.run(MBRRegister.getMbrs());
-	 
-	  /*	 MBR[] mbrs = new MBR[]; 
-	   * if(node  != null)
-	  	for (Configuration conf : node.conflist)
-		  mbrs.add(conf.getMbr());
-	 else
-		 mbrs = this.mbrs;
-	 else
-		 mbrs = MBRRegister.getMbrs();
-	 */
+
 	 if(sol != null)
 	  sp.run(mbrs , sol , true);
 	 else
 	 { 
 	   if(node != null)
-		 sp.run(mbrs , node , false);
+	   { 
+		   //  Use the Apporx solution
+		   ApproxSolution apps = new ApproxSolution(mbrs, node, logger);
+		   apps.getApporxSolution();
+		   sp.run(mbrs , node , false);
+	   }
 	   else
 		   sp.run(mbrs);
 	 
@@ -83,24 +81,28 @@ public class WorldinVision {
   {
 	  //node = MBRRegister.constructTestNode();
 	  //System.out.println(" the length of mbrs " + mbrs.length);
-  	  node = new TestNode(mbrs , null);
-	  MBRReasoner MBRR = new MBRReasoner(node);
+	  logger.createProfiles(mbrs.length);
+  	  node = new Node(mbrs , null); // initialize the root node
+  	  for (Configuration conf : node.conflist)
+  		  if(conf.edge)
+  			  logger.recordAsEdge(conf.mbr);
+  	  
+	  MBRReasoner MBRR = new MBRReasoner(node , logger);
   	 
   	  ExecutorService executor = Executors.newSingleThreadExecutor();
   	  
   try {
   		  
-  		  executor.submit(MBRR).get(Logger.timeLimit, TimeUnit.SECONDS);
+  		  executor.submit(MBRR).get(LoggersManager.timeLimit, TimeUnit.SECONDS);
   	      
 	} catch (InterruptedException e) {
-		// TODO Auto-generated catch block
+		
 		e.printStackTrace();
 	} catch (ExecutionException e) {
-		// TODO Auto-generated catch block
+		
 		e.printStackTrace();
 	} catch (TimeoutException e) {
-		// TODO Auto-generated catch block
-		/*e.printStackTrace();*/
+	
 		System.out.println(" time out, use the approx sol ");
 	}
   	
@@ -110,11 +112,53 @@ public class WorldinVision {
   	  sol = MBRR.sol;
 
   }
+  public void reasonMultiThread(int times)
+  {
+	  ExecutorService multiThread = Executors.newFixedThreadPool(5);
+	  
+	
+	  for (int i = 0; i < 5; i ++)
+	  {
+		  Logger logger = LoggersManager.createLogger();
+		  int[] order = logger.generateOrder();
+		  MBR[] _mbrs = new MBR[mbrs.length];
+		
+			 int counter = 0;
+			 for (int uniqueID: order)
+			 {
+				
+				_mbrs[counter] = mbrs[uniqueID];
+				
+				counter++;
+			 }
+			 
+			 node = new Node(_mbrs , null);
+			 for (Configuration conf : node.conflist)
+		  		  if(conf.edge)
+		  			  logger.recordAsEdge(conf.mbr);
+			 MBRReasoner MBRR = new MBRReasoner(node , logger);
+			 
+			 multiThread.execute(MBRR);
+	  }
+
+	   try {
+		   
+		multiThread.awaitTermination(5, TimeUnit.SECONDS);
+	} catch (InterruptedException e) {
+		
+		e.printStackTrace();
+	}
+	   logger = LoggersManager.merge();
+	   
+	  
+	
+  }
   public void reason(int times)
   {
-	  ExecutorService executor = Executors.newSingleThreadExecutor();
-    for (int i = 0; i < times ; i ++){
-		 int[] order = Logger.generateOrder();
+	   ExecutorService executor = Executors.newSingleThreadExecutor();
+		logger.createProfiles(mbrs.length);
+	  for (int i = 0; i < times ; i ++){
+		 int[] order = logger.generateOrder();
 		 MBR[] _mbrs = new MBR[mbrs.length];
 		 int counter = 0;
 		 for (int uniqueID: order)
@@ -122,14 +166,15 @@ public class WorldinVision {
 			_mbrs[counter] = mbrs[uniqueID];
 			counter++;
 		 }
-		 node = new TestNode(_mbrs , null);
-		 MBRReasoner MBRR = new MBRReasoner(node);
+		 node = new Node(_mbrs , null);
+		  for (Configuration conf : node.conflist)
+	  		  if(conf.edge)
+	  			  logger.recordAsEdge(conf.mbr);
+		 MBRReasoner MBRR = new MBRReasoner(node , logger);
 	  	 
-	  	
-	  	  
-	  	  try {
-	  		  
-	  		  executor.submit(MBRR).get(Logger.timeLimit, TimeUnit.SECONDS);
+	  try {
+	  		
+		   executor.submit(MBRR).get(LoggersManager.timeLimit, TimeUnit.SECONDS);
 	  	      
 	  	  } catch (InterruptedException e) {
 			// TODO Auto-generated catch block

@@ -6,13 +6,11 @@ import java.util.Random;
 import quali.MBR;
 
 public class Logger {
- public static HashMap<Integer , int[]> mbrs = new HashMap<Integer , int[]>();
- public static int timeLimit = 6; // timeLimit in seconds
- public static int attempts = 5; // number of attempts
- public static int threshold = 1000;// number of stable status a block hits during the backtracking. 2000
- public static boolean inUse = true;
- public static int uncheckedBlocks = 0;
- public static void createProfiles(int size)
+ public HashMap<Integer , int[]> mbrs = new HashMap<Integer , int[]>();
+ public int threshold = 1000;// number of stable status a block hits during the backtracking. 2000
+ public  boolean inUse = true;
+ public  int uncheckedBlocks = 0;
+ public  void createProfiles(int size)
  {
 	
 	 for (int i = 0; i < size ; i++)
@@ -21,17 +19,17 @@ public class Logger {
 		 mbrs.put(i, unarys);
 	 }
  }
- public synchronized static void recordUnary(MBR mbr, int unary)
+ public synchronized  void recordUnary(MBR mbr, int unary)
  {
 	 assert(mbrs.containsKey(mbr.uid));
 	
      ++ mbrs.get(mbr.uid)[unary];
  }
- public static void recordAsEdge(MBR mbr)
+ public void recordAsEdge(MBR mbr)
  {
 	 mbrs.get(mbr.uid)[0] = 100000;
  }
- public static int getMostLikelyUnary(int key)
+ public int getMostLikelyUnary(int key)
  {
 	 assert(mbrs.containsKey(key));
 	 int[] unarys = mbrs.get(key);
@@ -55,7 +53,7 @@ public class Logger {
      return j;
  }
  
- public static int[] generateOrder()
+ public int[] generateOrder()
  {   
 	
 	 uncheckedBlocks = 0;

@@ -6,9 +6,10 @@ import java.awt.Rectangle;
 public class MBR extends Rectangle
 {
 
-//The id used in backtracking. Depend on Variable Ordering
+//The id used for variable ordering during backtracking
 public int id;
-// The id that wont be changed. Used to uniquely represent a MBR
+
+// The unique id that wont be changed. Used to uniquely represent a MBR
 public int uid;
 
 public int getId() {
@@ -35,16 +36,11 @@ public MBR(Rectangle rec) {
     this.setLocation(new Point((int)rec.getLocation().getX(),(int)rec.getLocation().getY()));
    
 }
- 
-
 
 public MBR()
 {
 	
 }
-
-
-
 public int hashcode()
 {
 	 int hash  = 7;
@@ -52,10 +48,9 @@ public int hashcode()
 	 hash = 31 * hash + this.width;
 	 hash = 31 * hash + this.getLocation().hashCode();
 	 return hash;
-	
-
 }
 
+@Override
 public boolean equals(Object obj)
 {
 	MBR mbr = null;
@@ -70,12 +65,13 @@ public boolean equals(Object obj)
 		   mbr = ( (Neighbor) obj ).getMbr();
 	   }
    
-   if(mbr!= null  & mbr.getLocation().equals(this.getLocation()) & mbr.getHeight() == this.height && mbr.width == this.width)
+   if(mbr!= null  && mbr.getLocation().equals(getLocation()) && mbr.getHeight() == height && mbr.width == width)
 	   return true;
 	 
    return false;
    
 }
+@Override
 public String toString()
 {
    String result = " MBR uid " + uid + "  id  " + id;

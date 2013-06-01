@@ -4,11 +4,11 @@ import java.util.HashMap;
 
 import quali.Configuration;
 import quali.Contact;
-import quali.TestNode;
+import quali.Node;
 
 public class StabilityConfigurationOutput {
 
-  public static String getStabilityReport(TestNode node)
+  public static String getStabilityReport(Node node)
   {
 	String result = "============= Stability Report ===============" + "\n";
 	HashMap<Integer , Configuration > confs = node.getConfs();
@@ -21,7 +21,7 @@ public class StabilityConfigurationOutput {
   }	
   
   //although there is a toString() in Configuration class, we need this method to provide a understandable content regarding the stability configuration.
-  public static String getStabilityReport(Configuration conf , TestNode node)
+  public static String getStabilityReport(Configuration conf , Node node)
   {
 	//weak support parameter included for the regular mbr;
 	    String report = conf.toShortString();
@@ -75,7 +75,7 @@ public class StabilityConfigurationOutput {
   
   
   
-  public static String getStabilityShortReport(TestNode node)
+  public static String getStabilityShortReport(Node node)
   {
 	String result = "\n============= Stability Short Report ===============" + "\n";
 	HashMap<Integer , Configuration > confs = node.getConfs();

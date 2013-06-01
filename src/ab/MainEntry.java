@@ -2,13 +2,11 @@ package ab;
 
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import javax.imageio.ImageIO;
-
 import quali.util.Logger;
+import quali.util.LoggersManager;
 import ab.demo.other.ActionRobot;
 import ab.vision.Vision;
 
@@ -28,7 +26,8 @@ public class MainEntry {
 	   WorldinVision wiv = new WorldinVision();
 	   wiv.buildWorld(worldInVision);
 	   wiv.showWorldinVision();
-	   wiv.reason(Logger.attempts);
+	   //wiv.reason(LoggersManager.attempts);
+	   wiv.reasonMultiThread(5);
 	   wiv.showWorldinVision();
 	   
 			/*long time = System.currentTimeMillis();

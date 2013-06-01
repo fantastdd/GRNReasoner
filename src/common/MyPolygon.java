@@ -12,6 +12,8 @@ import quanti.QuantiShapeCalculator;
 
 public class MyPolygon extends Polygon {
 
+private static final long serialVersionUID = 8036073011840303349L;
+
 private HashMap<Polygon,LinkedList<Point>> touchedPolygon = new HashMap<Polygon,LinkedList<Point>>();
 
 private TreeMap<Double,LinkedList<MyPolygon>> coreSupport = new TreeMap<Double,LinkedList<MyPolygon>>();
@@ -262,6 +264,7 @@ private boolean testSupport(Point l1, Point l2, Point p)
 	return false;
 
 }
+@Override
 public String toString()
 {
    String result = "Polygon: " + this.id + " ";

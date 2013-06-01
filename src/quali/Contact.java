@@ -16,6 +16,7 @@ public void setTangential_area(int tangential_area) {
 }
 
 
+@Override
 public Contact clone()
 {
 	Contact contact = new Contact();
@@ -49,6 +50,7 @@ public boolean equals(Contact contact)
    
 }
 
+@Override
 public String toString()
 {
   String result = "";

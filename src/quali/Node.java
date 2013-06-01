@@ -12,10 +12,11 @@ import ab.WorldinVision;
 import common.util.MBRYComparator;
 import common.util.NeighborComparatorByMBRID;
 
-public class TestNode {
+public class Node {
 
 private HashMap<Integer,Configuration> confs ;
 public LinkedList<Configuration> conflist;
+
 private int count_id = -1;
 
 //the pointer points to the next configuration (pop())
@@ -32,13 +33,14 @@ public boolean instaniatedUntilIndex(int i)
 
 
 
-public TestNode()
+public Node()
 {
    confs = new HashMap<Integer,Configuration>();
    conflist = new LinkedList<Configuration>();
+  
 }
 
-public TestNode(MBR[] mbrs, List<MBR> edges)
+public Node(MBR[] mbrs, List<MBR> edges)
 {
 	confs = new HashMap<Integer,Configuration>();
 	
@@ -47,7 +49,6 @@ public TestNode(MBR[] mbrs, List<MBR> edges)
 	int counter = 0;
 	for (MBR mbr : mbrs)
 	{
-		
 		Configuration conf = new Configuration(mbr);
 		if(edges!= null && edges.contains(mbr))
 			conf.setEdge(true);
@@ -522,7 +523,7 @@ public void initialize()
 	        	  if(count == 0)
 	        	  {  
 	        		  conf.setEdge(true);
-	        	      Logger.recordAsEdge(mbr);
+	        	     
 	        	  }
 	        	  
 	          }
@@ -604,9 +605,10 @@ private Neighbor createNeighbor(MBR pmbr, MBR rmbr)
 public HashMap<Integer, Configuration> getConfs() {
 	return confs;
 }
-public TestNode clone()
+@Override
+public Node clone()
 {
-	TestNode _node = new TestNode();
+	Node _node = new Node();
      //clone hash map
 	for (Integer key: confs.keySet())
 	{
@@ -652,6 +654,7 @@ public void updateConf(Configuration newlyUpdatedConf)
 	   //also update the contact map if necessary
 
 }
+@Override
 public String toString()
 {
 	String result = "================= The Configurations  ============\n";

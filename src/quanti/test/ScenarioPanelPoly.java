@@ -28,6 +28,7 @@ public class ScenarioPanelPoly extends JFrame {
 		this.setVisible(true);
 	    super.paint(getGraphics());
 	}
+	@Override
 	public void paint(Graphics g) {
        for(Polygon polygon : polygons)
 		{  

@@ -8,6 +8,12 @@ import ab.WorldinVision;
 
 import common.MyPolygon;
 
+
+/**
+ * Configuration specifies an instantiation of a MBR.
+ * @author Gary
+ *
+ */
 public class Configuration {
 	
 public int angular;
@@ -114,8 +120,7 @@ public boolean isNowSupport(final Configuration tconf )
   { 
 	
 	Contact contact =  ContactManager.getPairContact(tconf, this, WorldinVision.gap);
-	/*if(mbr.uid == 5 && unary == 1 && tconf.getMbr().uid == 10)
-		System.out.println(" Is now support:  " + contact + "  " + tconf);*/
+	
 	contact_map.put(tconf.getMbr().getId(), contact);
 	if(isEdge())
 		result = true;

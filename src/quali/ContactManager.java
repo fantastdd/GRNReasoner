@@ -11,7 +11,7 @@ import common.MyPolygon;
 public class ContactManager {
 	
 	public static int neighbor_type;
-	public static LinkedList<HashMap<Integer, Contact>> getPossibleContacts(final Configuration conf, final TestNode node , int threshold) {
+	public static LinkedList<HashMap<Integer, Contact>> getPossibleContacts(final Configuration conf, final Node node , int threshold) {
 		LinkedList<HashMap<Integer, Contact>> contactMaps = null;
 
 		// since we instantiate the conf by the order of the id. so we only need to test all the confs of smaller.

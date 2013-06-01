@@ -40,7 +40,7 @@ public  LinkedList<LinkedList<MBR>> load(String filename) throws IOException
 		{	// read in form of x,y
 			if(!line.contains("#"))
 			{double sx = Double.parseDouble(line.substring(0,line.indexOf(" ")));
-			String line2 = line.substring(line.indexOf(" ")+1);
+			String line2 = line.substring(line.indexOf(" ") + 1);
 			double sy = Double.parseDouble(
 											line2.substring(0,line2.indexOf(" "))
 										   );
@@ -64,6 +64,7 @@ public  LinkedList<LinkedList<MBR>> load(String filename) throws IOException
 			scenario = new LinkedList<MBR>();
 		}
 		}
+		br.close();
 		return scenarios;
 	}
 

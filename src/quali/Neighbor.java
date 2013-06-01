@@ -31,6 +31,7 @@ public class Neighbor {
 
 	}
 
+	@Override
 	public boolean equals(Object object)
 	{
 		//  System.out.println(object instanceof Neighbor && getMbr().equals(((Neighbor)object).getMbr()) );
