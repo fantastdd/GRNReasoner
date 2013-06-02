@@ -1,9 +1,6 @@
 package quanti.test;
 import java.awt.Point;
 
-import quanti.QuantiShapeCalculator;
-
-
 import common.MyPolygon;
 
 
@@ -111,7 +108,7 @@ public class Test {
 	 /* MyPolygon pl1 = new MyPolygon(new Point 	  ( 611,515), new Point ( 683,463));
 		MyPolygon pl2 = new MyPolygon(new Point ( 675,473) , new Point( 675,477) , new Point( 697,477));*/
 
-		System.out.println(QuantiShapeCalculator.isIntersected(pl1, pl2, false));
+		//System.out.println(QuantiShapeCalculator.isIntersected(pl1, pl2, false));
 		 ScenarioPanelPoly scenario = new ScenarioPanelPoly();
 	        scenario.run(pl1,pl2);
 		

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.TreeMap;
 
-import quanti.QuantiShapeCalculator;
-
 
 
 
@@ -108,31 +106,6 @@ public double getArea()
 	return area;
 }
 
-public LinkedList<Edge> getUnSupportEdges(LinkedList<MyPolygon> polygons)
-{
-	LinkedList<Edge> unsupportedEdges = new LinkedList<Edge>();
-    unsupportedEdges.addAll(this.getSupportEdges());
-	LinkedList<Edge> supportedEdges = new LinkedList<Edge>();
-	for(MyPolygon mypolygon: polygons)
-	{
-		if(mypolygon.equals(this)){
-			for (Edge edge: this.getSupportEdges())
-			{
-			     if ( 
-			    		 verifySupport(QuantiShapeCalculator.isIntersectedWCA(mypolygon, this),edge)
-			        )
-			     {
-			    	 supportedEdges.add(edge);
-			     }
-			}
-		}
-	}
-	unsupportedEdges.removeAll(supportedEdges);
-	return unsupportedEdges;
-	
-	
-
-}
 private boolean verifySupport(LinkedList<Point> points, Edge edge)
 {
 	/* as long as a intersected point at support area and the centorid should be during */

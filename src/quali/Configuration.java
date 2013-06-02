@@ -106,7 +106,6 @@ public int y;
 public int lastTestNeighborId = -1;
 
 public int lastValidNeighborId = -2; //id = -2, touches all others -1, no neighbors
-//TODO write a isNowSupport method in configuration
 public int left_support = 0;
 public int right_support = 0;
 boolean weaksupport = false;
@@ -115,11 +114,12 @@ public boolean isNowSupport(final Configuration tconf )
 {
 	
 	boolean result = false;
+	ContactManager contactManager = new ContactManager();
    
   if(!tconf.getMbr().equals(mbr))
   { 
 	
-	Contact contact =  ContactManager.getPairContact(tconf, this, WorldinVision.gap);
+	Contact contact =  contactManager.getPairContact(tconf, this, WorldinVision.gap);
 	
 	contact_map.put(tconf.getMbr().getId(), contact);
 	if(isEdge())
@@ -678,7 +678,12 @@ public Configuration translate(Configuration tconf, int threshold)
 	//find out the neighbor region
 	MBR tmbr = tconf.getMbr();
 	//System.out.println(tmbr.getId() + "  " + this.getMbr().getId());
-	Neighbor neighbor = neighbors.get(neighbors.indexOf(tmbr));
+	//System.out.println(tmbr);
+	int index = neighbors.indexOf(tmbr);
+	//TODO disable print
+	if(index == -1)
+	    System.out.println("####" + tmbr + "   " + this);
+	Neighbor neighbor = neighbors.get(index);
 	byte type = neighbor.getNeighborType();
 	// only transform the configuration which are not overlapping/contained/containing
 	int gap = (int)neighbor.getGap();
@@ -691,7 +696,7 @@ public Configuration translate(Configuration tconf, int threshold)
 	_mbr.y = mbr.y;
 	_mbr.height = mbr.height;
 	_mbr.width = mbr.width;
-	_mbr.setId(mbr.getId());
+	_mbr.id = mbr.id;
 	_mbr.uid = mbr.uid;
 	Configuration conf;
    	
@@ -721,7 +726,7 @@ public Configuration translate(Configuration tconf, int threshold)
     
     }
 	conf  = new Configuration(_mbr);
-	conf.unary = this.unary;
+	conf.unary = unary;
 	
 	return conf;
   }
@@ -1315,7 +1320,7 @@ public Configuration enlarge(Configuration tconf , int i) {
 	int type = -1;
 	for (Neighbor neighbor : neighbors)
 	{
-		if(neighbor.getMbr().getId() == tconf.getMbr().getId())
+		if(neighbor.getMbr().uid == tconf.getMbr().uid)
 			    type = neighbor.getNeighborType();
 	}
 	// only enlarge the bounding boxes when intersecting. 

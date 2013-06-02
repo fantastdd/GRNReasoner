@@ -11,7 +11,8 @@ public class ApproxSolution {
 	private Node node;
 	private MBR[] mbrs;
 	private Logger logger;
-	
+	//private final int threshold = 1000;
+	private final int coefficient = 2000;
 	public ApproxSolution(MBR[] mbrs, Node node , Logger logger) {
 		super();
 		this.node = node;
@@ -23,11 +24,13 @@ public class ApproxSolution {
 	{
 	   for (MBR mbr : mbrs)
 	   {
-		   int unary;
+		  
 		   Configuration conf;
-		   unary = logger.getMostLikelyUnary(mbr.uid);
-		   conf = node.lookup(mbr);
-		   if(unary == -1)
+		   int[] unaryweights;
+		   int[] fastApproxUnarys = new int[5];
+		   unaryweights = logger.mbrs.get(mbr.uid);
+		   conf = node.lookupByUID(mbr.uid);
+		  // if(unaryweights[1] < threshold)
 		   {
 			  
 			  int ul = 0; // the upper left block of the MBR
@@ -58,18 +61,33 @@ public class ApproxSolution {
 				int lean_to_right_blocked = ur + bl;
 				
 				if(lean_to_left_blocked == 0 && lean_to_right_blocked == 0)
-					unary = 0;
+				    fastApproxUnarys[0] = 1;
 				else
-				if(lean_to_left_blocked > lean_to_right_blocked)
-					unary = 1;
-				else
-					unary = 2;
+				    if(lean_to_left_blocked > lean_to_right_blocked)
+					fastApproxUnarys[1] = 1;
+				    else
+					fastApproxUnarys[2] = 1;
 				
-				System.out.println("  Fast Approx  " + conf.toShortString() + "   " + unary + "  " + lean_to_left_blocked + "  " + lean_to_right_blocked);
+				System.out.print("  area approx  " + conf.toShortString() + "  " + lean_to_left_blocked + "  " + lean_to_right_blocked);
 				System.out.println(" ul " + ul + " ur " + ur + " bl " + bl + " br " + br);
+		   
 		   }  
-		   else
-			   System.out.println(conf.toShortString() + "   " + unary);
+		   //else
+		   
+		           int unary = 0;
+		           int max = 0;
+		           for (int i = 0; i < 5; i++) {
+		            //since we assign the unary value during the backtracking in the order of 
+		             //as the regular, slim lean to left etc, so we need to give more weights on the latter ones.
+		            double orderWeights = ((i + 1)/2) * unaryweights[i]; 
+		            int weights = (int)orderWeights   + fastApproxUnarys[i] * coefficient ; 
+		   	    if ( weights > max) {
+		   		max = weights ;
+		   		unary = i;
+		   	    }
+		   	}
+		           System.out.println(" final approx  weight: " + max + "  " + conf.mbr + "   " + unary);
+	           
 		   conf.unary = unary;
 	   }
 	}
