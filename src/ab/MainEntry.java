@@ -24,27 +24,28 @@ public class MainEntry {
 	  worldInVision.addAll(vision.findStones());
 	  worldInVision.addAll(vision.findWood());
 	  worldInVision.addAll(vision.findIce());
+	  worldInVision.addAll(vision.findPigs());
 	  
 	  WorldinVision wiv = new WorldinVision();
-	  wiv.buildWorld(worldInVision); wiv.showWorldinVision(null , null ,
-	  null);
+	  wiv.buildWorld(worldInVision); 
+	  wiv.showWorldinVision(null , null ,null);
 	  
-	   MultiThreadReasoner multiReasoner = new MultiThreadReasoner(wiv, 20 ,
-	  5, 4); multiReasoner.run();
+	   MultiThreadReasoner multiReasoner = new MultiThreadReasoner(wiv, 30 ,5, 4); 
+	   multiReasoner.run();
 	  
 	  //display 
-	  Logger logger = LoggerManager.merge();
-	  System.out.println("  print the logger  " + logger);
+	 // Logger logger = LoggerManager.merge();
+	 // System.out.println("  print the logger  " + logger);
 	  
-	  wiv.showWorldinVision(logger, multiReasoner.root , MultiThreadReasoner.sol);
+	 // wiv.showWorldinVision(logger, multiReasoner.root , MultiThreadReasoner.sol);
 	 
-/*
-	long time = System.currentTimeMillis();
-	ScenarioIO sio = new ScenarioIO("l41");
+
+	/*long time = System.currentTimeMillis();
+	ScenarioIO sio = new ScenarioIO("l4");
 
 	LinkedList<LinkedList<MBR>> scenarios;
 	try {
-	    scenarios = sio.load("l19c");
+	    scenarios = sio.load("l4");
 	    LinkedList<MBR> s1 = scenarios.get(0);
 	    LinkedList<Rectangle> worldInVision = new LinkedList<Rectangle>();
 	    for (MBR mbr : s1) {
@@ -56,10 +57,10 @@ public class MainEntry {
 	    MultiThreadReasoner multiReasoner = new MultiThreadReasoner(wiv, 20,
 		    4, 5);
 	    multiReasoner.run();
-	    Logger logger = LoggerManager.merge();
-	    System.out.println("  print the logger  " + logger);
+	    //Logger logger = LoggerManager.merge();
+	    //System.out.println("  print the logger  " + logger);
 
-	    wiv.showWorldinVision(logger, multiReasoner.root, MultiThreadReasoner.sol);
+	    //wiv.showWorldinVision(logger, multiReasoner.root, MultiThreadReasoner.sol);
 	} catch (IOException e) {
 
 	    e.printStackTrace();

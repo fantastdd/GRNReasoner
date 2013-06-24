@@ -1,12 +1,14 @@
 package quali.reasoner;
 
+import java.util.Observable;
+
 import quali.MBR;
 import quali.Node;
 import quali.util.Logger;
 import quali.util.LoggerManager;
 import ab.WorldinVision;
 
-public abstract class Reasoner implements Runnable {
+public abstract class Reasoner  extends Observable implements Runnable {
     protected WorldinVision world;
     protected Logger logger;
     public Node root = null;

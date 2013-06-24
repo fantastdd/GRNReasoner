@@ -66,11 +66,12 @@ public class SingleThreadReasoner extends Reasoner {
 	    Timer timer = new Timer();
 	    timer.schedule(tbttask, new Date(System.currentTimeMillis() + time * 1000));	   
 	    MBRR.run();
-	
 	    sol = MBRR.sol;
 	    if (sol != null)
 	    {	
 		MultiThreadReasoner.terminate(sol);
+		this.setChanged();
+		this.notifyObservers();
 		break;
 	    }
 	}

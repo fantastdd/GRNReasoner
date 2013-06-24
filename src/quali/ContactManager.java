@@ -1358,13 +1358,14 @@ public class ContactManager {
 	boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 
 	// print=============
-	/*
-	 * if(conf.unary == 1 && conf.getMbr().uid == 12 && tconf.getMbr().uid
-	 * == 16) System.out.println("--" + tr12 + "  " + tr34 + "  " + tr23 +
-	 * "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
-	 * + ra13_23 + "  " + ra24_2 + "  " + ra24_23 + "  " + ra24_4 + "  " +
-	 * ra24_14);
-	 */
+	
+	 /* if(conf.unary == 2 && conf.getMbr().uid == 8 && tconf.getMbr().uid
+	  == 3) 
+         System.out.println("--" + tr12 + "  " + tr34 + "  " + tr23 +
+	 "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
+	  + ra13_23 + "  " + ra24_2 + "  " + ra24_23 + "  " + ra24_4 + "  " +
+	  ra24_14);*/
+	 
 
 	// print end
 
@@ -1426,12 +1427,19 @@ public class ContactManager {
 		_contact.setTangential_area(3);
 	    else
 		_contact.setTangential_area(4);
-
+	    /*if(conf.unary == 2 && conf.getMbr().uid == 8 && tconf.getMbr().uid
+			  == 3)
+		{
+		   for (int i = 0 ; i < conf.getPermit_regions().length ; i ++)
+		       System.out.print(conf.getPermit_regions()[i] + "  ");
+		  System.out.println(conf.toShortString() + "   " + tconf.toShortString() +  "  " + _contact +
+			_contact.toString(false));
+		}*/
 	    contacts.add(_contact);
 
 	} else if (tr23) {
 	    Contact _contact = new Contact();
-
+           
 	    if (conf.getPermit_regions()[2] == 1) {
 		_contact.setType(1);
 		_contact.setTangential_area(4);
@@ -1440,6 +1448,8 @@ public class ContactManager {
 		_contact.setTangential_area(14);
 		_contact.setType(1);
 	    }
+	  
+	    
 	    contacts.add(_contact);
 
 	} else if (tr34) {

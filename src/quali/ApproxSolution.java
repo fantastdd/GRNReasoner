@@ -79,7 +79,7 @@ public class ApproxSolution {
 		           for (int i = 0; i < 5; i++) {
 		            //since we assign the unary value during the backtracking in the order of 
 		             //as the regular, slim lean to left etc, so we need to give more weights on the latter ones.
-		            double orderWeights = ((i + 1)/2) * unaryweights[i]; 
+		            double orderWeights = ((i + 1.6)/2) * unaryweights[i]; 
 		            int weights = (int)orderWeights   + fastApproxUnarys[i] * coefficient ; 
 		   	    if ( weights > max) {
 		   		max = weights ;

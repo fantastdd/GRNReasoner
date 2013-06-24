@@ -33,6 +33,7 @@ public class LoggerManager {
 				}
 			 }
 		 }
+		  System.out.println("  print the logger  " + mergeLogger);
 		 return mergeLogger;
 	 }
 }

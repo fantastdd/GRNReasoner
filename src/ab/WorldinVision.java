@@ -4,6 +4,8 @@ import gui.ScenarioPanel;
 
 import java.awt.Rectangle;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 import quali.ApproxSolution;
 import quali.MBR;
@@ -57,7 +59,7 @@ public class WorldinVision {
     public void showWorldinVision(Logger logger, Node node, Node sol) {
 
 	ScenarioPanel sp = new ScenarioPanel();
-
+	
 	if (sol != null)
 	    sp.run(mbrs, sol, true);
 	else {
@@ -72,6 +74,7 @@ public class WorldinVision {
 	}
 
     }
+
 
 
 
