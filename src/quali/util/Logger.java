@@ -81,7 +81,7 @@ public class Logger {
 	    }
 	}
 
-	// Randomly sort priority array
+	// Randomly sort the priority array
 	Random random = new Random();
 	for (int i = priority.length - 1; i > 1; i--) {
 	    int randIndex = random.nextInt(i);
@@ -93,15 +93,7 @@ public class Logger {
 
 	System.arraycopy(completed, 0, all, priority.length, completed.length);
 
-	// PRINT ===========================================
-	for (Integer key : all) {
-	    int total = 0;
-	    int[] unarys = mbrs.get(key);
-	    for (int val : unarys)
-		total += val;
-	    System.out.println(" MBR " + key + " total  " + total);
-	}
-	// PRINT END ======================================
+	
 	return all;
     }
     

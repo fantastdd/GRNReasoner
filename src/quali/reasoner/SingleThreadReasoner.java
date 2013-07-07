@@ -41,8 +41,7 @@ public class SingleThreadReasoner extends Reasoner {
     @Override
     public void run() {
 	
-	//System.out.println(" Run a Single Thread Reasoner");
-	//ExecutorService executor = Executors.newSingleThreadExecutor();
+	
         
 	for (int i = 0; i < attempts; i++) {
 	   

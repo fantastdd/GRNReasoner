@@ -32,15 +32,7 @@ public class ScenarioPanelPoly extends JFrame {
 	public void paint(Graphics g) {
        for(Polygon polygon : polygons)
 		{  
-			/*if(count%4 == 0)
-				g.setColor(Color.magenta);
-			else if (count%4 == 1)
-				g.setColor(Color.blue);
-			else if(count%4 == 2)
-				g.setColor(Color.black);
-			else if(count%4 == 3)
-				g.setColor(Color.cyan);*/
-    	   //g.drawLine(100, 200, 200, 200);
+		
 			  g.drawPolygon(polygon);
 		}
 		

@@ -9,7 +9,6 @@ import java.util.LinkedList;
 
 import quali.Configuration;
 
-import common.MyPolygon;
 import common.util.PointXComparator;
 import common.util.PointYComparator;
 
@@ -423,33 +422,33 @@ public class QuantiShapeCalculator {
 	 * System.out.println(QuantiShapeCalculator.isIntersected(mp3, mp2));
 	 */
 
-	MyPolygon m1 = new MyPolygon();
+	Polygon m1 = new Polygon();
 	m1.addPoint(200, 150);
 	m1.addPoint(250, 200);
 	m1.addPoint(300, 150);
 	m1.addPoint(250, 100);
 
-	MyPolygon m2 = new MyPolygon();
+	Polygon m2 = new Polygon();
 	m2.addPoint(200, 200);
 	m2.addPoint(200, 210);
 	m2.addPoint(1200, 210);
 	m2.addPoint(1200, 200);
 
-	MyPolygon m3 = new MyPolygon();
+	Polygon m3 = new Polygon();
 	m3.addPoint(300, 201);
 	m3.addPoint(500, 201);
 
-	MyPolygon m4 = new MyPolygon();
+	Polygon m4 = new Polygon();
 	m4.addPoint(286, 400);
 	m4.addPoint(210, 530);
 	m4.addPoint(434, 660);
 	m4.addPoint(510, 530);
 
-	MyPolygon m5 = new MyPolygon();
+	Polygon m5 = new Polygon();
 	m5.addPoint(300, 480);
 	m5.addPoint(260, 480);
 
-	MyPolygon m6 = new MyPolygon();
+	Polygon m6 = new Polygon();
 	m6.addPoint(286, 400);
 	m6.addPoint(286, 400);
 

@@ -1,0 +1,192 @@
+ Total 13 blocks displayed
+ MBR uid 0  id  0  java.awt.Rectangle[x=480,y=355,width=16,height=145]  lastValid Neighbor id :  12     edge:  true  unary 0 h/w: 9.0625 w/h0.1103448275862069  area 2320
+     MBR uid 12  id  12    0.0   index:  0 neighbor type:  1
+ MBR uid 1  id  1  java.awt.Rectangle[x=514,y=428,width=16,height=72]  lastValid Neighbor id :  6     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 6  id  6    0.0   index:  0 neighbor type:  1
+ MBR uid 2  id  2  java.awt.Rectangle[x=548,y=428,width=16,height=72]  lastValid Neighbor id :  7     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 6  id  6    0.0   index:  0 neighbor type:  1
+     MBR uid 7  id  7    0.0   index:  1 neighbor type:  1
+ MBR uid 3  id  3  java.awt.Rectangle[x=675,y=428,width=16,height=72]  lastValid Neighbor id :  8     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 7  id  7    0.0   index:  0 neighbor type:  1
+     MBR uid 8  id  8    0.0   index:  1 neighbor type:  1
+ MBR uid 4  id  4  java.awt.Rectangle[x=713,y=428,width=16,height=72]  lastValid Neighbor id :  8     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 8  id  8    0.0   index:  0 neighbor type:  1
+ MBR uid 5  id  5  java.awt.Rectangle[x=745,y=355,width=16,height=145]  lastValid Neighbor id :  11     edge:  true  unary 0 h/w: 9.0625 w/h0.1103448275862069  area 2320
+     MBR uid 8  id  8    10.0   index:  0 neighbor type:  2
+     MBR uid 11  id  11    0.0   index:  1 neighbor type:  1
+ MBR uid 6  id  6  java.awt.Rectangle[x=510,y=377,width=72,height=51]  lastValid Neighbor id :  9     edge:  false  unary -1 h/w: 0.7083333333333334 w/h1.411764705882353  area 3672
+     MBR uid 1  id  1    0.0   index:  0 neighbor type:  3
+     MBR uid 2  id  2    0.0   index:  1 neighbor type:  3
+     MBR uid 7  id  7    0.0   index:  2 neighbor type:  0
+     MBR uid 9  id  9    6.0   index:  3 neighbor type:  4
+ MBR uid 7  id  7  java.awt.Rectangle[x=548,y=412,width=148,height=16]  lastValid Neighbor id :  9     edge:  false  unary -1 h/w: 0.10810810810810811 w/h9.25  area 2368
+     MBR uid 2  id  2    0.0   index:  0 neighbor type:  3
+     MBR uid 3  id  3    0.0   index:  1 neighbor type:  3
+     MBR uid 6  id  6    0.0   index:  2 neighbor type:  0
+     MBR uid 8  id  8    0.0   index:  3 neighbor type:  0
+     MBR uid 9  id  9    0.0   index:  4 neighbor type:  1
+ MBR uid 8  id  8  java.awt.Rectangle[x=663,y=380,width=72,height=48]  lastValid Neighbor id :  9     edge:  false  unary -1 h/w: 0.6666666666666666 w/h1.5  area 3456
+     MBR uid 3  id  3    0.0   index:  0 neighbor type:  3
+     MBR uid 4  id  4    0.0   index:  1 neighbor type:  3
+     MBR uid 5  id  5    10.0   index:  2 neighbor type:  4
+     MBR uid 7  id  7    0.0   index:  3 neighbor type:  0
+     MBR uid 9  id  9    3.0   index:  4 neighbor type:  2
+ MBR uid 9  id  9  java.awt.Rectangle[x=588,y=375,width=72,height=37]  lastValid Neighbor id :  10     edge:  false  unary -1 h/w: 0.5138888888888888 w/h1.945945945945946  area 2664
+     MBR uid 6  id  6    6.0   index:  0 neighbor type:  2
+     MBR uid 7  id  7    0.0   index:  1 neighbor type:  3
+     MBR uid 8  id  8    3.0   index:  2 neighbor type:  4
+     MBR uid 10  id  10    0.0   index:  3 neighbor type:  1
+ MBR uid 10  id  10  java.awt.Rectangle[x=615,y=301,width=16,height=74]  lastValid Neighbor id :  12     edge:  false  unary -1 h/w: 4.625 w/h0.21621621621621623  area 1184
+     MBR uid 9  id  9    0.0   index:  0 neighbor type:  3
+     MBR uid 11  id  11    0.0   index:  1 neighbor type:  0
+     MBR uid 12  id  12    0.0   index:  2 neighbor type:  0
+ MBR uid 11  id  11  java.awt.Rectangle[x=620,y=280,width=140,height=75]  lastValid Neighbor id :  12     edge:  false  unary -1 h/w: 0.5357142857142857 w/h1.8666666666666667  area 10500
+     MBR uid 5  id  5    0.0   index:  0 neighbor type:  3
+     MBR uid 10  id  10    0.0   index:  1 neighbor type:  0
+     MBR uid 12  id  12    0.0   index:  2 neighbor type:  2
+ MBR uid 12  id  12  java.awt.Rectangle[x=480,y=283,width=140,height=72]  lastValid Neighbor id :  11     edge:  false  unary -1 h/w: 0.5142857142857142 w/h1.9444444444444444  area 10080
+     MBR uid 0  id  0    0.0   index:  0 neighbor type:  3
+     MBR uid 10  id  10    0.0   index:  1 neighbor type:  0
+     MBR uid 11  id  11    0.0   index:  2 neighbor type:  4
+ MBR uid 0  id  0  java.awt.Rectangle[x=480,y=355,width=16,height=145]  lastValid Neighbor id :  12     edge:  true  unary 0 h/w: 9.0625 w/h0.1103448275862069  area 2320
+     MBR uid 12  id  12    0.0   index:  0 neighbor type:  1
+ MBR uid 1  id  1  java.awt.Rectangle[x=514,y=428,width=16,height=72]  lastValid Neighbor id :  6     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 6  id  6    0.0   index:  0 neighbor type:  1
+ MBR uid 2  id  2  java.awt.Rectangle[x=548,y=428,width=16,height=72]  lastValid Neighbor id :  7     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 6  id  6    0.0   index:  0 neighbor type:  1
+     MBR uid 7  id  7    0.0   index:  1 neighbor type:  1
+ MBR uid 3  id  3  java.awt.Rectangle[x=675,y=428,width=16,height=72]  lastValid Neighbor id :  8     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 7  id  7    0.0   index:  0 neighbor type:  1
+     MBR uid 8  id  8    0.0   index:  1 neighbor type:  1
+ MBR uid 4  id  4  java.awt.Rectangle[x=713,y=428,width=16,height=72]  lastValid Neighbor id :  8     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 8  id  8    0.0   index:  0 neighbor type:  1
+ MBR uid 5  id  5  java.awt.Rectangle[x=745,y=355,width=16,height=145]  lastValid Neighbor id :  11     edge:  true  unary 0 h/w: 9.0625 w/h0.1103448275862069  area 2320
+     MBR uid 8  id  8    10.0   index:  0 neighbor type:  2
+     MBR uid 11  id  11    0.0   index:  1 neighbor type:  1
+ MBR uid 6  id  6  java.awt.Rectangle[x=510,y=377,width=72,height=51]  lastValid Neighbor id :  9     edge:  false  unary -1 h/w: 0.7083333333333334 w/h1.411764705882353  area 3672
+     MBR uid 1  id  1    0.0   index:  0 neighbor type:  3
+     MBR uid 2  id  2    0.0   index:  1 neighbor type:  3
+     MBR uid 7  id  7    0.0   index:  2 neighbor type:  0
+     MBR uid 9  id  9    6.0   index:  3 neighbor type:  4
+ MBR uid 7  id  7  java.awt.Rectangle[x=548,y=412,width=148,height=16]  lastValid Neighbor id :  9     edge:  false  unary -1 h/w: 0.10810810810810811 w/h9.25  area 2368
+     MBR uid 2  id  2    0.0   index:  0 neighbor type:  3
+     MBR uid 3  id  3    0.0   index:  1 neighbor type:  3
+     MBR uid 6  id  6    0.0   index:  2 neighbor type:  0
+     MBR uid 8  id  8    0.0   index:  3 neighbor type:  0
+     MBR uid 9  id  9    0.0   index:  4 neighbor type:  1
+ MBR uid 8  id  8  java.awt.Rectangle[x=663,y=380,width=72,height=48]  lastValid Neighbor id :  9     edge:  false  unary -1 h/w: 0.6666666666666666 w/h1.5  area 3456
+     MBR uid 3  id  3    0.0   index:  0 neighbor type:  3
+     MBR uid 4  id  4    0.0   index:  1 neighbor type:  3
+     MBR uid 5  id  5    10.0   index:  2 neighbor type:  4
+     MBR uid 7  id  7    0.0   index:  3 neighbor type:  0
+     MBR uid 9  id  9    3.0   index:  4 neighbor type:  2
+ MBR uid 9  id  9  java.awt.Rectangle[x=588,y=375,width=72,height=37]  lastValid Neighbor id :  10     edge:  false  unary -1 h/w: 0.5138888888888888 w/h1.945945945945946  area 2664
+     MBR uid 6  id  6    6.0   index:  0 neighbor type:  2
+     MBR uid 7  id  7    0.0   index:  1 neighbor type:  3
+     MBR uid 8  id  8    3.0   index:  2 neighbor type:  4
+     MBR uid 10  id  10    0.0   index:  3 neighbor type:  1
+ MBR uid 10  id  10  java.awt.Rectangle[x=615,y=301,width=16,height=74]  lastValid Neighbor id :  12     edge:  false  unary -1 h/w: 4.625 w/h0.21621621621621623  area 1184
+     MBR uid 9  id  9    0.0   index:  0 neighbor type:  3
+     MBR uid 11  id  11    0.0   index:  1 neighbor type:  0
+     MBR uid 12  id  12    0.0   index:  2 neighbor type:  0
+ MBR uid 11  id  11  java.awt.Rectangle[x=620,y=280,width=140,height=75]  lastValid Neighbor id :  12     edge:  false  unary -1 h/w: 0.5357142857142857 w/h1.8666666666666667  area 10500
+     MBR uid 5  id  5    0.0   index:  0 neighbor type:  3
+     MBR uid 10  id  10    0.0   index:  1 neighbor type:  0
+     MBR uid 12  id  12    0.0   index:  2 neighbor type:  2
+ MBR uid 12  id  12  java.awt.Rectangle[x=480,y=283,width=140,height=72]  lastValid Neighbor id :  11     edge:  false  unary -1 h/w: 0.5142857142857142 w/h1.9444444444444444  area 10080
+     MBR uid 0  id  0    0.0   index:  0 neighbor type:  3
+     MBR uid 10  id  10    0.0   index:  1 neighbor type:  0
+     MBR uid 11  id  11    0.0   index:  2 neighbor type:  4
+ number of un-checked blocks:  13
+ MBR uid 8  id  0  java.awt.Rectangle[x=663,y=380,width=72,height=48]  lastValid Neighbor id :  11     edge:  false  unary -1 h/w: 0.6666666666666666 w/h1.5  area 3456
+     MBR uid 9  id  4    3.0   index:  0 neighbor type:  2
+     MBR uid 5  id  6    10.0   index:  1 neighbor type:  4
+     MBR uid 3  id  7    0.0   index:  2 neighbor type:  3
+     MBR uid 7  id  9    0.0   index:  3 neighbor type:  0
+     MBR uid 4  id  11    0.0   index:  4 neighbor type:  3
+ MBR uid 1  id  1  java.awt.Rectangle[x=514,y=428,width=16,height=72]  lastValid Neighbor id :  12     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 6  id  12    0.0   index:  0 neighbor type:  1
+ MBR uid 12  id  2  java.awt.Rectangle[x=480,y=283,width=140,height=72]  lastValid Neighbor id :  10     edge:  false  unary -1 h/w: 0.5142857142857142 w/h1.9444444444444444  area 10080
+     MBR uid 10  id  3    0.0   index:  0 neighbor type:  0
+     MBR uid 11  id  5    0.0   index:  1 neighbor type:  4
+     MBR uid 0  id  10    0.0   index:  2 neighbor type:  3
+ MBR uid 10  id  3  java.awt.Rectangle[x=615,y=301,width=16,height=74]  lastValid Neighbor id :  5     edge:  false  unary -1 h/w: 4.625 w/h0.21621621621621623  area 1184
+     MBR uid 12  id  2    0.0   index:  0 neighbor type:  0
+     MBR uid 9  id  4    0.0   index:  1 neighbor type:  3
+     MBR uid 11  id  5    0.0   index:  2 neighbor type:  0
+ MBR uid 9  id  4  java.awt.Rectangle[x=588,y=375,width=72,height=37]  lastValid Neighbor id :  12     edge:  false  unary -1 h/w: 0.5138888888888888 w/h1.945945945945946  area 2664
+     MBR uid 8  id  0    3.0   index:  0 neighbor type:  4
+     MBR uid 10  id  3    0.0   index:  1 neighbor type:  1
+     MBR uid 7  id  9    0.0   index:  2 neighbor type:  3
+     MBR uid 6  id  12    6.0   index:  3 neighbor type:  2
+ MBR uid 11  id  5  java.awt.Rectangle[x=620,y=280,width=140,height=75]  lastValid Neighbor id :  6     edge:  false  unary -1 h/w: 0.5357142857142857 w/h1.8666666666666667  area 10500
+     MBR uid 12  id  2    0.0   index:  0 neighbor type:  2
+     MBR uid 10  id  3    0.0   index:  1 neighbor type:  0
+     MBR uid 5  id  6    0.0   index:  2 neighbor type:  3
+ MBR uid 5  id  6  java.awt.Rectangle[x=745,y=355,width=16,height=145]  lastValid Neighbor id :  5     edge:  true  unary 0 h/w: 9.0625 w/h0.1103448275862069  area 2320
+     MBR uid 8  id  0    10.0   index:  0 neighbor type:  2
+     MBR uid 11  id  5    0.0   index:  1 neighbor type:  1
+ MBR uid 3  id  7  java.awt.Rectangle[x=675,y=428,width=16,height=72]  lastValid Neighbor id :  9     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 8  id  0    0.0   index:  0 neighbor type:  1
+     MBR uid 7  id  9    0.0   index:  1 neighbor type:  1
+ MBR uid 2  id  8  java.awt.Rectangle[x=548,y=428,width=16,height=72]  lastValid Neighbor id :  12     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 7  id  9    0.0   index:  0 neighbor type:  1
+     MBR uid 6  id  12    0.0   index:  1 neighbor type:  1
+ MBR uid 7  id  9  java.awt.Rectangle[x=548,y=412,width=148,height=16]  lastValid Neighbor id :  12     edge:  false  unary -1 h/w: 0.10810810810810811 w/h9.25  area 2368
+     MBR uid 8  id  0    0.0   index:  0 neighbor type:  0
+     MBR uid 9  id  4    0.0   index:  1 neighbor type:  1
+     MBR uid 3  id  7    0.0   index:  2 neighbor type:  3
+     MBR uid 2  id  8    0.0   index:  3 neighbor type:  3
+     MBR uid 6  id  12    0.0   index:  4 neighbor type:  0
+ MBR uid 0  id  10  java.awt.Rectangle[x=480,y=355,width=16,height=145]  lastValid Neighbor id :  2     edge:  true  unary 0 h/w: 9.0625 w/h0.1103448275862069  area 2320
+     MBR uid 12  id  2    0.0   index:  0 neighbor type:  1
+ MBR uid 4  id  11  java.awt.Rectangle[x=713,y=428,width=16,height=72]  lastValid Neighbor id :  0     edge:  true  unary 0 h/w: 4.5 w/h0.2222222222222222  area 1152
+     MBR uid 8  id  0    0.0   index:  0 neighbor type:  1
+ MBR uid 6  id  12  java.awt.Rectangle[x=510,y=377,width=72,height=51]  lastValid Neighbor id :  9     edge:  false  unary -1 h/w: 0.7083333333333334 w/h1.411764705882353  area 3672
+     MBR uid 1  id  1    0.0   index:  0 neighbor type:  3
+     MBR uid 9  id  4    6.0   index:  1 neighbor type:  4
+     MBR uid 2  id  8    0.0   index:  2 neighbor type:  3
+     MBR uid 7  id  9    0.0   index:  3 neighbor type:  0
+solution is found:   
+================= The Configurations  ============
+ MBR uid 8  id  0 unary:  SL  contacted by [ MBR i4 at  Region: S4 ,touching ]  contacted by [ MBR i6 at  Region: S6 ,touching ]  contacted by [ MBR i7 at  Region:  non-touching ]  contacted by [ MBR i9 at  Region: S4 ,touching ]  contacted by [ MBR i11 at  Region: S6 ,touching ] 
+ MBR uid 1  id  1 unary:  Regular  contacted by [ MBR i12 at  Region: S2_l ,touching ] 
+ MBR uid 12  id  2 unary:  SR  contacted by [ MBR i3 at  Region: S6 ,touching ]  contacted by [ MBR i5 at  Region:  non-touching ]  contacted by [ MBR i10 at  Region: S4 ,touching ] 
+ MBR uid 10  id  3 unary:  Regular  contacted by [ MBR i2 at  Region: S3 ,touching ]  contacted by [ MBR i4 at  Region: S6 ,touching ]  contacted by [ MBR i5 at  Region: S1 ,touching ] 
+ MBR uid 9  id  4 unary:  Regular  contacted by [ MBR i0 at  Region: S8 ,touching ]  contacted by [ MBR i3 at  Region: S2 ,touching ]  contacted by [ MBR i9 at  Region: S6 ,touching ]  contacted by [ MBR i12 at  Region: S4 ,touching ] 
+ MBR uid 11  id  5 unary:  SL  contacted by [ MBR i2 at  Region:  non-touching ]  contacted by [ MBR i3 at  Region: S4 ,touching ]  contacted by [ MBR i6 at  Region: S6 ,touching ] 
+ MBR uid 5  id  6 unary:  Regular  contacted by [ MBR i0 at  Region: S4 ,touching ]  contacted by [ MBR i5 at  Region: S2_r ,touching ] 
+ MBR uid 3  id  7 unary:  Regular  contacted by [ MBR i0 at  Region:  non-touching ]  contacted by [ MBR i9 at  Region: S2 ,touching ] 
+ MBR uid 2  id  8 unary:  Regular  contacted by [ MBR i9 at  Region: S2 ,touching ]  contacted by [ MBR i12 at  Region:  non-touching ] 
+ MBR uid 7  id  9 unary:  Regular  contacted by [ MBR i0 at  Region: S1 ,touching ]  contacted by [ MBR i4 at  Region: S2 ,touching ]  contacted by [ MBR i7 at  Region: S6_r ,touching ]  contacted by [ MBR i8 at  Region: S6_l ,touching ]  contacted by [ MBR i12 at  Region: S3 ,touching ] 
+ MBR uid 0  id  10 unary:  Regular  contacted by [ MBR i2 at  Region: S2_r ,touching ] 
+ MBR uid 4  id  11 unary:  Regular  contacted by [ MBR i0 at  Region: S2_r ,touching ] 
+ MBR uid 6  id  12 unary:  SR  contacted by [ MBR i1 at  Region: S4 ,touching ]  contacted by [ MBR i4 at  Region: S6 ,touching ]  contacted by [ MBR i8 at  Region:  non-touching ]  contacted by [ MBR i9 at  Region: S6 ,touching ] 
+================= End  =============
+
+ the number of iterations : 526  filtered nodes:   74
+
+============= Stability Short Report ===============
+
+ MBR uid 8  id  0 ( SL )   MBR uid 1  id  1 ( regular )   MBR uid 12  id  2 ( SR)  
+ MBR uid 10  id  3 ( regular )   MBR uid 9  id  4 ( regular )   MBR uid 11  id  5 ( SL )  
+ MBR uid 5  id  6 ( regular )   MBR uid 3  id  7 ( regular )   MBR uid 2  id  8 ( regular )  
+ MBR uid 7  id  9 ( regular )   MBR uid 0  id  10 ( regular )   MBR uid 4  id  11 ( regular )  
+ MBR uid 6  id  12 ( SR)  
+ ================= End of Short Report ============== 
+
+  print the logger   MBR uid 0  unary  100001  0  0  0  0
+ MBR uid 1  unary  100001  0  0  0  0
+ MBR uid 2  unary  100009  0  0  0  0
+ MBR uid 3  unary  100031  0  0  0  0
+ MBR uid 4  unary  100001  0  0  0  0
+ MBR uid 5  unary  100097  0  0  0  0
+ MBR uid 6  unary  0  1  0  0  0
+ MBR uid 7  unary  2  0  0  0  0
+ MBR uid 8  unary  200  87  12  0  1
+ MBR uid 9  unary  2  0  0  0  0
+ MBR uid 10  unary  6  14  36  44  10
+ MBR uid 11  unary  0  0  294  0  70
+ MBR uid 12  unary  3  184  0  136  0
+
+13

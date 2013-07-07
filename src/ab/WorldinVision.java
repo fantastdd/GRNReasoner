@@ -14,10 +14,8 @@ import quali.util.Logger;
 import quali.util.LoggerManager;
 
 /**
- * 
- * @author Gary , Jochen Get the blocks from the vision software. Display the
+ * Get the blocks from the vision software. Display the
  *         blocks with/without configurations.
- * 
  */
 public class WorldinVision {
 
@@ -49,7 +47,7 @@ public class WorldinVision {
 	mbrs = new MBR[mbr_counter];
 	System.arraycopy(buf_mbrs, 0, mbrs, 0, mbr_counter);
 
-	// MBRRegister.batchRegister(mbrs);
+
 	// register the mbr for later analysis regarding the number of stable
 	// states it hits during the backtracking
 	LoggerManager.mbrsSize = mbrs.length;

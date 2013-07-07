@@ -1,12 +1,11 @@
 package quali;
 
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import quanti.QuantiShapeCalculator;
-
-import common.MyPolygon;
 
 public class ContactManager {
 
@@ -199,25 +198,12 @@ public class ContactManager {
 
 	final Contact _contact = tconf.getContact_map().get(
 		conf.getMbr().getId());
-	// print
-	// if(tconf.getMbr().getId() == 1 && conf.unary == 1 && tconf.unary == 0
-	// && conf.getMbr().getId() == 6)
-	// System.out.println(" get pair contact conf    " +
-	// conf.toShortString() + "    tconf    " + tconf.toShortString() +
-	// "   contact   " + _contact );
-	// System.out.println(conf.getMbr() + "   " + tconf.getMbr());
-	// System.out.println(tconf.toShortString() + "  " +
-	// conf.toShortString() + "   " + _contact);
+	
 	Contact contact = new Contact();
 
 	if (conf.unary != 0 && tconf.unary != 0) {
-	    /*
-	     * if(conf.unary == 1 && tconf.unary == 1 && conf.getMbr().getId()
-	     * == 15 && tconf.getMbr().getId() == 16)
-	     * System.out.println(conf.toShortString() + "  " +
-	     * tconf.toShortString() + _contact);
-	     */
-	    // April 6 : turn all the angular touch to edge touch
+	
+	  
 	    if (_contact.getTangential_area() == 12) {
 
 		double x = conf.getMbr().getCenterX();
@@ -262,22 +248,19 @@ public class ContactManager {
 
 	/* ombr regular supported by regular mbr */
 	if (conf.unary == 0 && tconf.unary == 0) {
-	    // System.out.println(conf + "    " + tconf + "   " + _contact);
+	  
 	    if (_contact.getTangential_area() == 34
 		    || _contact.getTangential_area() == 3
 		    || _contact.getTangential_area() == 4) {
 
-		MyPolygon regionline1 = conf.getRegionLine(1);
-		MyPolygon regionline2 = conf.getRegionLine(2);
+		Polygon regionline1 = conf.getRegionLine(1);
+		Polygon regionline2 = conf.getRegionLine(2);
 		boolean region1Contact = quantiShapeCalculator.isIntersected(
 			regionline1, tconf.getRegionLine(34), true);
 		boolean region2Contact = quantiShapeCalculator.isIntersected(
 			regionline2, tconf.getRegionLine(34), true);
 
-		// System.out.println("contact spcifics "+ tconf.toShortString()
-		// + "   " + tconf.getMbr().getBounds() + "   " +
-		// conf.toShortString() + "  " + conf.getMbr().getBounds() +
-		// "    " + region1Contact + "    " + region2Contact);
+		
 
 		if (region1Contact && region2Contact) {
 		    contact.setTangential_area(12);
@@ -292,8 +275,8 @@ public class ContactManager {
 	    } else if (_contact.getTangential_area() == 12
 		    || _contact.getTangential_area() == 1
 		    || _contact.getTangential_area() == 2) {
-		MyPolygon regionline3 = conf.getRegionLine(3);
-		MyPolygon regionline4 = conf.getRegionLine(4);
+		Polygon regionline3 = conf.getRegionLine(3);
+		Polygon regionline4 = conf.getRegionLine(4);
 		boolean region3Contact = quantiShapeCalculator.isIntersected(
 			regionline3, tconf.getRegionLine(12), true);
 		boolean region4Contact = quantiShapeCalculator.isIntersected(
@@ -317,18 +300,14 @@ public class ContactManager {
 		contact.setTangential_area(23);
 		contact.setType(1);
 	    } else if (_contact.getTangential_area() == 0) {
-		// Debug.echo(null, " Tangential Area = 0 detected");
+		
 		System.out.println(" Tangential Area = 0 detected");
 	    }
 
 	} else
-	// Fat Fixed April 4
+	
 	if (conf.unary != 0 && tconf.unary == 0) {
-	    /*
-	     * if(conf.unary == 1 && conf.getMbr().uid == 5 )
-	     * System.out.println(" Get Pair Contact: " + conf + "  tconf  " +
-	     * tconf);
-	     */
+	 
 	    // TODO may be area = 12
 	    if (_contact.getTangential_area() == 1
 		    || _contact.getTangential_area() == 2) {
@@ -347,42 +326,23 @@ public class ContactManager {
 
 	    } else if (_contact.getTangential_area() == 23) {
 
-		/*
-		 * commented on April 4 if (conf.unary == 1 ) {
-		 * contact.setTangential_area(4); contact.setType(1); } else if
-		 * (conf.getPermit_regions()[3] == 1) {
-		 * 
-		 * contact.setTangential_area(1); contact.setType(1); }
-		 */
+		
 		contact.setTangential_area(4);
 		contact.setType(1);
 	    } else if (_contact.getTangential_area() == 14) {
-		/*
-		 * commented on April 4 if (conf.getPermit_regions()[2] == 1) {
-		 * contact.setTangential_area(2); contact.setType(1); } else if
-		 * (conf.getPermit_regions()[3] == 1) {
-		 * contact.setTangential_area(3); contact.setType(1); }
-		 */
+	
 		contact.setTangential_area(3);
 		contact.setType(1);
 	    } else if (_contact.getTangential_area() == 3
 		    || _contact.getTangential_area() == 4) {
-		/* no need to distinguish between region 1 or 2 of the tconf */
-		/*
-		 * commented on Apirl 4 if (conf.getPermit_regions()[2] == 1) {
-		 * contact.setTangential_area(1); contact.setType(1); } else if
-		 * (conf.getPermit_regions()[3] == 1) {
-		 * contact.setTangential_area(1); contact.setType(1); }
-		 */
+		
 		contact.setTangential_area(1);
 		contact.setType(1);
 
 	    } else if (_contact.getTangential_area() == 114) {
 
 		if (_contact.getType() == 1) {
-		    // System.out.println(tconf.toShortString() + "  " +
-		    // conf.toShortString() + "  " + _contact + "   " +
-		    // _contact.points[0]);
+		  
 		    // TODO make restricted points check for fat gsr
 		    if (conf.addRestrictedPoints(_contact.points[0], 3, true)) {
 			contact.setTangential_area(3);
@@ -403,13 +363,13 @@ public class ContactManager {
 			contact.setTangential_area(4);
 			contact.setType(1);
 		    }
-		    // Debug.echo(null, conf.getMbr(),_contact,contact);
+		  
 		} else {
 		    if (conf.addRestrictedPoints(_contact.points[0], 4, false)) {
 			contact.setTangential_area(4);
 			contact.setType(0);
 		    }
-		    // Debug.echo(null, conf.getMbr(),_contact,contact);
+		  
 		}
 
 	    } else if (_contact.getTangential_area() == 233) {
@@ -419,13 +379,13 @@ public class ContactManager {
 			contact.setTangential_area(1);
 			contact.setType(1);
 		    }
-		    // Debug.echo(null, conf.getMbr(),_contact,contact);
+		  
 		} else {
 		    if (conf.addRestrictedPoints(_contact.points[0], 1, false)) {
 			contact.setTangential_area(1);
 			contact.setType(0);
 		    }
-		    // Debug.echo(null, conf.getMbr(),_contact,contact);
+		 
 		}
 
 	    } else if (_contact.getTangential_area() == 414) {
@@ -436,13 +396,13 @@ public class ContactManager {
 			contact.setTangential_area(2);
 			contact.setType(1);
 		    }
-		    // Debug.echo(null, conf.getMbr(),_contact,contact);
+		  
 		} else {
 		    if (conf.addRestrictedPoints(_contact.points[0], 2, false)) {
 			contact.setTangential_area(2);
 			contact.setType(0);
 		    }
-		    // Debug.echo(null, conf.getMbr(),_contact,contact);
+		 
 		}
 
 	    } else if (_contact.getTangential_area() == 0) {
@@ -452,7 +412,7 @@ public class ContactManager {
 
 	}
 
-	// Fat GSRs fixed , April 4
+	
 	if (conf.unary == 0 && tconf.unary != 0) {
 	    boolean tr2 = testRegionR_A(conf, tconf, 2);
 	    boolean tr1 = testRegionR_A(conf, tconf, 1);
@@ -472,12 +432,6 @@ public class ContactManager {
 	    boolean vertex_4 = (testVertexR_A24(conf, tconf, 4) == 2)
 		    && (testVertexR_A24(conf, tconf, 14) == 2);
 
-	    /*
-	     * if(conf.getMbr().getId() == 0 && tconf.getMbr().getId() == 12) {
-	     * System.out.println("  conf " + conf.toShortString() + "  tconf "
-	     * + tconf.toShortString() + "  " + vertex_1 + "  " + vertex_2 +
-	     * "  " + vertex_3 + "  " + vertex_4 + "  " + _contact); }
-	     */
 	    if (_contact.getTangential_area() == 4) {
 
 		if (vertex_2) {
@@ -571,16 +525,11 @@ public class ContactManager {
 			    contact.setTangential_area(114);
 			    contact.setType(1);
 			    contact.points[0] = new Point(conf.vertices[0]);
-			    // print
-			    // System.out.println( "  enter to this block  " +
-			    // conf.toShortString() + "   " +
-			    // tconf.toShortString() + "   " + contact);
+			 
 			    conf.v1 = true;
 			}
 		    } else {
-			// System.out.println( "  enter to this block  " +
-			// conf.toShortString() + "   " + tconf.toShortString()
-			// + "   " + contact);
+		
 			contact.setTangential_area(114);
 			contact.setType(0);
 
@@ -664,9 +613,9 @@ public class ContactManager {
      */
     private boolean testRegularRegion34(final Configuration conf,
 	    final Configuration tconf, int region) {
-	MyPolygon rline = conf.getRegionLine(region);
+	Polygon rline = conf.getRegionLine(region);
 
-	MyPolygon trline = tconf.getRegionLine(12);
+	Polygon trline = tconf.getRegionLine(12);
 	// Debug.echo(null,mbr,rline,
 	// tmbr,trline,QuantiShapeCalculator.isIntersected(rline, trline).size()
 	// > 1);
@@ -679,9 +628,9 @@ public class ContactManager {
     private boolean testRegularRegion12(final Configuration conf,
 	    final Configuration tconf, int region) {
 
-	MyPolygon rline = conf.getRegionLine(region);
+	Polygon rline = conf.getRegionLine(region);
 
-	MyPolygon trline = tconf.getRegionLine(34);
+	Polygon trline = tconf.getRegionLine(34);
 	// Debug.echo(null,
 	// " test ",rline,trline,QuantiShapeCalculator.isIntersected(rline,
 	// trline));
@@ -692,9 +641,9 @@ public class ContactManager {
     private boolean testRegularRegion23(final Configuration conf,
 	    final Configuration tconf) {
 	/* region 23 refers to the left edge of the rectangle */
-	MyPolygon rline = conf.getRegionLine(23);
+	Polygon rline = conf.getRegionLine(23);
 
-	MyPolygon trline = tconf.getRegionLine(14);
+	Polygon trline = tconf.getRegionLine(14);
 
 	return quantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;
 
@@ -703,9 +652,9 @@ public class ContactManager {
     private boolean testRegularRegion14(final Configuration conf,
 	    final Configuration tconf) {
 	/* region 23 refers to the right edge of the rectangle */
-	MyPolygon rline = conf.getRegionLine(14);
+	Polygon rline = conf.getRegionLine(14);
 
-	MyPolygon trline = tconf.getRegionLine(23);
+	Polygon trline = tconf.getRegionLine(23);
 
 	return quantiShapeCalculator.isIntersectedWCA(rline, trline).size() > 1;
 
@@ -713,12 +662,12 @@ public class ContactManager {
 
     // This method tests whether the conf's (regular) edge can touch a specific
     // sector of the tconf
-    // Fixed April 4, correct April 5, checked for invalid case
+
     private boolean testRegionR_A(final Configuration conf,
 	    final Configuration tconf, int region) {
-	MyPolygon rline = conf.getRegionLine(region);
+	Polygon rline = conf.getRegionLine(region);
 
-	MyPolygon trline = new MyPolygon();
+	Polygon trline = new Polygon();
 
 	if (region == 1 || region == 2 || region == 12) {
 
@@ -768,31 +717,31 @@ public class ContactManager {
      * R: regular A: angular 13: test the space area 1 or 3 of the angular
      * rectangle, whether it touches the region of the conf
      * 
-     * fixed April 4, correct April 5
+     * 
      */
     private int testVertexR_A13(final Configuration conf,
 	    final Configuration tconf, int region) {
 
 	int result = -1;
 
-	MyPolygon min = new MyPolygon();
-	MyPolygon max = new MyPolygon();
-	MyPolygon tmin = new MyPolygon();
-	MyPolygon tmax = new MyPolygon();
+	Polygon min = new Polygon();
+	Polygon max = new Polygon();
+	Polygon tmin = new Polygon();
+	Polygon tmax = new Polygon();
 
 	min = conf.getRegionLine(region);
 	max = conf.getRegionLine(region);
 
 	if (tconf.unary == 1) {
-	    tmin = tconf.getCore_right();
+	    tmin = tconf.core_right;
 	    if (region == 1 || region == 14)
 		tmax = tconf.getRegion(3); // get the bottom left triangular
 					   // space.
 	    else
 		tmax = tconf.getRegion(1);
 	} else if (tconf.unary == 2) {
-	    tmax = tconf.getCore_left();
-	    tmin = tconf.getDiagonal_left();
+	    tmax = tconf.core_left;
+	    tmin = tconf.diagonal_left;
 	} else if (tconf.unary == 3) {
 	    if (region == 1 || region == 14) {
 		tmax = tconf.approx_u3t3;
@@ -811,7 +760,7 @@ public class ContactManager {
 	    }
 	}
 
-	MyPolygon _region = max;
+	Polygon _region = max;
 	// print
 	/*
 	 * if(tconf.unary == 2 && conf.unary == 0 && tconf.getMbr().getId() == 8
@@ -857,31 +806,31 @@ public class ContactManager {
      * R: regular A: angular 24: test the space area 2 or 4 of the angular
      * rectangle, whether it touches the region of the conf
      * 
-     * fixed April 4 , correct April 5
+     *
      */
     private int testVertexR_A24(final Configuration conf,
 	    final Configuration tconf, int region) {
 
 	int result = -1;
 
-	MyPolygon min = new MyPolygon();
-	MyPolygon max = new MyPolygon();
-	MyPolygon tmin = new MyPolygon();
-	MyPolygon tmax = new MyPolygon();
+	Polygon min = new Polygon();
+	Polygon max = new Polygon();
+	Polygon tmin = new Polygon();
+	Polygon tmax = new Polygon();
 
 	min = conf.getRegionLine(region);
 	max = conf.getRegionLine(region);
 
 	if (tconf.unary == 2) {
-	    tmin = tconf.getCore_left();
+	    tmin = tconf.core_left;
 	    // tmax = tconf.getDiagonal_right();
 	    if (region == 2 || region == 23)
 		tmax = tconf.getRegion(4);
 	    else
 		tmax = tconf.getRegion(2);
 	} else if (tconf.unary == 1) {
-	    tmax = tconf.getCore_right();
-	    tmin = tconf.getDiagonal_right();
+	    tmax = tconf.core_right;
+	    tmin = tconf.diagonal_right;
 	} else if (tconf.unary == 3) {
 	    if (region == 2 || region == 23) {
 		tmax = tconf.approx_u3t4;
@@ -899,7 +848,7 @@ public class ContactManager {
 		tmin = tconf.approx_u4t2r;
 	    }
 	}
-	MyPolygon _region = new MyPolygon();
+	Polygon _region = new Polygon();
 
 	_region = max;
 
@@ -927,17 +876,15 @@ public class ContactManager {
 
     /*
      * region numbered as 1,2,3,4 from right-top, anti clockwise
-     * 
-     * correct April 6
      */
     private int testFreeRegion24(final Configuration conf,
 	    final Configuration tconf, int region) {
 	int result = 0;
 
-	MyPolygon min = new MyPolygon();
-	MyPolygon max = new MyPolygon();
-	MyPolygon tmin = new MyPolygon();
-	MyPolygon tmax = new MyPolygon();
+	Polygon min = new Polygon();
+	Polygon max = new Polygon();
+	Polygon tmin = new Polygon();
+	Polygon tmax = new Polygon();
 
 	if (conf.unary == 1) {
 	    min = conf.diagonal_right;
@@ -969,7 +916,7 @@ public class ContactManager {
 	    tmin = (region == 4) ? tconf.approx_u4t2r : tconf.approx_u4t4r;
 	}
 
-	MyPolygon _region = new MyPolygon();
+	Polygon _region = new Polygon();
 
 	if (conf.unary == 2)
 	    _region = conf.getRegion(region);
@@ -1001,17 +948,15 @@ public class ContactManager {
 
     }
 
-    /*
-     * Massive fixes for FatGSR April 4, correct April 5
-     */
+
     private int testFreeRegion13(final Configuration conf,
 	    final Configuration tconf, int region) {
 
 	int result = 0;
-	MyPolygon min = new MyPolygon();
-	MyPolygon max = new MyPolygon();
-	MyPolygon tmin = new MyPolygon();
-	MyPolygon tmax = new MyPolygon();
+	Polygon min = new Polygon();
+	Polygon max = new Polygon();
+	Polygon tmin = new Polygon();
+	Polygon tmax = new Polygon();
 
 	if (conf.unary == 1) {
 	    /*
@@ -1051,7 +996,7 @@ public class ContactManager {
 	}
 
 	/* pay attention to touch relationship */
-	MyPolygon _region = new MyPolygon();
+	Polygon _region = new Polygon();
 
 	// TODO edit to here...
 
@@ -1115,18 +1060,12 @@ public class ContactManager {
      * 1: Must be Touching ? 0: Must be Non-Touching 2: Touching or Non-Touching
      * -1: Invalid. Intersecting
      */
-    private int minmaxEvaluation(MyPolygon min, MyPolygon max, MyPolygon tmin,
-	    MyPolygon tmax) {
+    private int minmaxEvaluation(Polygon min, Polygon max, Polygon tmin,
+	    Polygon tmax) {
 	int result = 0;
 	boolean min_disjoint = false;
 	boolean max_intersecting = false;
 
-	/* If bot max are edges, then they could be considered as intersecting. */
-
-	// Debug.echo(null, " in ",
-	// max,tmax,QuantiShapeCalculator.isIntersected(max,tmax,true));
-	// System.out.println(max + "   " + tmax + "  " +
-	// QuantiShapeCalculator.isIntersected(max, tmax, true));
 
 	if (!quantiShapeCalculator.isIntersected(min, tmin, false))
 	    min_disjoint = true;
@@ -1134,8 +1073,7 @@ public class ContactManager {
 	if (quantiShapeCalculator.isIntersected(max, tmax, true))
 	    max_intersecting = true;
 
-	// if(max.npoints == 2 && tmax.npoints == 2)
-	// max_intersecting = true;
+	
 	if (min_disjoint & max_intersecting)
 	    result = 2; // can be either touching or non-touching
 	else if (!max_intersecting)
@@ -1145,8 +1083,8 @@ public class ContactManager {
 	return result;
     }
 
-    private boolean testSolidOverlapping(MyPolygon m, MyPolygon n) {
-	// return QuantiShapeCalculator.isIntersectedWCA(m, n).size() > 1;
+    private boolean testSolidOverlapping(Polygon m, Polygon n) {
+	
 	return quantiShapeCalculator.isIntersected(m, n, false);
     }
 
@@ -1155,15 +1093,7 @@ public class ContactManager {
     private LinkedList<Contact> getContactRA(LinkedList<Contact> contacts,
 	    Configuration conf, Configuration tconf) {
 	/* no needs to distinguish between edge 12,23,34,14 */
-	/*
-	 * if(conf.getMbr().getId() == 10 && tconf.getMbr().getId() == 8)
-	 * System.out.println(isOverlappingR_A(conf,tconf));
-	 */
-	/*
-	 * if(isOverlappingR_A(conf,tconf)) { Contact _contact = new Contact();
-	 * 
-	 * _contact.setType(-2); contacts.add(_contact); return contacts; }
-	 */
+	
 	boolean tr1 = testRegionR_A(conf, tconf, 1);// test the right half of
 						    // the top edge.
 	boolean tr2 = testRegionR_A(conf, tconf, 2);
@@ -1191,15 +1121,7 @@ public class ContactManager {
 
 	boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 
-	// print ========
-	/*
-	 * if(conf.getMbr().uid == 16 && tconf.getMbr().uid == 12 && tconf.unary
-	 * == 1) System.out.println( " ++ " + tr1 + "  " + tr2 + "  " + tr3 +
-	 * "  " + tr4 + "  " + tr23 + "  " + tr14 + "  " + ra13_1 + " " +
-	 * ra13_14 + "  " + ra13_3 + "  " + ra13_23 + "  " + ra24_2 + "  " +
-	 * ra24_23 + "  " + ra24_4 + "  " + ra24_14);
-	 */
-	// print end ====
+	
 
 	if (!tr1 && !tr2 && !tr3 && !tr4 && !tr23 && !tr14
 		&& (ra13_1 == -1 || ra13_14 == -1)
@@ -1219,15 +1141,7 @@ public class ContactManager {
 	    _contact.setTangential_area(114);
 	    _contact.points[0] = new Point(conf.x + conf.width, conf.y);
 	    contacts.add(_contact);
-	    // System.out.println(" enter to this block   " +
-	    // conf.toShortString() + "   " + tconf.toShortString() + "   " +
-	    // _contact.points[0]);
-	    /*
-	     * if(!conf.v1) { //TODO conf updates .v1 Contact _contact = new
-	     * Contact(); _contact.points[0] = __contact.points[0];
-	     * _contact.setType(1); _contact.setTangential_area(114);
-	     * contacts.add(_contact); }
-	     */
+	   
 
 	} else if (vertex_2 && neighbor_type == 0) {
 	    Contact _contact = new Contact();
@@ -1236,11 +1150,6 @@ public class ContactManager {
 	    _contact.points[0] = new Point(conf.x, conf.y);
 	    contacts.add(_contact);
 
-	    /*
-	     * if(!conf.v2) { Contact _contact = new Contact();
-	     * _contact.points[0] = __contact.points[0]; _contact.setType(1);
-	     * _contact.setTangential_area(223); contacts.add(_contact); }
-	     */
 
 	} else if (vertex_3 && neighbor_type == 0) {
 
@@ -1250,11 +1159,7 @@ public class ContactManager {
 	    _contact.points[0] = new Point(conf.x, conf.y + conf.height);
 	    contacts.add(_contact);
 
-	    /*
-	     * if(!conf.v3) { Contact _contact = new Contact();
-	     * _contact.points[0] = __contact.points[0]; _contact.setType(1);
-	     * _contact.setTangential_area(233); contacts.add(_contact); }
-	     */
+	
 	} else if (vertex_4 && neighbor_type == 0) {
 
 	    Contact _contact = new Contact();
@@ -1263,12 +1168,7 @@ public class ContactManager {
 	    _contact.points[0] = new Point(conf.x + conf.width, conf.y
 		    + conf.height);
 	    contacts.add(_contact);
-	    /*
-	     * if(!conf.v4) { Contact _contact = new Contact();
-	     * _contact.setType(1); _contact.points[0] = __contact.points[0];
-	     * _contact.setTangential_area(414); contacts.add(_contact); }
-	     */
-
+	 
 	} else if (tr1) // must touch
 	{
 	    Contact _contact = new Contact();
@@ -1305,33 +1205,19 @@ public class ContactManager {
 	    _contact.setType(1);
 	    _contact.setTangential_area(14);
 	    contacts.add(_contact);
-	} // if no contacts April 9
+	} 
 	else {
 	    Contact _contact = new Contact();
 	    _contact.setType(0);
 	    contacts.add(_contact);
 	}
 	return contacts;
-	/*
-	 * if(non_touching) { Contact _contact = new Contact();
-	 * _contact.setType(0); _contact.setTangential_area(-1); Configuration
-	 * _conf = conf.clone(); _conf.getContact_map().put(tconf.getMbr(),
-	 * _contact); confs.add(_conf); }
-	 */
+
     }
 
     private LinkedList<Contact> getContactAR(LinkedList<Contact> contacts,
 	    Configuration conf, Configuration tconf) {
-	// print
-	/*
-	 * if(conf.unary == 1 && conf.getMbr().getId() == 6 &&
-	 * tconf.getMbr().getId() == 5 && tconf.unary == 0)
-	 * System.out.println(isOverlappingR_A(tconf,conf));
-	 */
-	/*
-	 * if(isOverlappingR_A(tconf,conf)) { Contact _contact = new Contact();
-	 * _contact.setType(-2); contacts.add(_contact); return contacts; }
-	 */
+	
 	/* no needs to distinguish between edge 12,23,34,14 */
 	boolean tr12 = testRegionR_A(tconf, conf, 12);
 	boolean tr34 = testRegionR_A(tconf, conf, 34);
@@ -1357,17 +1243,7 @@ public class ContactManager {
 
 	boolean vertex_4 = (ra24_4 == 2) && (ra24_14 == 2);
 
-	// print=============
 	
-	 /* if(conf.unary == 2 && conf.getMbr().uid == 8 && tconf.getMbr().uid
-	  == 3) 
-         System.out.println("--" + tr12 + "  " + tr34 + "  " + tr23 +
-	 "  " + tr14 + "  " + ra13_1 + "  " + ra13_14 + "  " + ra13_3 + "   "
-	  + ra13_23 + "  " + ra24_2 + "  " + ra24_23 + "  " + ra24_4 + "  " +
-	  ra24_14);*/
-	 
-
-	// print end
 
 	if (!tr12 && !tr34 && !tr23 && !tr14 && (ra13_1 == -1 || ra13_14 == -1)
 		&& (ra13_3 == -1 || ra13_23 == -1)
@@ -1427,14 +1303,7 @@ public class ContactManager {
 		_contact.setTangential_area(3);
 	    else
 		_contact.setTangential_area(4);
-	    /*if(conf.unary == 2 && conf.getMbr().uid == 8 && tconf.getMbr().uid
-			  == 3)
-		{
-		   for (int i = 0 ; i < conf.getPermit_regions().length ; i ++)
-		       System.out.print(conf.getPermit_regions()[i] + "  ");
-		  System.out.println(conf.toShortString() + "   " + tconf.toShortString() +  "  " + _contact +
-			_contact.toString(false));
-		}*/
+
 	    contacts.add(_contact);
 
 	} else if (tr23) {
@@ -1476,7 +1345,7 @@ public class ContactManager {
 	    }
 	    contacts.add(_contact);
 	}
-	// if no contacts April 9
+	
 	else {
 	    Contact _contact = new Contact();
 	    _contact.setType(0);
@@ -1493,37 +1362,20 @@ public class ContactManager {
 	int tr3 = testFreeRegion13(conf, tconf, 3);
 	int tr4 = testFreeRegion24(conf, tconf, 4);
 
-	// print
-	/*
-	 * if(conf.unary == 1 && tconf.unary == 1 && conf.getMbr().getId() == 23
-	 * && tconf.getMbr().getId() == 12) System.out.println(tr1 + "  " + tr2
-	 * + "  " + tr3 + "  " + tr4 + "   " );
-	 */
-	// print end
+
 
 	// TODO effect efficiency
 	if (tr1 == -1 && tr2 == -1 && tr3 == -1 && tr4 == -1) {
 	    Contact _contact = new Contact();
 	    _contact.setType(-2);
 	    contacts.add(_contact);
-	    /*
-	     * if(conf.getMbr().getId() == 16 && conf.unary == 1 &&
-	     * tconf.getMbr().getId() == 10 && tconf.unary == 0)
-	     * System.out.println(" enter this block  " + conf.toShortString() +
-	     * "    " + tconf.toShortString() );
-	     */
+	  
 	    return contacts;
 	}
 
 	boolean potentialEdgeTouch = quantiShapeCalculator.potentialEdgeTouch(
 		conf, tconf);
-	// print
-	/*
-	 * if(conf.unary == 1 && tconf.unary == 2 && conf.getMbr().getId() == 20
-	 * && tconf.getMbr().getId() == 19) System.out.println(tr1 + "  " + tr2
-	 * + "  " + tr3 + "  " + tr4 + "   " + potentialEdgeTouch);
-	 */
-	// print end
+	
 
 	// boolean non_touching = false;
 	if (tr1 == 2) {
@@ -1581,7 +1433,7 @@ public class ContactManager {
 	    contacts.add(_contact);
 	    // non_touching = true;
 	}
-	// if no contacts April 9
+
 
 	Contact _contact = new Contact();
 	_contact.setType(0);
@@ -1606,9 +1458,7 @@ public class ContactManager {
 	boolean tr4 = testRegularRegion34(conf, tconf, 4);
 	boolean tr23 = testRegularRegion23(conf, tconf);
 	boolean tr14 = testRegularRegion14(conf, tconf);
-	// System.out.println(conf.getMbr() + "    " + tconf.getMbr() + "   " +
-	// tr1 + "   " + tr2 + "   " + tr3 + "   " + tr4 + "   " + tr23 + "   "
-	// + tr14);
+	
 	if (tr2 && tr1) {
 	    Contact _contact = new Contact();
 	    _contact.setTangential_area(12);

@@ -1,12 +1,11 @@
 package quali;
 
 import java.awt.Point;
+import java.awt.Polygon;
 import java.util.HashMap;
 import java.util.LinkedList;
 
 import ab.WorldinVision;
-
-import common.MyPolygon;
 
 /**
  * Configuration specifies an instantiation of a MBR.
@@ -19,41 +18,41 @@ public class Configuration {
     public int angular;
     public HashMap<Integer, LinkedList<MBR>> blocked_regions = new HashMap<Integer, LinkedList<MBR>>();
     public HashMap<Integer, Contact> contact_map = new HashMap<Integer, Contact>();
-    public MyPolygon core_left = new MyPolygon();
-    public MyPolygon core_left1 = new MyPolygon();
-    public MyPolygon core_left3 = new MyPolygon();
-    public MyPolygon core_right = new MyPolygon();
-    public MyPolygon core_right2 = new MyPolygon();
-    public MyPolygon core_right4 = new MyPolygon();
+    public Polygon core_left = new Polygon();
+    public Polygon core_left1 = new Polygon();
+    public Polygon core_left3 = new Polygon();
+    public Polygon core_right = new Polygon();
+    public Polygon core_right2 = new Polygon();
+    public Polygon core_right4 = new Polygon();
 
     // approx_u3t3 is the approx maximum space of a fat right leaning rectangle.
-    public MyPolygon approx_u3t3 = new MyPolygon();
-    public MyPolygon approx_u3t2 = new MyPolygon();
-    public MyPolygon approx_u3t1 = new MyPolygon();
-    public MyPolygon approx_u3t4 = new MyPolygon();
+    public Polygon approx_u3t3 = new Polygon();
+    public Polygon approx_u3t2 = new Polygon();
+    public Polygon approx_u3t1 = new Polygon();
+    public Polygon approx_u3t4 = new Polygon();
 
     // approx_u3t3r is the remaining part of the approx_u3t3 region
-    public MyPolygon approx_u3t3r = new MyPolygon();
-    public MyPolygon approx_u3t2r = new MyPolygon();
-    public MyPolygon approx_u3t1r = new MyPolygon();
-    public MyPolygon approx_u3t4r = new MyPolygon();
+    public Polygon approx_u3t3r = new Polygon();
+    public Polygon approx_u3t2r = new Polygon();
+    public Polygon approx_u3t1r = new Polygon();
+    public Polygon approx_u3t4r = new Polygon();
 
     // approx_left is the approx maximum space of a fat left leaning rectangle.
-    public MyPolygon approx_u4t3 = new MyPolygon();
-    public MyPolygon approx_u4t2 = new MyPolygon();
-    public MyPolygon approx_u4t1 = new MyPolygon();
-    public MyPolygon approx_u4t4 = new MyPolygon();
+    public Polygon approx_u4t3 = new Polygon();
+    public Polygon approx_u4t2 = new Polygon();
+    public Polygon approx_u4t1 = new Polygon();
+    public Polygon approx_u4t4 = new Polygon();
 
     // approx_u4t3r is the remaining part of the approx_u4t3 region
-    public MyPolygon approx_u4t3r = new MyPolygon();
-    public MyPolygon approx_u4t2r = new MyPolygon();
-    public MyPolygon approx_u4t1r = new MyPolygon();
-    public MyPolygon approx_u4t4r = new MyPolygon();
+    public Polygon approx_u4t3r = new Polygon();
+    public Polygon approx_u4t2r = new Polygon();
+    public Polygon approx_u4t1r = new Polygon();
+    public Polygon approx_u4t4r = new Polygon();
 
-    public MyPolygon diagonal_left = new MyPolygon();
-    public MyPolygon diagonal_right = new MyPolygon();
+    public Polygon diagonal_left = new Polygon();
+    public Polygon diagonal_right = new Polygon();
 
-    public MyPolygon fullRec = new MyPolygon();
+    public Polygon fullRec = new Polygon();
     public boolean edge = false;
     public int height;
     public int width;
@@ -76,15 +75,15 @@ public class Configuration {
     /* store all the points that contact with the actual shape */
     public LinkedList<Point> points41 = new LinkedList<Point>();
 
-    public MyPolygon triangle1 = new MyPolygon();
-    public MyPolygon triangle11 = new MyPolygon();
+    private Polygon triangle1 = new Polygon();
+    private Polygon triangle11 = new Polygon();
 
-    public MyPolygon triangle2 = new MyPolygon();
-    public MyPolygon triangle22 = new MyPolygon();
-    public MyPolygon triangle3 = new MyPolygon();
-    public MyPolygon triangle33 = new MyPolygon();
-    public MyPolygon triangle4 = new MyPolygon();
-    public MyPolygon triangle44 = new MyPolygon();
+    private Polygon triangle2 = new Polygon();
+    private Polygon triangle22 = new Polygon();
+    private Polygon triangle3 = new Polygon();
+    private Polygon triangle33 = new Polygon();
+    private Polygon triangle4 = new Polygon();
+    private Polygon triangle44 = new Polygon();
 
     public int unary = -1;// 0 = regular, 1 = slim lean to right, 2 = slim lean
 			  // to left, 3 = fat lean to right, 4 = fat lean to
@@ -171,11 +170,7 @@ public class Configuration {
 		}
 
 		result = ((left_support > 0) && (right_support > 0));
-		/*
-		 * if(unary == 1 && mbr.getId() == 6 && tconf.getMbr().getId()
-		 * == 7 && tconf.unary == 0) System.out.println("  " + contact +
-		 * "   " + left_support + "  " + right_support + "  ");
-		 */
+
 		if (unary == 0)
 		    result |= weaksupport;
 		else if (unary == 1) {
@@ -576,16 +571,14 @@ public class Configuration {
     public Configuration translate(Configuration tconf, int threshold) {
 	// find out the neighbor region
 	MBR tmbr = tconf.getMbr();
-	// System.out.println(tmbr.getId() + "  " + this.getMbr().getId());
-	// System.out.println(tmbr);
+
 	int index = neighbors.indexOf(tmbr);
 	// TODO disable print
 	if (index == -1)
 	    System.out.println("####" + tmbr + "   " + this);
 	Neighbor neighbor = neighbors.get(index);
 	byte type = neighbor.getNeighborType();
-	// only transform the configuration which are not
-	// overlapping/contained/containing
+
 	int gap = (int) neighbor.getGap();
 	if (gap > threshold || type == 0)
 	    return this;
@@ -603,8 +596,7 @@ public class Configuration {
 	case 1: {
 	    _mbr.translate(0, -gap);
 	    break;
-	    // System.out.println(" enter this " + mbr + "   " + mbr.getBounds()
-	    // + "   " + _mbr.getBounds());
+
 	}
 	case 2: {
 	    _mbr.translate(-gap, 0);
@@ -682,41 +674,9 @@ public class Configuration {
 	return contact_map;
     }
 
-    public MyPolygon getCore_left() {
 
-	return core_left;
-    }
 
-    public MyPolygon getCore_left1() {
-	return core_left1;
-    }
-
-    public MyPolygon getCore_left3() {
-	return core_left3;
-    }
-
-    public MyPolygon getCore_right() {
-
-	return core_right;
-    }
-
-    public MyPolygon getCore_right2() {
-	return core_right2;
-    }
-
-    public MyPolygon getCore_right4() {
-	return core_right4;
-    }
-
-    public MyPolygon getDiagonal_left() {
-
-	return diagonal_left;
-    }
-
-    public MyPolygon getDiagonal_right() {
-
-	return diagonal_right;
-    }
+ 
 
     public int getHeight() {
 	return height;
@@ -734,19 +694,19 @@ public class Configuration {
 	return permit_regions;
     }
 
-    public MyPolygon getRegion(int region) {
-	MyPolygon result = new MyPolygon();
+    public Polygon getRegion(int region) {
+	Polygon result = new Polygon();
 
 	if (region == 1)
-	    result = getTriangle1();
+	    result = triangle1;
 	else if (region == 2)
-	    result = getTriangle2();
+	    result = triangle2;
 
 	else if (region == 3)
-	    result = getTriangle3();
+	    result = triangle3;
 
 	else if (region == 4)
-	    result = getTriangle4();
+	    result = triangle4;
 
 	else if (region == 5) {
 	    result.addPoint(x, y);
@@ -759,19 +719,19 @@ public class Configuration {
 
     }
 
-    public MyPolygon getRegionLarge(int region) {
-	MyPolygon result = new MyPolygon();
+    public Polygon getRegionLarge(int region) {
+	Polygon result = new Polygon();
 
 	if (region == 1)
-	    result = getTriangle11();
+	    result = triangle11;
 	else if (region == 2)
-	    result = getTriangle22();
+	    result = triangle22;
 
 	else if (region == 3)
-	    result = getTriangle33();
+	    result = triangle33;
 
 	else if (region == 4)
-	    result = getTriangle44();
+	    result = triangle44;
 
 	else if (region == 5) {
 	    result.addPoint(x, y);
@@ -784,8 +744,8 @@ public class Configuration {
 
     }
 
-    public MyPolygon getRegionLine(int region) {
-	MyPolygon result = new MyPolygon();
+    public Polygon getRegionLine(int region) {
+	Polygon result = new Polygon();
 
 	if (region == 1) {
 	    if (unary == 0) {
@@ -864,41 +824,10 @@ public class Configuration {
 
     }
 
-    public MyPolygon getTriangle1() {
+  
+  
+ 
 
-	return triangle1;
-    }
-
-    public MyPolygon getTriangle11() {
-	return triangle11;
-    }
-
-    public MyPolygon getTriangle2() {
-
-	return triangle2;
-    }
-
-    public MyPolygon getTriangle22() {
-	return triangle22;
-    }
-
-    public MyPolygon getTriangle3() {
-
-	return triangle3;
-    }
-
-    public MyPolygon getTriangle33() {
-	return triangle33;
-    }
-
-    public MyPolygon getTriangle4() {
-
-	return triangle4;
-    }
-
-    public MyPolygon getTriangle44() {
-	return triangle44;
-    }
 
     public int getWidth() {
 	return width;
@@ -1007,19 +936,18 @@ public class Configuration {
 
 	return unary;
     }
-    
-    private void calPermitRegions()
-    {
-	  if (unary == 1) // lean to right
-			setPermit_regions(0, 1, 1, 0);
-		    else if (unary == 2)
-			setPermit_regions(0, 1, 0, 1);
-		    else if (unary == 3)
-			setPermit_regions(1, 0, 1, 0);
-		    else if (unary == 4)
-			setPermit_regions(1, 0, 0, 1);
-		    else
-			setPermit_regions(0, 0, 0, 0);
+
+    private void calPermitRegions() {
+	if (unary == 1) // lean to right
+	    setPermit_regions(0, 1, 1, 0);
+	else if (unary == 2)
+	    setPermit_regions(0, 1, 0, 1);
+	else if (unary == 3)
+	    setPermit_regions(1, 0, 1, 0);
+	else if (unary == 4)
+	    setPermit_regions(1, 0, 0, 1);
+	else
+	    setPermit_regions(0, 0, 0, 0);
     }
 
     public void setAngular(int angular) {
@@ -1090,22 +1018,22 @@ public class Configuration {
     public String toString() {
 	String result = mbr + " unary: ";
 	if (unary == 0)
-	    result += " regular ";
+	    result += " Regular ";
 	else if (unary == 1)
-	    result += " slim lean to right ";
+	    result += " SR ";
 	else if (unary == 2)
-	    result += "slim lean to left";
+	    result += " SL ";
 	else if (unary == 3)
-	    result += "fat lean to right";
+	    result += " FR ";
 	else if (unary == 4)
-	    result += " fat lean to left";
+	    result += " FL ";
 	else if (unary == -2)
 	    result += " completed";
 	else
 	    result += " not initialized ";
 
 	for (Integer mbr : contact_map.keySet()) {
-	    result += " contacted with [ MBR id: " + mbr + " at "
+	    result += " contacted by [ MBR i" + mbr + " at "
 		    + contact_map.get(mbr).toString(unary == 0) + " ] ";
 	}
 	return result;

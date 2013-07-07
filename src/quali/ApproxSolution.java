@@ -4,7 +4,7 @@ import quali.util.Logger;
 
 /**
  * If no solution found during the backtracking, an approx solution will be returned
- * @author Gary, Jochen Renz
+ * @author Gary, Jochen
  *
  */
 public class ApproxSolution {

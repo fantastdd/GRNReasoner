@@ -49,7 +49,7 @@ public class ScenarioPanel extends JFrame {
 	// this.setResizable(false);
 	this.setVisible(true);
 	super.paint(getGraphics());
-
+	repaint();
     }
 
     @Override
@@ -219,6 +219,6 @@ public class ScenarioPanel extends JFrame {
 
     }
 
-  
+
 
 }
