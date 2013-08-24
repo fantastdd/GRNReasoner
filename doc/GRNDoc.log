@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  3 JUL 2013 17:20
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2013.1.20)  7 JUL 2013 17:18
 entering extended mode
 **GRNDoc.tex
 (F:\Implementation\GSR\GRNReasoner\doc\GRNDoc.tex
@@ -62,7 +62,11 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
-(F:\Implementation\GSR\GRNReasoner\doc\GRNDoc.aux)
+(F:\Implementation\GSR\GRNReasoner\doc\GRNDoc.aux
+
+LaTeX Warning: Label `example' multiply defined.
+
+)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 6.
@@ -75,8 +79,7 @@ LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
 LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
-
-("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
+ ("C:\Program Files\MiKTeX 2.9\tex\context\base\supp-pdf.mkii"
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count88
 \scratchdimen=\dimen105
@@ -96,53 +99,52 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 7.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <6> on input line 7.
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 10.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 12.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\base\omscmr.fd"
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 10.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 12.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 26.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 26.
 
-Underfull \hbox (badness 10000) in paragraph at lines 24--41
+Underfull \hbox (badness 10000) in paragraph at lines 26--43
 
  []
 
 [1
 
 {C:/Users/Gary/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 43.
-LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 43.
-
-Overfull \hbox (52.85703pt too wide) in paragraph at lines 46--49
+Overfull \hbox (52.85703pt too wide) in paragraph at lines 48--51
 $[]$ $[]$ $[]$ 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 46--49
+Underfull \hbox (badness 10000) in paragraph at lines 48--51
 
  []
 
-<combo1.png, id=11, 450.9347pt x 161.10187pt>
+<combo1.png, id=12, 450.9347pt x 161.10187pt>
 File: combo1.png Graphic file (type png)
  <use combo1.png>
-Package pdftex.def Info: combo1.png used on input line 57.
+Package pdftex.def Info: combo1.png used on input line 59.
 (pdftex.def)             Requested size: 248.01485pt x 88.6063pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<sectors.png, id=13, 644.4075pt x 225.84375pt>
+<sectors.png, id=14, 644.4075pt x 225.84375pt>
 File: sectors.png Graphic file (type png)
  <use sectors.png>
-Package pdftex.def Info: sectors.png used on input line 72.
+Package pdftex.def Info: sectors.png used on input line 74.
 (pdftex.def)             Requested size: 225.546pt x 79.04648pt.
  [2]
 <f1.jpg, id=22, 842.14626pt x 474.77374pt>
 File: f1.jpg Graphic file (type jpg)
  <use f1.jpg>
-Package pdftex.def Info: f1.jpg used on input line 85.
+Package pdftex.def Info: f1.jpg used on input line 87.
 (pdftex.def)             Requested size: 294.7556pt x 166.1733pt.
 
 
@@ -150,54 +152,74 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 [3 <F:/Implementation/GSR/GRNReasoner/doc/combo1.png> <F:/Implementation/GSR/GR
 NReasoner/doc/sectors.png>] [4 <F:/Implementation/GSR/GRNReasoner/doc/f1.jpg>]
-Underfull \hbox (badness 10000) in paragraph at lines 129--152
+<f2.jpg, id=30, 967.615pt x 203.76125pt>
+File: f2.jpg Graphic file (type jpg)
+ <use f2.jpg>
+Package pdftex.def Info: f2.jpg used on input line 108.
+(pdftex.def)             Requested size: 338.67033pt x 71.31749pt.
+
+<l4vo.png, id=31, 348.55219pt x 252.19218pt>
+File: l4vo.png Graphic file (type png)
+ <use l4vo.png>
+Package pdftex.def Info: l4vo.png used on input line 129.
+(pdftex.def)             Requested size: 121.99509pt x 88.26857pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[5 <F:/Implementation/GSR/GRNReasoner/doc/f2.jpg>]
+Underfull \hbox (badness 10000) in paragraph at lines 138--161
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--152
+Underfull \hbox (badness 10000) in paragraph at lines 138--161
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--152
+Underfull \hbox (badness 10000) in paragraph at lines 138--161
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--152
+Underfull \hbox (badness 10000) in paragraph at lines 138--161
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 129--152
+Underfull \hbox (badness 10000) in paragraph at lines 138--161
 
  []
 
-[5] [6] (F:\Implementation\GSR\GRNReasoner\doc\GRNDoc.aux) ) 
+[6 <F:/Implementation/GSR/GRNReasoner/doc/l4vo.png>]
+(F:\Implementation\GSR\GRNReasoner\doc\GRNDoc.aux)
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
 Here is how much of TeX's memory you used:
- 1170 strings out of 494045
- 15333 string characters out of 3148390
- 69851 words of memory out of 3000000
- 4496 multiletter control sequences out of 15000+200000
+ 1182 strings out of 494045
+ 15457 string characters out of 3148390
+ 69908 words of memory out of 3000000
+ 4506 multiletter control sequences out of 15000+200000
  8241 words of font info for 29 fonts, out of 3000000 for 9000
  715 hyphenation exceptions out of 8191
- 27i,9n,19p,772b,217s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/M
-iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX 2.
-9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pu
-blic/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/ams
-fonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
-cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb
-><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C:/Prog
-ram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/
-MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Program Files/MiKTeX 2
-.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX 2.9/fonts/
-type1/public/amsfonts/cm/cmti10.pfb>
-Output written on GRNDoc.pdf (6 pages, 231123 bytes).
+ 27i,9n,19p,792b,217s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Pr
+ogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Program Files/MiKT
+eX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/f
+onts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/
+amsfonts/cm/cmr12.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/
+cm/cmr17.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.p
+fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Fi
+les/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
+Output written on GRNDoc.pdf (6 pages, 261925 bytes).
 PDF statistics:
- 74 PDF objects out of 1000 (max. 8388607)
+ 76 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 16 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 26 words of extra memory for PDF output out of 10000 (max. 10000000)
 

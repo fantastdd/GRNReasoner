@@ -76,12 +76,6 @@ public class MainEntry {
 	  
 	  MultiThreadReasoner multiReasoner = new MultiThreadReasoner(wiv, threads ,attempt, time); 
 	  multiReasoner.run();
-	  
-	  //display 
-	   //Logger logger = LoggerManager.merge();
-	 // System.out.println("  print the logger  " + logger);
-	  
-	  //wiv.showWorldinVision(logger, multiReasoner.root , MultiThreadReasoner.sol);
 	 
 	}
 	else{
